@@ -2,6 +2,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.core.mail import send_mail
@@ -12,6 +15,49 @@ from django.utils.crypto import salted_hmac
 from django.conf import settings
 import secrets
 import re
+
+_DEMANDE_FORM_KEYS = (
+    "declarant_nom",
+    "declarant_telephone",
+    "declarant_email",
+    "declarant_adresse",
+    "motif_precisions",
+)
+
+
+def _demande_form_defaults(user: User) -> dict[str, str]:
+    nom = ((user.get_full_name() or "").strip() or (user.first_name or "").strip() or "").strip()
+    email = (user.email or "").strip()
+    return {
+        "declarant_nom": nom,
+        "declarant_telephone": "",
+        "declarant_email": email,
+        "declarant_adresse": "",
+        "motif_precisions": "",
+    }
+
+
+def _demande_form_from_post(post) -> dict[str, str]:
+    return {k: (post.get(k) or "").strip() for k in _DEMANDE_FORM_KEYS}
+
+
+def _validate_demande_form(data: dict[str, str]) -> list[str]:
+    errs: list[str] = []
+    if len(data["declarant_nom"]) < 3:
+        errs.append("Indiquez votre nom et prénom(s) (au moins 3 caractères).")
+    tel_digits = re.sub(r"\D+", "", data["declarant_telephone"])
+    if len(tel_digits) < 8:
+        errs.append("Indiquez un numéro de téléphone valide (au moins 8 chiffres).")
+    if data["declarant_email"]:
+        try:
+            EmailValidator()(data["declarant_email"])
+        except ValidationError:
+            errs.append("L’adresse email de contact n’est pas valide.")
+    if len(data["declarant_adresse"]) < 10:
+        errs.append("L’adresse complète doit contenir au moins 10 caractères.")
+    if len(data["motif_precisions"]) < 20:
+        errs.append("Précisez le motif de votre demande (au moins 20 caractères).")
+    return errs
 
 from accounts.models import Demande, DemandeStatut, Document, PasswordResetCode, UserRole
 
@@ -188,6 +234,7 @@ def dashboard_view(request):
 
     demandes = [
         {
+            "id": d.pk,
             "ref": d.reference,
             "type": d.type_demande,
             "etat": d.get_statut_display().upper(),
@@ -212,7 +259,7 @@ def dashboard_view(request):
         },
         "demandes": demandes,
     }
-    return render(request, "dashboard.html", ctx)
+    return render(request, "dashboard_clean.html", ctx)
 
 
 @login_required
@@ -229,6 +276,189 @@ def documents_view(request):
         "documents": docs,
     }
     return render(request, "documents.html", ctx)
+
+
+DOCUMENT_CREATE_OPTIONS = (
+    {
+        "type": "Attestation de résidence",
+        "icon": "home_work",
+        "hint": "Justificatif de domicile auprès de la mairie.",
+    },
+    {
+        "type": "Attestation de bonne vie et mœurs",
+        "icon": "gavel",
+        "hint": "Souvent demandée pour un emploi ou une inscription.",
+    },
+    {
+        "type": "Certificat de nationalité (copie légalisée / attestation)",
+        "icon": "badge",
+        "hint": "Démarche d’état civil liée à la nationalité.",
+    },
+    {
+        "type": "Certificat de vie",
+        "icon": "favorite",
+        "hint": "Attestation de présence en vie pour un organisme.",
+    },
+    {
+        "type": "Certificat de célibat / mariage / divorce (selon dossier)",
+        "icon": "diversity_3",
+        "hint": "Selon votre situation matrimoniale et les pièces fournies.",
+    },
+    {
+        "type": "Autorisation d’occupation / domaniale (dossier communal)",
+        "icon": "map",
+        "hint": "Dossier lié au foncier ou à l’occupation du domaine.",
+    },
+    {
+        "type": "Autre document communal",
+        "icon": "description",
+        "hint": "Demande générique ; précisez au guichet si besoin.",
+    },
+)
+
+DOCUMENT_TYPES_COMMUNE = tuple(o["type"] for o in DOCUMENT_CREATE_OPTIONS)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def demandes_view(request):
+    user = request.user
+    display = (user.first_name or user.get_full_name() or user.username).strip() or "Citoyen"
+
+    qs = Demande.objects.filter(citoyen=user).prefetch_related("documents")
+
+    q = (request.GET.get("q") or "").strip()
+    statut = (request.GET.get("statut") or "").strip()
+    categorie = (request.GET.get("categorie") or "").strip()
+
+    if q:
+        qs = qs.filter(Q(pk__icontains=q) | Q(type_demande__icontains=q))
+    if statut:
+        qs = qs.filter(statut=statut)
+    if categorie:
+        qs = qs.filter(type_demande=categorie)
+
+    total = Demande.objects.filter(citoyen=user).count()
+    brouillon = Demande.objects.filter(citoyen=user, statut=DemandeStatut.BROUILLON).count()
+    action_requise = Demande.objects.filter(citoyen=user, statut=DemandeStatut.ACTION_REQUISE).count()
+    en_attente = brouillon + action_requise
+    en_traitement = Demande.objects.filter(citoyen=user, statut=DemandeStatut.EN_EXAMEN).count()
+    approuvees = Demande.objects.filter(citoyen=user, statut=DemandeStatut.APPROUVE).count()
+
+    demandes_rows = []
+    for d in qs:
+        first_doc = d.documents.all()[:1]
+        doc = first_doc[0] if first_doc else None
+        demandes_rows.append(
+            {
+                "id": d.pk,
+                "reference": d.reference,
+                "type_demande": d.type_demande,
+                "statut": d.statut,
+                "statut_label": d.get_statut_display(),
+                "created_at": d.created_at,
+                "updated_at": d.updated_at,
+                "first_document": doc,
+            }
+        )
+
+    ctx = {
+        "user_display_name": display,
+        "filters": {
+            "q": q,
+            "statut": statut,
+            "categorie": categorie,
+        },
+        "stats": {
+            "total": total,
+            "en_attente": en_attente,
+            "en_traitement": en_traitement,
+            "approuvees": approuvees,
+        },
+        "demandes": demandes_rows,
+        "result_count": len(demandes_rows),
+        "statut_choices": DemandeStatut.choices,
+        "document_types": DOCUMENT_TYPES_COMMUNE,
+        "sync_at": timezone.localtime(timezone.now()).strftime("%d/%m/%Y %H:%M"),
+    }
+    return render(request, "demandes.html", ctx)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def demande_create_view(request):
+    user = request.user
+    display = (user.first_name or user.get_full_name() or user.username).strip() or "Citoyen"
+
+    form_data = _demande_form_from_post(request.POST) if request.method == "POST" else _demande_form_defaults(user)
+
+    if request.method == "POST":
+        type_demande = (request.POST.get("type_demande") or "").strip()
+        accept = request.POST.get("accept_terms") == "on"
+        type_ok = type_demande in DOCUMENT_TYPES_COMMUNE
+        field_errors = _validate_demande_form(form_data) if type_ok else []
+        if not type_ok:
+            messages.error(request, "Type de document invalide. Veuillez recommencer le parcours.")
+        else:
+            for msg in field_errors:
+                messages.error(request, msg)
+            if not accept:
+                messages.error(request, "Vous devez accepter les conditions pour déposer une demande.")
+            elif not field_errors:
+                d = Demande.objects.create(
+                    citoyen=user,
+                    type_demande=type_demande,
+                    statut=DemandeStatut.BROUILLON,
+                    declarant_nom=form_data["declarant_nom"],
+                    declarant_telephone=form_data["declarant_telephone"],
+                    declarant_email=form_data["declarant_email"],
+                    declarant_adresse=form_data["declarant_adresse"],
+                    motif_precisions=form_data["motif_precisions"],
+                )
+                messages.success(
+                    request,
+                    "Votre demande a été créée en brouillon. Vous pouvez maintenant consulter le dossier et préparer les pièces demandées par la mairie.",
+                )
+                return redirect("demande_detail", pk=d.pk)
+
+    if request.method == "POST":
+        posted = (request.POST.get("type_demande") or "").strip()
+        preselect = posted if posted in DOCUMENT_TYPES_COMMUNE else ""
+    else:
+        preselect = (request.GET.get("type") or "").strip()
+        if preselect not in DOCUMENT_TYPES_COMMUNE:
+            preselect = ""
+
+    ctx = {
+        "user_display_name": display,
+        "document_options": DOCUMENT_CREATE_OPTIONS,
+        "preselect_type": preselect,
+        "form_data": form_data,
+        "wizard_resume": request.method == "POST",
+    }
+    return render(request, "demande_nouvelle.html", ctx)
+
+
+@login_required
+@require_http_methods(["GET"])
+def demande_detail_view(request, pk: int):
+    user = request.user
+    display = (user.first_name or user.get_full_name() or user.username).strip() or "Citoyen"
+    demande = (
+        Demande.objects.prefetch_related("documents")
+        .filter(pk=pk, citoyen=user)
+        .first()
+    )
+    if demande is None:
+        messages.error(request, "Dossier introuvable.")
+        return redirect("demandes")
+
+    ctx = {
+        "user_display_name": display,
+        "demande": demande,
+        "documents": demande.documents.all(),
+    }
+    return render(request, "demande_detail.html", ctx)
 
 
 @require_http_methods(["GET"])

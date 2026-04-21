@@ -30,6 +30,9 @@ urlpatterns = [
     path('register/sent/', views.register_sent_view, name='register_sent'),
     path('confirm-email/<str:token>/', views.confirm_email_view, name='confirm_email'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('demandes/nouvelle/', views.demande_create_view, name='demande_create'),
+    path('demandes/<int:pk>/', views.demande_detail_view, name='demande_detail'),
+    path('demandes/', views.demandes_view, name='demandes'),
     path('documents/', views.documents_view, name='documents'),
     path('admin/', admin.site.urls),
 ]

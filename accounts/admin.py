@@ -16,7 +16,7 @@ class DemandeAdmin(admin.ModelAdmin):
     list_display = ("reference", "citoyen", "type_demande", "statut", "updated_at")
     list_select_related = ("citoyen",)
     list_filter = ("statut",)
-    search_fields = ("type_demande", "citoyen__username", "citoyen__email")
+    search_fields = ("type_demande", "declarant_nom", "citoyen__username", "citoyen__email")
     readonly_fields = ("created_at", "updated_at")
     ordering = ("-updated_at",)
 

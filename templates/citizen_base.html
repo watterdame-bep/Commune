@@ -57,9 +57,11 @@
 
 <body class="bg-[#f6f7fb] font-body text-slate-900">
   <header class="relative overflow-hidden pt-14">
+    {% block header_background %}
     <div class="absolute inset-0 drc-topbar"></div>
     <div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.32] mix-blend-soft-light"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/40"></div>
+    {% endblock %}
 
     <div class="relative z-10">
       <!-- Navbar fixe : sidebar horizontale -->
@@ -79,8 +81,8 @@
               <span class="material-symbols-outlined text-[18px]">dashboard</span>
               Dashboard
             </a>
-            <a class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white"
-              href="#">
+            <a class="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-center text-[13px] font-semibold text-white transition-colors hover:bg-white/10 {% if current == 'demandes' or current == 'demande_detail' or current == 'demande_create' %}border-[#FDB813] bg-white/10{% else %}border-transparent text-white/90 hover:text-white{% endif %}"
+              href="{% url 'demandes' %}">
               <span class="material-symbols-outlined text-[18px]">assignment</span>
               Mes demandes
             </a>
@@ -108,11 +110,12 @@
               aria-label="Notifications">
               <span class="material-symbols-outlined text-[18px]">notifications</span>
             </button>
-            <button type="button"
-              class="hidden items-center justify-center rounded-xl bg-[#FDB813] p-2 text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md md:inline-flex"
-              aria-label="Nouvelle demande" title="Nouvelle demande">
+            <a href="{% url 'demande_create' %}"
+              class="hidden items-center justify-center gap-2 rounded-xl bg-[#FDB813] px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md md:inline-flex"
+              title="Nouvelle demande">
               <span class="material-symbols-outlined text-[18px]">add</span>
-            </button>
+              <span class="hidden lg:inline">Nouvelle demande</span>
+            </a>
 
             <div class="relative">
               <button id="acctBtn"

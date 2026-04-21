@@ -42,6 +42,11 @@ class Demande(models.Model):
         default=DemandeStatut.BROUILLON,
         db_index=True,
     )
+    declarant_nom = models.CharField("Nom et prénom(s)", max_length=200, blank=True, default="")
+    declarant_telephone = models.CharField("Téléphone", max_length=40, blank=True, default="")
+    declarant_email = models.CharField("Email de contact", max_length=254, blank=True, default="")
+    declarant_adresse = models.TextField("Adresse complète", blank=True, default="")
+    motif_precisions = models.TextField("Motif et précisions", blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

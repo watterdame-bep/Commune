@@ -1,0 +1,263 @@
+{% extends "citizen_base.html" %}
+
+{% block title %}Tableau de bord | MuniWorks DRC{% endblock %}
+
+{% block header_background %}
+<div class="absolute inset-0 bg-[#0B2B4A]"></div>
+<div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.22] mix-blend-overlay"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/40"></div>
+{% endblock %}
+
+{% block hero %}
+<div class="mx-auto flex min-h-[calc(100dvh-56px)] max-w-7xl items-center px-5 pb-14 pt-6 sm:px-7 lg:px-8 lg:pb-16">
+  <div class="grid w-full gap-6 lg:grid-cols-3 lg:items-stretch">
+    <div class="lg:col-span-2">
+      <div class="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/15 bg-black/25 px-7 py-7 backdrop-blur-md shadow-[0_25px_70px_-55px_rgba(0,0,0,0.75)]">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.65]" aria-hidden="true"
+          style="background: radial-gradient(ellipse 90% 70% at 18% 18%, rgba(253,184,19,0.10), transparent 55%), radial-gradient(ellipse 90% 70% at 82% 18%, rgba(56,189,248,0.10), transparent 60%), radial-gradient(ellipse 120% 90% at 50% 120%, rgba(0,0,0,0.35), transparent 55%);"></div>
+
+        <div class="relative flex flex-1 flex-col">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[12px] font-semibold text-white/90">
+              <span class="material-symbols-outlined text-[16px]">shield_lock</span>
+              Espace citoyen
+            </span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] font-semibold text-white/80">
+              <span class="material-symbols-outlined text-[16px]">verified</span>
+              Compte actif
+            </span>
+          </div>
+
+          <h1 class="mt-4 font-headline text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Bienvenue, <span class="text-[#FDB813]">{{ user_display_name|default:"Citoyen" }}</span>
+          </h1>
+
+          <p class="mt-4 max-w-2xl text-[15px] font-medium leading-relaxed text-white/85 sm:text-[16px]">
+            Déposez une demande, suivez vos dossiers et récupérez vos documents en toute sécurité. Vos informations restent centralisées dans cet espace.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-5 py-3 text-[12px] font-extrabold tracking-tight text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02]"
+              href="{% url 'demande_create' %}">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              Nouvelle demande
+            </a>
+            <a class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-[12px] font-semibold text-white hover:bg-white/15"
+              href="{% url 'documents' %}">
+              <span class="material-symbols-outlined text-[18px]">folder_open</span>
+              Mes documents
+            </a>
+          </div>
+
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/15 bg-white/5 px-4 py-3">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-[20px] text-white/80">task_alt</span>
+                <div class="min-w-0">
+                  <p class="text-[11px] font-semibold text-white/65">Prochain pas</p>
+                  {% if stats.action_requise|default:0 %}
+                  <p class="mt-1 text-[13px] font-semibold text-white">Vérifier les dossiers en attente d’action.</p>
+                  {% else %}
+                  <p class="mt-1 text-[13px] font-semibold text-white">Aucune action urgente aujourd’hui.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/5 px-4 py-3">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-[20px] text-white/80">download</span>
+                <div class="min-w-0">
+                  <p class="text-[11px] font-semibold text-white/65">Documents</p>
+                  <p class="mt-1 text-[13px] font-semibold text-white">Téléchargez vos pièces délivrées en un clic.</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/5 px-4 py-3">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-[20px] text-white/80">support_agent</span>
+                <div class="min-w-0">
+                  <p class="text-[11px] font-semibold text-white/65">Aide</p>
+                  <p class="mt-1 text-[13px] font-semibold text-white">Consultez la FAQ et les démarches.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden lg:block">
+      <div class="flex h-full flex-col rounded-3xl border border-white/15 bg-white/10 p-6 text-white backdrop-blur-md shadow-[0_25px_70px_-55px_rgba(0,0,0,0.65)]">
+        <div class="flex items-center gap-3">
+          <div class="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+            <span class="material-symbols-outlined text-[26px] opacity-90">domain</span>
+          </div>
+          <div>
+            <p class="text-[11px] font-semibold text-white/70">Portail communal</p>
+            <p class="text-sm font-extrabold">Session sécurisée</p>
+          </div>
+        </div>
+        <div class="mt-5 h-px bg-white/15"></div>
+        <div class="mt-4 flex-1 space-y-2">
+          <p class="text-[12px] font-semibold text-white/70">État : connecté</p>
+          <p class="text-[12px] font-semibold text-white/65">Dernière activité : aujourd’hui</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="min-w-0">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Synthèse</p>
+      <h2 class="mt-2 font-headline text-3xl font-extrabold tracking-tight text-[#0B2B4A]">
+        Tableau de <span class="text-[#caa14a]">bord</span>
+      </h2>
+      <p class="mt-2 text-sm font-semibold text-slate-600">Vue d’ensemble de vos dossiers et de votre activité.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="{% url 'documents' %}"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-[12px] font-semibold text-slate-700 shadow-sm hover:bg-slate-50">
+        <span class="material-symbols-outlined text-[18px]">folder_open</span>
+        Documents
+      </a>
+    </div>
+  </div>
+
+  <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Dossiers totaux</p>
+          <p class="mt-3 font-headline text-5xl font-extrabold leading-none text-[#0B2B4A]">{{ stats.dossiers_total }}</p>
+        </div>
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-[#0B2B4A]/10 ring-1 ring-[#0B2B4A]/15">
+          <span class="material-symbols-outlined text-[22px] text-[#0B2B4A]">folder</span>
+        </div>
+      </div>
+      <div class="mt-5 h-1.5 w-full rounded-full bg-slate-100">
+        <div class="js-bar h-1.5 max-w-full rounded-full bg-gradient-to-r from-[#0B2B4A] to-[#123554]" data-bar-width="{{ bar_widths.dossiers|default:0 }}"></div>
+      </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">En examen</p>
+          <p class="mt-3 font-headline text-5xl font-extrabold leading-none text-[#0B2B4A]">{{ stats.en_examen }}</p>
+        </div>
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-sky-500/10 ring-1 ring-sky-500/15">
+          <span class="material-symbols-outlined text-[22px] text-sky-700">schedule</span>
+        </div>
+      </div>
+      <div class="mt-5 h-1.5 w-full rounded-full bg-slate-100">
+        <div class="js-bar h-1.5 max-w-full rounded-full bg-gradient-to-r from-sky-500 to-sky-700" data-bar-width="{{ bar_widths.en_examen|default:0 }}"></div>
+      </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Approuvés</p>
+          <p class="mt-3 font-headline text-5xl font-extrabold leading-none text-[#0B2B4A]">{{ stats.approuves }}</p>
+        </div>
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/15">
+          <span class="material-symbols-outlined text-[22px] text-emerald-700">verified</span>
+        </div>
+      </div>
+      <div class="mt-5 h-1.5 w-full rounded-full bg-slate-100">
+        <div class="js-bar h-1.5 max-w-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-700" data-bar-width="{{ bar_widths.approuves|default:0 }}"></div>
+      </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Action requise</p>
+          <p class="mt-3 font-headline text-5xl font-extrabold leading-none text-[#0B2B4A]">{{ stats.action_requise }}</p>
+        </div>
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-rose-500/10 ring-1 ring-rose-500/15">
+          <span class="material-symbols-outlined text-[22px] text-rose-700">priority_high</span>
+        </div>
+      </div>
+      <div class="mt-5 h-1.5 w-full rounded-full bg-slate-100">
+        <div class="js-bar h-1.5 max-w-full rounded-full bg-gradient-to-r from-rose-500 to-rose-700" data-bar-width="{{ bar_widths.action_requise|default:0 }}"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-2">
+    <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.18)]">
+      <div class="flex items-center justify-between gap-3">
+        <h3 class="font-headline text-lg font-extrabold text-[#0B2B4A]">Mes demandes récentes</h3>
+        <a href="{% url 'demandes' %}" class="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#123554]">Voir tout</a>
+      </div>
+      <div class="mt-5 space-y-4">
+        {% for d in demandes %}
+        <div class="group rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm transition-all hover:shadow-md">
+          <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="text-sm font-extrabold text-slate-900">{{ d.ref }}</p>
+                <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-slate-600">
+                  {{ d.etat }}
+                </span>
+              </div>
+              <p class="mt-1 truncate text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{{ d.type }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-500">MAJ</p>
+              <p class="mt-1 text-[11px] font-semibold text-slate-600">{{ d.date }}</p>
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-[12px] font-semibold text-slate-600">
+              <span class="material-symbols-outlined text-[18px] text-slate-500">info</span>
+              <span class="truncate">Statut : {{ d.etat }}</span>
+            </div>
+            <a href="{% url 'demande_detail' d.id %}" class="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-800 transition-colors hover:bg-slate-100">
+              Gérer
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <p class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-8 text-center text-sm font-semibold text-slate-500">
+          Aucune demande enregistrée. Les statistiques et cette liste se mettront à jour dès qu’un dossier sera créé (ex. via l’administration pour les tests).
+        </p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.18)]">
+      <h3 class="font-headline text-lg font-extrabold text-[#0B2B4A]">Actions rapides</h3>
+      <div class="mt-5 grid gap-4 sm:grid-cols-2">
+        <a href="{% url 'demande_create' %}" class="rounded-2xl border border-slate-200 bg-slate-50 p-5 hover:bg-slate-100">
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Nouvelle demande</p>
+          <p class="mt-2 text-sm font-extrabold text-slate-900">Démarrer une procédure</p>
+        </a>
+        <a href="#" class="rounded-2xl border border-slate-200 bg-slate-50 p-5 hover:bg-slate-100">
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Support</p>
+          <p class="mt-2 text-sm font-extrabold text-slate-900">Aide & FAQ</p>
+        </a>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    document.querySelectorAll('.js-bar[data-bar-width]').forEach((el) => {
+      const raw = el.getAttribute('data-bar-width');
+      const n = Math.max(0, Math.min(100, Number(raw || 0)));
+      el.style.width = n + '%';
+    });
+  })();
+</script>
+{% endblock %}
+

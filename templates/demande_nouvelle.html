@@ -1,0 +1,427 @@
+{% extends "citizen_base.html" %}
+
+{% block title %}Nouvelle demande | MuniWorks DRC{% endblock %}
+
+{% block header_background %}
+<div class="absolute inset-0 bg-white"></div>
+<div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.06] mix-blend-multiply"></div>
+{% endblock %}
+
+{% block main_class %}mx-auto max-w-7xl px-3 pb-12 pt-2 sm:px-3 lg:px-3{% endblock %}
+
+{% block hero %}
+<div class="mx-auto max-w-7xl px-3 pb-6 pt-1 sm:px-3 lg:px-3">
+  <div class="relative overflow-hidden rounded-3xl border border-white/15 bg-[#0B2B4A] px-6 py-6 shadow-[0_25px_70px_-55px_rgba(0,0,0,0.75)] sm:px-8">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.60]" aria-hidden="true"
+      style="background: radial-gradient(ellipse 90% 70% at 18% 18%, rgba(253,184,19,0.10), transparent 55%), radial-gradient(ellipse 90% 70% at 82% 18%, rgba(56,189,248,0.10), transparent 60%);"></div>
+
+    <div class="relative flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div class="min-w-0">
+        <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/70">Démarche citoyenne</p>
+        <h1 class="mt-2 font-headline text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Nouvelle demande</h1>
+        <p class="mt-3 max-w-2xl text-[14px] font-semibold leading-relaxed text-white/80">
+          <span class="font-extrabold text-[#FDB813]">1.</span> Choix du document &nbsp;·&nbsp;
+          <span class="font-extrabold text-[#FDB813]">2.</span> Vos informations &nbsp;·&nbsp;
+          <span class="font-extrabold text-[#FDB813]">3.</span> Confirmation. Le dossier est créé en <span class="font-extrabold text-white">brouillon</span> jusqu’au traitement par la mairie.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-2.5 text-[12px] font-semibold text-white hover:bg-white/15"
+          href="{% url 'demandes' %}">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          Mes demandes
+        </a>
+        <a class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-4 py-2.5 text-[12px] font-extrabold tracking-tight text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02]"
+          href="{% url 'dashboard' %}">
+          <span class="material-symbols-outlined text-[18px]">dashboard</span>
+          Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="min-w-0 -mt-6">
+  {% if messages %}
+  <div class="mb-4 space-y-2">
+    {% for message in messages %}
+    <div
+      class="rounded-2xl border px-4 py-3 text-[13px] font-semibold {% if message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-900{% elif message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-900{% else %}border-slate-200 bg-white text-slate-800{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.18)] lg:col-span-2">
+      <div class="flex flex-wrap items-center gap-2" aria-label="Étapes">
+        <div id="pillStep1" class="inline-flex items-center gap-2 rounded-full border border-[#123554] bg-[#123554] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white">
+          <span class="pill-num grid h-6 w-6 place-items-center rounded-full bg-white/15 text-[12px]">1</span>
+          Document
+        </div>
+        <span class="material-symbols-outlined text-slate-300" aria-hidden="true">chevron_right</span>
+        <div id="pillStep2" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500">
+          <span class="pill-num grid h-6 w-6 place-items-center rounded-full bg-white text-[12px] text-slate-600 ring-1 ring-slate-200">2</span>
+          Informations
+        </div>
+        <span class="material-symbols-outlined text-slate-300" aria-hidden="true">chevron_right</span>
+        <div id="pillStep3" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500">
+          <span class="pill-num grid h-6 w-6 place-items-center rounded-full bg-white text-[12px] text-slate-600 ring-1 ring-slate-200">3</span>
+          Confirmation
+        </div>
+      </div>
+
+      <form id="wizardForm" method="post" class="mt-8" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="type_demande" id="fieldTypeDemande" value="{{ preselect_type }}" />
+
+        <div id="step1" class="space-y-6">
+          <div>
+            <h2 class="font-headline text-xl font-extrabold text-[#0B2B4A]">Étape 1 — Quel document souhaitez-vous ?</h2>
+            <p class="mt-2 text-sm font-semibold text-slate-600">Sélectionnez une carte pour continuer.</p>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            {% for opt in document_options %}
+            <button type="button"
+              class="doc-choice group flex w-full flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50/50 p-4 text-left transition-all hover:border-[#123554] hover:bg-white hover:shadow-[0_18px_45px_-40px_rgba(2,6,23,0.2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDB813] focus-visible:ring-offset-2"
+              data-type="{{ opt.type }}">
+              <div class="flex items-start justify-between gap-3">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#0B2B4A] text-white ring-1 ring-white/10">
+                  <span class="material-symbols-outlined text-[22px]">{{ opt.icon }}</span>
+                </span>
+                <span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-slate-500 group-hover:border-[#FDB813]/50 group-hover:text-[#0B2B4A]">Communal</span>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-extrabold leading-snug text-slate-900">{{ opt.type }}</p>
+                <p class="mt-1 text-[12px] font-medium leading-relaxed text-slate-600">{{ opt.hint }}</p>
+              </div>
+            </button>
+            {% endfor %}
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6">
+            <p class="text-[12px] font-semibold text-slate-500">Étape suivante : renseigner vos coordonnées.</p>
+            <button type="button" id="btnToStep2"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#123554]">
+              Continuer
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="step2" class="hidden space-y-6">
+          <div>
+            <h2 class="font-headline text-xl font-extrabold text-[#0B2B4A]">Étape 2 — Vos informations</h2>
+            <p class="mt-2 text-sm font-semibold text-slate-600">Ces données seront associées au dossier. Vérifiez leur exactitude.</p>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Document sélectionné</p>
+            <p id="typeRecapStep2" class="mt-2 text-sm font-extrabold text-[#123554]"></p>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block sm:col-span-2">
+              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">Nom et prénom(s) <span class="text-rose-600">*</span></span>
+              <input name="declarant_nom" id="f_nom" required minlength="3" maxlength="200" autocomplete="name"
+                value="{{ form_data.declarant_nom }}"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 focus:border-[#123554] focus:ring-[#123554]" />
+            </label>
+            <label class="block">
+              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">Téléphone <span class="text-rose-600">*</span></span>
+              <input name="declarant_telephone" id="f_tel" required minlength="8" maxlength="40" autocomplete="tel" inputmode="tel"
+                placeholder="+243 …"
+                value="{{ form_data.declarant_telephone }}"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 focus:border-[#123554] focus:ring-[#123554]" />
+            </label>
+            <label class="block">
+              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">Email (facultatif)</span>
+              <input name="declarant_email" id="f_email" type="email" maxlength="254" autocomplete="email"
+                value="{{ form_data.declarant_email }}"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 focus:border-[#123554] focus:ring-[#123554]" />
+            </label>
+            <label class="block sm:col-span-2">
+              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">Adresse complète <span class="text-rose-600">*</span></span>
+              <textarea name="declarant_adresse" id="f_adresse" required minlength="10" maxlength="2000" rows="3"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 focus:border-[#123554] focus:ring-[#123554]">{{ form_data.declarant_adresse }}</textarea>
+            </label>
+            <label class="block sm:col-span-2">
+              <span class="text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">Motif et précisions <span class="text-rose-600">*</span></span>
+              <textarea name="motif_precisions" id="f_motif" required minlength="20" maxlength="4000" rows="4"
+                placeholder="Expliquez pourquoi vous demandez ce document (destinataire, usage, contexte…)."
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 focus:border-[#123554] focus:ring-[#123554]">{{ form_data.motif_precisions }}</textarea>
+            </label>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6">
+            <button type="button" id="btnBackTo1"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-slate-800 hover:bg-slate-50">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              Retour
+            </button>
+            <button type="button" id="btnToStep3"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#123554]">
+              Continuer
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="step3" class="hidden space-y-6">
+          <div>
+            <h2 class="font-headline text-xl font-extrabold text-[#0B2B4A]">Étape 3 — Vérification avant envoi</h2>
+            <p class="mt-2 text-sm font-semibold text-slate-600">Relisez le récapitulatif puis validez.</p>
+          </div>
+
+          <div class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/80 p-5 text-[13px] font-semibold text-slate-800">
+            <div class="flex flex-wrap justify-between gap-2 border-b border-slate-200/80 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Document</span>
+              <span id="recapType" class="max-w-full text-right font-extrabold text-[#123554]"></span>
+            </div>
+            <div class="flex flex-wrap justify-between gap-2 border-b border-slate-200/80 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Identité</span>
+              <span id="recapNom" class="max-w-full text-right"></span>
+            </div>
+            <div class="flex flex-wrap justify-between gap-2 border-b border-slate-200/80 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Téléphone</span>
+              <span id="recapTel" class="max-w-full text-right"></span>
+            </div>
+            <div class="flex flex-wrap justify-between gap-2 border-b border-slate-200/80 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Email</span>
+              <span id="recapEmail" class="max-w-full text-right text-slate-600"></span>
+            </div>
+            <div class="border-b border-slate-200/80 pb-3">
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Adresse</span>
+              <p id="recapAdresse" class="mt-2 whitespace-pre-wrap font-semibold leading-relaxed"></p>
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-500">Motif</span>
+              <p id="recapMotif" class="mt-2 whitespace-pre-wrap font-semibold leading-relaxed"></p>
+            </div>
+          </div>
+
+          <label class="flex cursor-pointer gap-3 rounded-2xl border border-slate-200 bg-white p-4 hover:border-[#123554]/40">
+            <input type="checkbox" name="accept_terms" id="acceptTerms"
+              class="mt-1 h-4 w-4 rounded border-slate-300 text-[#0B2B4A] focus:ring-[#123554]" />
+            <span class="text-[13px] font-semibold leading-relaxed text-slate-700">
+              Je certifie l’exactitude des renseignements fournis et j’accepte que ma demande soit traitée par les services communaux conformément aux règles en vigueur.
+            </span>
+          </label>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6">
+            <button type="button" id="btnBackTo2"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-slate-800 hover:bg-slate-50">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              Retour
+            </button>
+            <button type="submit" id="btnSubmit"
+              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02]">
+              <span class="material-symbols-outlined text-[18px]">check_circle</span>
+              Créer le dossier
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <aside class="space-y-4">
+      <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_22px_55px_-48px_rgba(2,6,23,0.22)]">
+        <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">À savoir</p>
+        <ul class="mt-4 space-y-3 text-[13px] font-semibold text-slate-700">
+          <li class="flex gap-2">
+            <span class="material-symbols-outlined mt-0.5 shrink-0 text-[18px] text-[#0B2B4A]">edit_note</span>
+            <span>Le dossier est créé en <strong class="text-[#0B2B4A]">brouillon</strong> après validation des informations.</span>
+          </li>
+          <li class="flex gap-2">
+            <span class="material-symbols-outlined mt-0.5 shrink-0 text-[18px] text-[#0B2B4A]">id_card</span>
+            <span>Les champs marqués <span class="text-rose-600">*</span> sont obligatoires pour traiter votre demande.</span>
+          </li>
+          <li class="flex gap-2">
+            <span class="material-symbols-outlined mt-0.5 shrink-0 text-[18px] text-[#FDB813]">notifications_active</span>
+            <span>Vous pourrez suivre l’évolution dans « Mes demandes ».</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl border border-[#0B2B4A]/20 bg-[#0B2B4A] p-5 text-white shadow-[0_22px_55px_-48px_rgba(0,0,0,0.45)]">
+        <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/70">Besoin d’aide ?</p>
+        <p class="mt-3 text-sm font-semibold text-white/90">En cas de doute sur le type de document ou les pièces à fournir, contactez l’accueil de la mairie.</p>
+        <a href="{% url 'demandes' %}"
+          class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white hover:bg-white/15">
+          <span class="material-symbols-outlined text-[18px]">list_alt</span>
+          Voir mes dossiers
+        </a>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const form = document.getElementById('wizardForm');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const fieldType = document.getElementById('fieldTypeDemande');
+    const btnTo2 = document.getElementById('btnToStep2');
+    const btnTo3 = document.getElementById('btnToStep3');
+    const btnBack1 = document.getElementById('btnBackTo1');
+    const btnBack2 = document.getElementById('btnBackTo2');
+    const typeRecapStep2 = document.getElementById('typeRecapStep2');
+    const recapType = document.getElementById('recapType');
+    const recapNom = document.getElementById('recapNom');
+    const recapTel = document.getElementById('recapTel');
+    const recapEmail = document.getElementById('recapEmail');
+    const recapAdresse = document.getElementById('recapAdresse');
+    const recapMotif = document.getElementById('recapMotif');
+    const accept = document.getElementById('acceptTerms');
+    const preselect = "{{ preselect_type|default_if_none:''|escapejs }}";
+
+    const pillActive = 'inline-flex items-center gap-2 rounded-full border border-[#123554] bg-[#123554] px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-white';
+    const pillDone = 'inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-emerald-800';
+    const pillTodo = 'inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500';
+
+    function pillNumClass(state) {
+      if (state === 'active') return 'pill-num grid h-6 w-6 place-items-center rounded-full bg-white/15 text-[12px] text-white';
+      if (state === 'done') return 'pill-num grid h-6 w-6 place-items-center rounded-full bg-white text-[12px] text-emerald-700 ring-1 ring-emerald-200';
+      return 'pill-num grid h-6 w-6 place-items-center rounded-full bg-white text-[12px] text-slate-600 ring-1 ring-slate-200';
+    }
+
+    function setPillState(el, n, state) {
+      if (!el) return;
+      el.className = state === 'active' ? pillActive : state === 'done' ? pillDone : pillTodo;
+      const num = el.querySelector('.pill-num');
+      if (num) {
+        num.className = pillNumClass(state);
+        num.textContent = state === 'done' ? '✓' : String(n);
+      }
+    }
+
+    function setStep(n) {
+      step1.classList.toggle('hidden', n !== 1);
+      step2.classList.toggle('hidden', n !== 2);
+      step3.classList.toggle('hidden', n !== 3);
+      setPillState(document.getElementById('pillStep1'), 1, n > 1 ? 'done' : n === 1 ? 'active' : 'todo');
+      setPillState(document.getElementById('pillStep2'), 2, n > 2 ? 'done' : n === 2 ? 'active' : 'todo');
+      setPillState(document.getElementById('pillStep3'), 3, n === 3 ? 'active' : 'todo');
+    }
+
+    function highlightChoice(type) {
+      document.querySelectorAll('.doc-choice').forEach((el) => {
+        const on = el.getAttribute('data-type') === type;
+        el.classList.toggle('ring-2', on);
+        el.classList.toggle('ring-[#FDB813]', on);
+        el.classList.toggle('border-[#123554]', on);
+        el.classList.toggle('bg-white', on);
+      });
+    }
+
+    function syncTypeRecap() {
+      const t = (fieldType.value || '').trim();
+      if (typeRecapStep2) typeRecapStep2.textContent = t || '—';
+    }
+
+    function fillRecapStep3() {
+      const t = (fieldType.value || '').trim();
+      const nom = (document.getElementById('f_nom')?.value || '').trim();
+      const tel = (document.getElementById('f_tel')?.value || '').trim();
+      const em = (document.getElementById('f_email')?.value || '').trim();
+      const adr = (document.getElementById('f_adresse')?.value || '').trim();
+      const mot = (document.getElementById('f_motif')?.value || '').trim();
+      if (recapType) recapType.textContent = t || '—';
+      if (recapNom) recapNom.textContent = nom || '—';
+      if (recapTel) recapTel.textContent = tel || '—';
+      if (recapEmail) recapEmail.textContent = em || '— (non renseigné)';
+      if (recapAdresse) recapAdresse.textContent = adr || '—';
+      if (recapMotif) recapMotif.textContent = mot || '—';
+    }
+
+    document.querySelectorAll('.doc-choice').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const t = btn.getAttribute('data-type') || '';
+        fieldType.value = t;
+        highlightChoice(t);
+        syncTypeRecap();
+      });
+    });
+
+    btnTo2 && btnTo2.addEventListener('click', () => {
+      const t = (fieldType.value || '').trim();
+      if (!t) {
+        alert('Veuillez sélectionner un type de document.');
+        return;
+      }
+      syncTypeRecap();
+      setStep(2);
+    });
+
+    btnTo3 && btnTo3.addEventListener('click', () => {
+      const ids = ['f_nom', 'f_tel', 'f_adresse', 'f_motif'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && typeof el.reportValidity === 'function' && !el.reportValidity()) return;
+      }
+      const em = document.getElementById('f_email');
+      if (em && em.value.trim() && !em.reportValidity()) return;
+      fillRecapStep3();
+      setStep(3);
+    });
+
+    btnBack1 && btnBack1.addEventListener('click', () => setStep(1));
+    btnBack2 && btnBack2.addEventListener('click', () => setStep(2));
+
+    form && form.addEventListener('submit', (e) => {
+      const t = (fieldType.value || '').trim();
+      if (!t) {
+        e.preventDefault();
+        alert('Veuillez sélectionner un type de document.');
+        setStep(1);
+        return;
+      }
+      const ids = ['f_nom', 'f_tel', 'f_adresse', 'f_motif'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && !el.checkValidity()) {
+          e.preventDefault();
+          el.reportValidity();
+          setStep(2);
+          return;
+        }
+      }
+      const em = document.getElementById('f_email');
+      if (em && em.value.trim() && !em.checkValidity()) {
+        e.preventDefault();
+        em.reportValidity();
+        setStep(2);
+        return;
+      }
+      if (accept && !accept.checked) {
+        e.preventDefault();
+        alert('Veuillez accepter les conditions pour créer le dossier.');
+        setStep(3);
+      }
+    });
+
+    if (preselect) {
+      fieldType.value = preselect;
+      highlightChoice(preselect);
+    }
+    syncTypeRecap();
+
+    const resume = {{ wizard_resume|yesno:"true,false" }};
+    if (resume && (fieldType.value || '').trim()) {
+      highlightChoice(fieldType.value.trim());
+      syncTypeRecap();
+      setStep(2);
+    } else {
+      setStep(1);
+    }
+  })();
+</script>
+{% endblock %}

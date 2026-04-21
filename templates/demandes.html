@@ -1,0 +1,366 @@
+{% extends "citizen_base.html" %}
+
+{% block title %}Mes demandes | MuniWorks DRC{% endblock %}
+
+{% block header_background %}
+<div class="absolute inset-0 bg-white"></div>
+<div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.06] mix-blend-multiply"></div>
+{% endblock %}
+
+{% block main_class %}mx-auto max-w-7xl px-3 pb-12 pt-2 sm:px-3 lg:px-3{% endblock %}
+
+{% block hero %}
+<div class="mx-auto max-w-7xl px-3 pb-7 pt-1 sm:px-3 lg:px-3">
+  <div class="grid w-full gap-5 lg:grid-cols-3 lg:items-stretch">
+    <div class="lg:col-span-2">
+      <div class="relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-[#0B2B4A] px-7 py-6 shadow-[0_25px_70px_-55px_rgba(0,0,0,0.75)]">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.60]" aria-hidden="true"
+          style="background: radial-gradient(ellipse 90% 70% at 18% 18%, rgba(253,184,19,0.10), transparent 55%), radial-gradient(ellipse 90% 70% at 82% 18%, rgba(56,189,248,0.10), transparent 60%);"></div>
+
+        <div class="relative flex flex-1 flex-col">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[12px] font-semibold text-white/90">
+              <span class="material-symbols-outlined text-[16px]">assignment</span>
+              Mes demandes
+            </span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] font-semibold text-white/80">
+              <span class="material-symbols-outlined text-[16px]">shield_lock</span>
+              Suivi sécurisé
+            </span>
+          </div>
+
+          <h1 class="mt-4 font-headline text-3xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Suivi des dossiers
+          </h1>
+
+          <p class="mt-3 max-w-2xl text-[14px] font-medium leading-relaxed text-white/85 sm:text-[15px]">
+            Base des demandes déposées auprès de la commune (attestations, certificats, autorisations…). Filtrez, consultez et déposez un nouveau dossier.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-5 py-3 text-[12px] font-extrabold tracking-tight text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02]"
+              href="{% url 'demande_create' %}">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              Nouvelle demande
+            </a>
+            <a class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-[12px] font-semibold text-white hover:bg-white/15"
+              href="{% url 'dashboard' %}">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              Dashboard
+            </a>
+            <a class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-[12px] font-semibold text-white hover:bg-white/15"
+              href="{% url 'documents' %}">
+              <span class="material-symbols-outlined text-[18px]">folder_open</span>
+              Mes documents
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="relative flex h-full min-h-[220px] flex-col justify-between overflow-hidden rounded-3xl border border-slate-200 bg-[#0a243d] p-6 text-white shadow-[0_25px_70px_-55px_rgba(0,0,0,0.55)]">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden="true"
+          style="background: radial-gradient(ellipse 90% 70% at 20% 20%, rgba(253,184,19,0.12), transparent 55%), radial-gradient(ellipse 90% 70% at 85% 30%, rgba(56,189,248,0.10), transparent 60%);"></div>
+
+        <div class="relative">
+          <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/70">Action rapide</p>
+          <p class="mt-3 font-headline text-lg font-extrabold leading-snug">Nouvelle demande</p>
+          <p class="mt-2 text-[12px] font-semibold text-white/75">Parcours guidé : type de pièce, vérification et dépôt sécurisé.</p>
+        </div>
+
+        <div class="relative mt-6 space-y-3">
+          <a href="{% url 'demande_create' %}"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-4 py-3 text-[12px] font-extrabold tracking-tight text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02]">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            Créer une demande
+          </a>
+          <p class="text-center text-[11px] font-semibold text-white/60">Vous serez redirigé vers le dossier après validation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="min-w-0 -mt-10">
+  {% if messages %}
+  <div class="mb-4 space-y-2">
+    {% for message in messages %}
+    <div
+      class="rounded-2xl border px-4 py-3 text-[13px] font-semibold {% if message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-900{% elif message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-900{% else %}border-slate-200 bg-white text-slate-800{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.18)]">
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.25)]">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Total dossiers</p>
+            <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.total|stringformat:"02d" }}</p>
+          </div>
+          <span class="grid h-10 w-10 place-items-center rounded-2xl bg-sky-50 text-sky-700 ring-1 ring-sky-100">
+            <span class="material-symbols-outlined text-[22px]">inventory_2</span>
+          </span>
+        </div>
+        <p class="mt-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">SYS_TTL</p>
+        <div class="mt-3 h-1 rounded-full bg-sky-500/90"></div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.25)]">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">En attente</p>
+            <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.en_attente|stringformat:"02d" }}</p>
+          </div>
+          <span class="grid h-10 w-10 place-items-center rounded-2xl bg-amber-50 text-amber-700 ring-1 ring-amber-100">
+            <span class="material-symbols-outlined text-[22px]">schedule</span>
+          </span>
+        </div>
+        <p class="mt-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">SYS_PND</p>
+        <div class="mt-3 h-1 rounded-full bg-amber-500/90"></div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.25)]">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">En traitement</p>
+            <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.en_traitement|stringformat:"02d" }}</p>
+          </div>
+          <span class="grid h-10 w-10 place-items-center rounded-2xl bg-cyan-50 text-cyan-700 ring-1 ring-cyan-100">
+            <span class="material-symbols-outlined text-[22px]">progress_activity</span>
+          </span>
+        </div>
+        <p class="mt-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">SYS_PRC</p>
+        <div class="mt-3 h-1 rounded-full bg-cyan-500/90"></div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.25)]">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-500">Approuvées</p>
+            <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.approuvees|stringformat:"02d" }}</p>
+          </div>
+          <span class="grid h-10 w-10 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+            <span class="material-symbols-outlined text-[22px]">check_circle</span>
+          </span>
+        </div>
+        <p class="mt-3 text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">SYS_OK</p>
+        <div class="mt-3 h-1 rounded-full bg-emerald-500/90"></div>
+      </div>
+    </div>
+
+    <form method="get" class="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex min-w-0 flex-1 flex-col gap-3 lg:flex-row lg:items-center">
+        <div class="relative min-w-[220px] flex-1">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+            <span class="material-symbols-outlined text-[20px]">search</span>
+          </span>
+          <input name="q" value="{{ filters.q }}"
+            class="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-11 pr-3 text-[13px] font-semibold text-slate-900 placeholder:text-slate-400 focus:border-[#123554] focus:ring-[#123554]"
+            placeholder="Référence / type de document" />
+        </div>
+
+        <select name="statut"
+          class="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[12px] font-extrabold uppercase tracking-[0.14em] text-slate-800 focus:border-[#123554] focus:ring-[#123554] lg:w-[220px]">
+          <option value="">Tous statuts</option>
+          {% for value,label in statut_choices %}
+          <option value="{{ value }}" {% if filters.statut == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="categorie"
+          class="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[12px] font-extrabold uppercase tracking-[0.12em] text-slate-800 focus:border-[#123554] focus:ring-[#123554] lg:w-[280px]">
+          <option value="">Toutes classes</option>
+          {% for t in document_types %}
+          <option value="{{ t }}" {% if filters.categorie == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <a href="{% url 'demandes' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-700 hover:bg-slate-50">
+          <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+          Réinitialiser
+        </a>
+        <button type="submit"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-[0.16em] text-white hover:bg-[#123554]">
+          <span class="material-symbols-outlined text-[18px]">filter_alt</span>
+          Appliquer
+        </button>
+
+        <div class="ml-1 hidden items-center gap-1 rounded-2xl border border-slate-200 bg-white p-1 sm:inline-flex" role="group" aria-label="Mode d’affichage">
+          <button type="button" id="vwGrid"
+            class="grid h-9 w-9 place-items-center rounded-xl bg-[#123554] text-white"
+            aria-pressed="true" title="Grille">
+            <span class="material-symbols-outlined text-[20px]">grid_view</span>
+          </button>
+          <button type="button" id="vwList"
+            class="grid h-9 w-9 place-items-center rounded-xl text-slate-600 hover:bg-slate-50"
+            aria-pressed="false" title="Liste">
+            <span class="material-symbols-outlined text-[20px]">view_list</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-500">
+      <span>Requête exécutée : {{ result_count }} entrée{{ result_count|pluralize }} détectée{{ result_count|pluralize }}</span>
+      <span class="text-slate-400">Sync_status: OK // {{ sync_at }}</span>
+    </div>
+
+    <div id="demandes-grid" class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {% for d in demandes %}
+      <article class="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_22px_55px_-48px_rgba(2,6,23,0.22)]">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="truncate text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">{{ d.reference }}</p>
+            <p class="mt-2 truncate text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#123554]">{{ d.type_demande }}</p>
+          </div>
+          {% with s=d.statut %}
+          <span class="shrink-0 rounded-full border px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em]
+            {% if s == 'approuve' %}border-emerald-200 bg-emerald-50 text-emerald-800
+            {% elif s == 'en_examen' %}border-cyan-200 bg-cyan-50 text-cyan-900
+            {% elif s == 'action_requise' %}border-amber-200 bg-amber-50 text-amber-900
+            {% elif s == 'rejete' %}border-rose-200 bg-rose-50 text-rose-900
+            {% else %}border-slate-200 bg-slate-50 text-slate-700{% endif %}">
+            {{ d.statut_label|upper }}
+          </span>
+          {% endwith %}
+        </div>
+
+        <div class="mt-5 space-y-3 text-[12px]">
+          <div class="flex gap-3">
+            <span class="mt-0.5 grid h-9 w-9 place-items-center rounded-2xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
+              <span class="material-symbols-outlined text-[18px]">location_city</span>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">Commune</p>
+              <p class="mt-1 font-extrabold text-slate-900">Mairie — dossier numérique</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <span class="mt-0.5 grid h-9 w-9 place-items-center rounded-2xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
+              <span class="material-symbols-outlined text-[18px]">event</span>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">Dernière mise à jour</p>
+              <p class="mt-1 font-extrabold text-slate-900">{{ d.updated_at|date:"d M Y" }}</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <span class="mt-0.5 grid h-9 w-9 place-items-center rounded-2xl bg-slate-50 text-slate-700 ring-1 ring-slate-200">
+              <span class="material-symbols-outlined text-[18px]">history</span>
+            </span>
+            <div class="min-w-0">
+              <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-400">Enregistré</p>
+              <p class="mt-1 font-extrabold text-slate-900">{{ d.created_at|date:"d M Y" }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-auto flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+          <a href="{% url 'demande_detail' d.id %}"
+            class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-800 hover:bg-slate-50 sm:flex-none">
+            <span class="material-symbols-outlined text-[18px]">visibility</span>
+            Consulter
+          </a>
+
+          {% if d.first_document %}
+          <a href="{{ d.first_document.fichier.url }}"
+            class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-emerald-700 sm:flex-none">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            Document
+          </a>
+          {% elif d.statut == 'brouillon' %}
+          <a href="{% url 'demande_detail' d.id %}"
+            class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-sky-600 px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-sky-700 sm:flex-none">
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+            Compléter
+          </a>
+          {% endif %}
+        </div>
+
+        <p class="mt-3 text-right text-[10px] font-semibold text-slate-300">ID_{{ d.id }}</p>
+      </article>
+      {% empty %}
+      <div class="col-span-full rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center">
+        <p class="text-sm font-semibold text-slate-700">Aucune demande ne correspond à ces filtres.</p>
+        <p class="mt-2 text-[12px] font-medium text-slate-500">Réinitialisez la recherche ou créez un nouveau dossier.</p>
+        <a href="{% url 'demande_create' %}"
+          class="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-5 py-3 text-[12px] font-extrabold uppercase tracking-[0.12em] text-white hover:bg-[#123554]">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Nouvelle demande
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div id="demandes-list" class="mt-6 hidden space-y-3">
+      {% for d in demandes %}
+      <div class="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.18)] sm:flex-row sm:items-center sm:justify-between">
+        <div class="min-w-0">
+          <p class="truncate text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-500">{{ d.reference }}</p>
+          <p class="mt-1 truncate text-sm font-extrabold text-slate-900">{{ d.type_demande }}</p>
+          <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">{{ d.statut_label }} • MAJ {{ d.updated_at|date:"d/m/Y" }}</p>
+        </div>
+        <div class="flex shrink-0 flex-wrap gap-2">
+          <a href="{% url 'demande_detail' d.id %}"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-slate-800 hover:bg-slate-50">
+            <span class="material-symbols-outlined text-[18px]">visibility</span>
+            Consulter
+          </a>
+          {% if d.first_document %}
+          <a href="{{ d.first_document.fichier.url }}"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-emerald-700">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            Document
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+        <p class="text-sm font-semibold text-slate-600">Aucune entrée à afficher.</p>
+        <a href="{% url 'demande_create' %}" class="mt-4 inline-flex items-center justify-center gap-2 text-[12px] font-extrabold text-[#123554] hover:underline">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Créer une demande
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const grid = document.getElementById('demandes-grid');
+    const list = document.getElementById('demandes-list');
+    const btnGrid = document.getElementById('vwGrid');
+    const btnList = document.getElementById('vwList');
+    if (!grid || !list || !btnGrid || !btnList) return;
+
+    function setMode(mode) {
+      const isGrid = mode === 'grid';
+      grid.classList.toggle('hidden', !isGrid);
+      list.classList.toggle('hidden', isGrid);
+      btnGrid.setAttribute('aria-pressed', isGrid ? 'true' : 'false');
+      btnList.setAttribute('aria-pressed', isGrid ? 'false' : 'true');
+      btnGrid.className = 'grid h-9 w-9 place-items-center rounded-xl ' + (isGrid ? 'bg-[#123554] text-white' : 'text-slate-600 hover:bg-slate-50');
+      btnList.className = 'grid h-9 w-9 place-items-center rounded-xl ' + (!isGrid ? 'bg-[#123554] text-white' : 'text-slate-600 hover:bg-slate-50');
+    }
+
+    btnGrid.addEventListener('click', () => setMode('grid'));
+    btnList.addEventListener('click', () => setMode('list'));
+    setMode('grid');
+  })();
+</script>
+{% endblock %}
