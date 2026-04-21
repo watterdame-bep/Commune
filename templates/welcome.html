@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>MuniWorks DRC | Portail Officiel des Services Municipaux</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Police principale (type GENK) : Plus Jakarta Sans -->
+    <!-- Outfit : section procédure (lisible sur fond sombre) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f9f9fc",
+                        "surface-container-high": "#e8e8ea",
+                        "surface": "#f9f9fc",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#e9c400",
+                        "surface-variant": "#e2e2e5",
+                        "on-surface-variant": "#434653",
+                        "on-secondary-container": "#705e00",
+                        "on-secondary-fixed": "#221b00",
+                        "primary-container": "#0045b1",
+                        "tertiary-container": "#9f0014",
+                        "secondary-container": "#fed721",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "on-tertiary-container": "#ffa7a0",
+                        "inverse-on-surface": "#f0f0f3",
+                        "secondary": "#705d00",
+                        "tertiary-fixed": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#410003",
+                        "on-background": "#1a1c1e",
+                        "outline": "#737684",
+                        "secondary-fixed": "#ffe16d",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "surface-tint": "#2558c3",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f3f3f6",
+                        "surface-container-highest": "#e2e2e5",
+                        "inverse-primary": "#b3c5ff",
+                        "on-surface": "#1a1c1e",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "surface-container": "#eeeef0",
+                        "primary-fixed": "#dae1ff",
+                        "on-secondary": "#ffffff",
+                        "primary": "#003081",
+                        "surface-dim": "#dadadc",
+                        "on-primary-container": "#a7bdff",
+                        "inverse-surface": "#2f3133",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f9f9fc",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#74000b",
+                        "on-tertiary-fixed-variant": "#930011",
+                        "outline-variant": "#c3c6d5",
+                        "on-primary-fixed": "#001849",
+                        "on-secondary-fixed-variant": "#544600"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.75rem",
+                        "sm": "0.5rem",
+                        "md": "0.75rem",
+                        "lg": "0.75rem",
+                        "xl": "0.75rem",
+                        "2xl": "0.75rem",
+                        "3xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Outfit", "system-ui", "sans-serif"],
+                        "body": ["Outfit", "system-ui", "sans-serif"],
+                        "label": ["Outfit", "system-ui", "sans-serif"],
+                        "procedure": ["Outfit", "system-ui", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+            vertical-align: middle;
+        }
+
+        .hero-banner-drc {
+            background:
+                radial-gradient(ellipse 140% 110% at 12% 18%, rgba(56, 189, 248, 0.10) 0%, transparent 56%),
+                radial-gradient(ellipse 105% 90% at 88% 22%, rgba(96, 165, 250, 0.07) 0%, transparent 62%),
+                radial-gradient(ellipse 95% 70% at 50% 110%, rgba(0, 12, 28, 0.62) 0%, transparent 48%),
+                radial-gradient(circle at 45% 55%, rgba(255, 255, 255, 0.045) 0%, transparent 42%),
+                linear-gradient(162deg, #0b2b4a 0%, #0a2a48 18%, #082744 40%, #07223c 62%, #061b32 82%, #051428 100%);
+        }
+
+        .hero-radial-glow {
+            background:
+                radial-gradient(ellipse 65% 50% at 18% 42%, rgba(255, 255, 255, 0.07) 0%, transparent 52%),
+                radial-gradient(ellipse 50% 40% at 92% 12%, rgba(253, 184, 19, 0.055) 0%, transparent 45%),
+                radial-gradient(ellipse 70% 50% at 75% 88%, rgba(0, 40, 90, 0.25) 0%, transparent 50%);
+        }
+
+        /* Motif pentagones (hero) */
+        .hero-pentagon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.20' stroke-width='1.1'%3E%3Cpath d='M110 12 L188 70 L158 168 L62 168 L32 70 Z'/%3E%3Cpath d='M110 48 L160 86 L141 150 L79 150 L60 86 Z'/%3E%3C/g%3E%3Cg fill='%23f0b322' fill-opacity='0.22'%3E%3Ccircle cx='60' cy='66' r='1.7'/%3E%3Ccircle cx='160' cy='154' r='1.7'/%3E%3Ccircle cx='168' cy='78' r='1.35'/%3E%3Ccircle cx='52' cy='142' r='1.35'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 92px 92px;
+            background-repeat: repeat;
+            background-position: center;
+        }
+
+        .nav-scrolled {
+            background-color: rgba(0, 40, 85, 0.82) !important;
+            border-color: rgba(255, 255, 255, 0.14) !important;
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Motif procédure (déplacé du style inline pour éviter erreurs CSS) */
+        .procedure-motif {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.095' stroke-width='0.55'%3E%3Cpath d='M120 0 L240 120 L120 240 L0 120 Z'/%3E%3Cpath d='M120 34 L206 120 L120 206 L34 120 Z'/%3E%3Cpath d='M120 68 L172 120 L120 172 L68 120 Z'/%3E%3C/g%3E%3Cg fill='%23f0b322' fill-opacity='0.22'%3E%3Ccircle cx='180' cy='60' r='1.65'/%3E%3Ccircle cx='60' cy='180' r='1.65'/%3E%3Ccircle cx='60' cy='60' r='1.35'/%3E%3Ccircle cx='180' cy='180' r='1.35'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 240px 240px;
+            background-repeat: repeat;
+            background-position: center;
+            filter: blur(0.15px);
+        }
+
+        .crest-float {
+            animation: sisepFloatCrest 6.5s ease-in-out infinite;
+        }
+
+        .footer-halos {
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(37, 88, 195, 0.08), transparent 35%),
+                radial-gradient(circle at 85% 30%, rgba(253, 184, 19, 0.08), transparent 40%),
+                radial-gradient(circle at 50% 100%, rgba(15, 55, 120, 0.06), transparent 55%);
+        }
+
+        /* En-têtes type « low-poly » (cartes services) */
+        .svc-header-poly-1 {
+            background-color: #5a6f7e;
+            background-image:
+                linear-gradient(118deg, rgba(255, 255, 255, 0.14) 0%, transparent 44%),
+                linear-gradient(228deg, rgba(0, 48, 100, 0.45) 0%, transparent 52%),
+                linear-gradient(12deg, #6d8494 0%, #455a6a 55%, #3d4f5e 100%);
+        }
+
+        .svc-header-poly-2 {
+            background-color: #8b6f47;
+            background-image:
+                linear-gradient(132deg, rgba(255, 220, 150, 0.35) 0%, transparent 48%),
+                linear-gradient(298deg, rgba(70, 45, 15, 0.35) 0%, transparent 50%),
+                linear-gradient(185deg, #c4a06a 0%, #7d5e38 100%);
+        }
+
+        .svc-header-poly-3 {
+            background-color: #164a36;
+            background-image:
+                linear-gradient(155deg, rgba(140, 220, 180, 0.2) 0%, transparent 46%),
+                linear-gradient(268deg, rgba(0, 35, 22, 0.55) 0%, transparent 52%),
+                linear-gradient(22deg, #2a7a5c 0%, #123d2e 100%);
+        }
+
+        .svc-header-poly-4 {
+            background-color: #4a6480;
+            background-image:
+                linear-gradient(68deg, rgba(200, 225, 255, 0.12) 0%, transparent 42%),
+                linear-gradient(242deg, rgba(0, 40, 90, 0.42) 0%, transparent 54%),
+                linear-gradient(312deg, #5c7a9a 0%, #334c62 100%);
+        }
+
+        /* Fond section services : blancs et gris-bleus très nuancés (charte MuniWorks) */
+        .svc-section-bg {
+            background:
+                radial-gradient(ellipse 120% 70% at 50% 0%, rgba(255, 255, 255, 0.98) 0%, transparent 58%),
+                radial-gradient(ellipse 90% 55% at 100% 85%, rgba(218, 230, 248, 0.55) 0%, transparent 52%),
+                radial-gradient(ellipse 75% 50% at 0% 100%, rgba(245, 248, 252, 0.9) 0%, transparent 48%),
+                linear-gradient(178deg, #fefefe 0%, #f5f7fa 38%, #eef1f6 72%, #e8ecf2 100%);
+        }
+
+        /* Motif doré (Services) — très petit, discret, pro */
+        .svc-gold-motif {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f0b322' stroke-opacity='0.62' stroke-width='2.25'%3E%3Cpath d='M60 10 L78 22 L92 40 L90 60 L92 80 L78 98 L60 110 L42 98 L28 80 L30 60 L28 40 L42 22 Z'/%3E%3Cpath d='M60 24 L72 32 L80 44 L79 60 L80 76 L72 88 L60 96 L48 88 L40 76 L41 60 L40 44 L48 32 Z'/%3E%3Crect x='53' y='53' width='14' height='14' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 28px 28px;
+            background-repeat: repeat;
+            background-position: center;
+        }
+
+        @keyframes sisepSweep {
+            0% {
+                background-position: 140% 50%;
+                opacity: 0.75;
+            }
+            50% {
+                background-position: 0% 50%;
+                opacity: 0.95;
+            }
+            100% {
+                background-position: -140% 50%;
+                opacity: 0.75;
+            }
+        }
+
+        @keyframes sisepDrift {
+            0% {
+                transform: translate3d(0, 0, 0);
+                opacity: 0.22;
+            }
+            50% {
+                transform: translate3d(18px, -8px, 0);
+                opacity: 0.32;
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+                opacity: 0.22;
+            }
+        }
+
+        @keyframes sisepFloatCrest {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+                opacity: 0.18;
+            }
+            50% {
+                transform: translate3d(-10px, 10px, 0) scale(1.06);
+                opacity: 0.26;
+            }
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+                opacity: 0.18;
+            }
+        }
+
+        /* Carrousel hero */
+        [data-carousel] .carousel-slide.is-active {
+            opacity: 1;
+        }
+
+        [data-carousel] .carousel-dot.is-active {
+            width: 20px;
+            border-radius: 9999px;
+            background: rgba(253, 184, 19, 0.9);
+        }
+
+        /* Navbar : lien actif (reste coloré) */
+        #siteNav a[data-nav-link].is-active {
+            border-bottom: 1px solid #FDB813;
+            padding-bottom: 0.125rem;
+            color: #FDB813 !important;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-background font-body selection:bg-secondary-container selection:text-on-secondary-container">
+    <!-- TopNavBar (institutionnel, faible hauteur — inspiré portails e-services RDC) -->
+    <nav id="siteNav"
+        class="fixed left-0 right-0 top-0 z-50 border-b border-transparent bg-transparent transition-colors duration-300">
+        <div class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+            <a href="{% url 'welcome' %}" class="flex shrink-0 items-center gap-2">
+                <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+                <span
+                    class="hidden font-headline text-[13px] font-extrabold tracking-tight text-white sm:inline">MuniWorks
+                    DRC</span>
+            </a>
+            <div class="hidden flex-1 justify-center gap-7 md:flex lg:gap-10">
+                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
+                    href="#services">Services</a>
+                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
+                    href="#portail-citoyen">Portails</a>
+                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
+                    href="#procedure">Procédure</a>
+                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
+                    href="#footer-support">FAQ</a>
+            </div>
+            <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+                <span class="inline-flex items-center gap-1 text-[13px] font-semibold text-white/95"
+                    aria-label="Langue : français">
+                    <span class="material-symbols-outlined text-base opacity-90">language</span>
+                    FR
+                </span>
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}"
+                    class="rounded-xl border border-white px-3 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-white/10 sm:px-4 sm:text-[11px]">Mon
+                    portail</a>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="hidden sm:inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/10 px-4 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-[2px] transition-all hover:bg-white/15 sm:text-[11px]">Connexion</a>
+                <a href="{% url 'login' %}"
+                    class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-4 py-1.5 text-center text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md sm:text-[11px]">Créer
+                    un compte</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <!-- Hero / bannière (hauteur = navigateur) -->
+    <section class="relative min-h-[100dvh] overflow-hidden pt-14">
+        <div class="absolute inset-0 hero-banner-drc"></div>
+        <div class="pointer-events-none absolute inset-0 hero-radial-glow"></div>
+        <div class="pointer-events-none absolute inset-0 hero-pentagon opacity-[0.62] mix-blend-screen" aria-hidden="true"></div>
+        <!-- Grain mat (bruit fractal), sans lignes géométriques — proche texture photo de référence -->
+        <div class="pointer-events-none absolute inset-0 z-[1] opacity-[0.5] mix-blend-soft-light"
+            aria-hidden="true">
+            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <filter id="sisepHeroGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" stitchTiles="stitch"
+                        result="noise" />
+                    <feColorMatrix in="noise" type="saturate" values="0" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#sisepHeroGrain)" fill="#ffffff" />
+            </svg>
+        </div>
+        <div
+            class="relative z-10 mx-auto flex min-h-[calc(100dvh-56px)] max-w-7xl flex-col justify-start gap-7 px-5 pb-16 pt-6 sm:px-6 lg:flex-row lg:items-start lg:gap-12 lg:px-8 lg:pb-28 lg:pt-7">
+            <!-- Carrousel (gauche sur desktop) -->
+            <div class="order-2 w-full lg:order-1 lg:flex-[0_0_560px] lg:max-w-[560px] lg:pt-2">
+                <div class="relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_20px_60px_-35px_rgba(0,0,0,0.65)] backdrop-blur-[2px]"
+                    data-carousel="commune">
+                <div class="relative h-[260px] w-full sm:h-[320px] lg:h-[380px]">
+                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                            src="{% static 'commune-image/comune1.png' %}" alt="Maison communale - 1" />
+                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                            src="{% static 'commune-image/comune2.png' %}" alt="Maison communale - 2" />
+                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                            src="{% static 'commune-image/commune3.png' %}" alt="Maison communale - 3" />
+                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                            src="{% static 'commune-image/commune4.png' %}" alt="Maison communale - 4" />
+                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                            src="{% static 'commune-image/commune5.jpg' %}" alt="Maison communale - 5" />
+
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/10"></div>
+                    </div>
+
+                    <!-- Controls -->
+                    <button type="button"
+                        class="carousel-prev absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-white/25 bg-black/35 p-2 text-white backdrop-blur-md transition-all hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#FDB813]/70"
+                        aria-label="Photo précédente">
+                        <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+                        </button>
+                    <button type="button"
+                        class="carousel-next absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/25 bg-black/35 p-2 text-white backdrop-blur-md transition-all hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#FDB813]/70"
+                        aria-label="Photo suivante">
+                        <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                        </button>
+
+                    <!-- Dots -->
+                    <div class="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
+                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
+                            aria-label="Aller à la photo 1"></button>
+                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
+                            aria-label="Aller à la photo 2"></button>
+                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
+                            aria-label="Aller à la photo 3"></button>
+                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
+                            aria-label="Aller à la photo 4"></button>
+                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
+                            aria-label="Aller à la photo 5"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branding (droite sur desktop) -->
+            <div class="order-1 max-w-xl flex-1 text-white lg:order-2 lg:max-w-[640px] lg:pt-2">
+                <p
+                    class="mb-4 inline-flex rounded-xl border border-[#FDB813] bg-black/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#FDB813]">
+                    Services communaux & état civil</p>
+                <h1 class="mb-6 font-headline text-4xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
+                    Votre commune,<br />
+                    <span class="text-[#FDB813]">désormais en ligne.</span>
+                </h1>
+                <p class="mb-9 max-w-xl text-[16px] font-medium leading-relaxed text-white/90 sm:text-[17px]">
+                    Déposez vos demandes, suivez chaque étape et récupérez vos documents sans file d’attente.
+                    Une plateforme sécurisée pour l’<strong class="font-bold text-white">état civil</strong>, les
+                    autorisations communales et l’archivage.
+                </p>
+
+                <div class="mt-4 flex flex-wrap gap-3 sm:gap-4">
+                    <a href="#services"
+                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02] sm:text-xs">Commencer</a>
+                    <a href="{% url 'login' %}"
+                        class="inline-flex items-center justify-center rounded-xl border border-white/30 bg-transparent px-8 py-3 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-white/10 sm:text-xs">Se
+                        connecter</a>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            const links = Array.from(document.querySelectorAll('#siteNav a[data-nav-link]'));
+            if (!links.length) return;
+
+            function setActiveByHash() {
+                const hash = window.location.hash || '#services';
+                links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === hash));
+            }
+
+            links.forEach(a => {
+                a.addEventListener('click', () => {
+                    links.forEach(x => x.classList.remove('is-active'));
+                    a.classList.add('is-active');
+                });
+            });
+
+            window.addEventListener('hashchange', setActiveByHash);
+            setActiveByHash();
+        })();
+    </script>
+    <!-- Services Section (charte MuniWorks, fond blanc nuancé + grain) -->
+    <section id="services" class="svc-section-bg relative scroll-mt-14 border-b border-slate-300/40 py-16">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.38] mix-blend-multiply" aria-hidden="true">
+            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <filter id="sisepServicesGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="4" stitchTiles="stitch"
+                        result="noise" />
+                    <feColorMatrix in="noise" type="saturate" values="0" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#sisepServicesGrain)" fill="#64748b" />
+            </svg>
+        </div>
+        <!-- Motif doré (photo) — taille très réduite, rendu institutionnel -->
+        <div class="pointer-events-none absolute inset-0 z-[2] svc-gold-motif opacity-[0.28]" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-soft-light" aria-hidden="true">
+            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <filter id="sisepServicesGrainTop" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="4" stitchTiles="stitch"
+                        result="noise2" />
+                    <feColorMatrix in="noise2" type="saturate" values="0" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#sisepServicesGrainTop)" fill="#ffffff" />
+            </svg>
+        </div>
+        <div class="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center md:mb-14">
+                <h2 class="mb-3 font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+                    Services <span class="text-[#FDB813]">municipaux</span>
+                </h2>
+                <p class="mx-auto max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
+                    Prestations de la maison communale accessibles en ligne : délais affichés, tarifs indicatifs,
+                    parcours guidé — aux couleurs institutionnelles bleu nuit et or de MuniWorks DRC.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+                <!-- Carte 1 -->
+                <article
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    <div class="relative h-[8.75rem] shrink-0 svc-header-poly-1">
+                        <span
+                            class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-primary shadow-sm backdrop-blur-[2px]">#1</span>
+                        <span
+                            class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
+                    </div>
+                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
+                            État civil &amp; actes</h3>
+                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Demandes d’actes de naissance,
+                            mariage, décès et extraits certifiés, déposées et suivies sur le portail.</p>
+                        <a href="#procedure"
+                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
+                            la procédure</a>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
+                                moyen</p>
+                            <p class="font-headline text-sm font-bold text-[#1a2332]">10 jours ouvrés</p>
+                        </div>
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">À partir
+                                de</p>
+                            <p class="font-headline text-sm font-bold text-primary">2 500 CDF</p>
+                        </div>
+                    </div>
+                </article>
+                <!-- Carte 2 -->
+                <article
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    <div class="relative h-[8.75rem] shrink-0 svc-header-poly-2">
+                        <span
+                            class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-[#8b6914] shadow-sm backdrop-blur-[2px]">#2</span>
+                        <span
+                            class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
+                    </div>
+                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
+                            Permis de construire</h3>
+                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Dépôt des plans, pièces
+                            urbanistiques et autorisations de bâtir avec instruction numérique par la commune.</p>
+                        <a href="#procedure"
+                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
+                            la procédure</a>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
+                                max.</p>
+                            <p class="font-headline text-sm font-bold text-[#1a2332]">45 jours</p>
+                        </div>
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Frais
+                                min.</p>
+                            <p class="font-headline text-sm font-bold text-primary">15 000 CDF</p>
+                        </div>
+                    </div>
+                </article>
+                <!-- Carte 3 -->
+                <article
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    <div class="relative h-[8.75rem] shrink-0 svc-header-poly-3">
+                        <span
+                            class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-[#14523d] shadow-sm backdrop-blur-[2px]">#3</span>
+                        <span
+                            class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
+                    </div>
+                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
+                            Pétitions &amp; concertation</h3>
+                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Recueil de contributions
+                            citoyennes, pétitions et suggestions pour les projets communaux prioritaires.</p>
+                        <a href="#procedure"
+                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
+                            la procédure</a>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Instruction</p>
+                            <p class="font-headline text-sm font-bold text-[#1a2332]">30 jours</p>
+                        </div>
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Frais</p>
+                            <p class="font-headline text-sm font-bold text-primary">0 CDF</p>
+                </div>
+                    </div>
+                </article>
+                <!-- Carte 4 -->
+                <article
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    <div class="relative h-[8.75rem] shrink-0 svc-header-poly-4">
+                        <span
+                            class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-primary shadow-sm backdrop-blur-[2px]">#4</span>
+                        <span
+                            class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
+                </div>
+                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
+                            Taxes &amp; redevances</h3>
+                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Encodage des droits communaux,
+                            quittances et attestations de paiement liés aux services municipaux.</p>
+                        <a href="#procedure"
+                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
+                            la procédure</a>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
+                                moyen</p>
+                            <p class="font-headline text-sm font-bold text-[#1a2332]">48 h</p>
+                        </div>
+                        <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Montant</p>
+                            <p class="font-headline text-sm font-bold text-primary">Selon barème</p>
+                        </div>
+                </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Procédure administrative — bandeau horizontal, fond noir nuancé, police Outfit -->
+    <section id="procedure"
+        class="font-procedure relative scroll-mt-14 overflow-hidden border-t border-white/[0.06] py-20 text-center">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_95%_65%_at_50%_-18%,rgba(59,130,246,0.16),transparent_58%),radial-gradient(ellipse_75%_55%_at_0%_100%,rgba(56,189,248,0.08),transparent_55%),radial-gradient(ellipse_70%_50%_at_100%_100%,rgba(212,168,75,0.08),transparent_50%),linear-gradient(165deg,#0f0f14_0%,#1b1b24_44%,#0b0b10_100%)]"
+            aria-hidden="true"></div>
+        <!-- Motif type e‑VISA (fine, visible sans gêner le texte) -->
+        <div class="pointer-events-none absolute inset-0 procedure-motif opacity-[0.42] mix-blend-screen" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay" aria-hidden="true">
+            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <filter id="sisepProcedureGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="3" stitchTiles="stitch"
+                        result="n" />
+                    <feColorMatrix in="n" type="saturate" values="0" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#sisepProcedureGrain)" fill="#ffffff" />
+            </svg>
+        </div>
+        <div class="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+            <header class="mx-auto mb-14 max-w-3xl sm:mb-16">
+                <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-sky-200/75">Parcours citoyen
+                </p>
+                <h2 class="mb-4 text-3xl font-semibold tracking-tight text-[#ececf1] sm:text-4xl md:text-[2.35rem] md:leading-tight">
+                    Procédure <span class="bg-gradient-to-r from-[#e8c86a] via-[#d4a84b] to-[#b8923f] bg-clip-text font-semibold text-transparent">administrative</span>
+                </h2>
+                <p class="text-sm font-light leading-relaxed text-slate-400/95 sm:text-[15px]">Quatre étapes alignées,
+                    de l’identification à la délivrance. Chaque dossier est tracé sur la plateforme — vous suivez
+                    l’avancement sans déplacements inutiles.</p>
+            </header>
+
+            <div class="relative">
+                <div class="pointer-events-none absolute left-[8%] right-[8%] top-[1.35rem] hidden h-px bg-gradient-to-r from-transparent via-slate-400/35 to-transparent lg:block"
+                    aria-hidden="true"></div>
+                <ol
+                    class="mx-auto grid max-w-6xl list-none grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-6 lg:gap-y-6">
+                    <li class="flex flex-col items-center text-center">
+                        <span
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#2a63b5] to-[#0e2f62] text-sm font-semibold text-[#eef2ff] shadow-[0_0_0_1px_rgba(255,255,255,0.12)] shadow-[0_12px_30px_-18px_rgba(56,189,248,0.65)] ring-4 ring-[#0f0f14]">1</span>
+                        <div
+                            class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">person_add</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Identité
+                                &amp; compte</h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Compte citoyen
+                                et vérification d’identité — accès unique à tous les services de la commune.</p>
+                            </div>
+                    </li>
+                    <li class="flex flex-col items-center text-center">
+                        <span
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#191925] text-sm font-semibold text-[#d7e2f5] shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(59,130,246,0.45)] ring-4 ring-[#0f0f14]">2</span>
+                        <div
+                            class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">edit_document</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Dépôt du
+                                dossier</h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Formulaire
+                                guidé, pièces au format requis et accusé de réception automatique.</p>
+                        </div>
+                    </li>
+                    <li class="flex flex-col items-center text-center">
+                        <span
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#191925] text-sm font-semibold text-[#d7e2f5] shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(59,130,246,0.45)] ring-4 ring-[#0f0f14]">3</span>
+                        <div
+                            class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">fact_check</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Instruction
+                            </h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Traitement par
+                                les agents : compléments demandés et notifications à chaque étape.</p>
+                        </div>
+                    </li>
+                    <li class="flex flex-col items-center text-center">
+                        <span
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#f1cf6a] via-[#d4a84b] to-[#8f6f2e] text-sm font-semibold text-[#171510] shadow-[0_0_0_1px_rgba(255,255,255,0.16)] shadow-[0_14px_34px_-22px_rgba(212,168,75,0.7)] ring-4 ring-[#0f0f14]">4</span>
+                        <div
+                            class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-amber-200/80">verified</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Délivrance
+                            </h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Document
+                                certifié en téléchargement sécurisé ou retrait sur convocation ; dossier archivé.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+            <p class="mx-auto mt-12 max-w-2xl text-center text-[11px] font-light leading-relaxed text-slate-500/90">
+                Délais indicatifs selon le service — les barèmes et pièces exactes figurent sur chaque fiche métier.
+            </p>
+        </div>
+    </section>
+    <!-- CTA Section -->
+    <section id="portail-citoyen" class="relative overflow-hidden py-16 scroll-mt-14">
+        <!-- Fond “photo 1” : grands halos flous, sans cadre -->
+        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div class="absolute inset-0 bg-white"></div>
+            <div class="absolute -left-24 top-10 h-[340px] w-[340px] rounded-full bg-primary/20 blur-3xl"></div>
+            <div class="absolute right-[-120px] top-20 h-[420px] w-[420px] rounded-full bg-secondary-container/30 blur-3xl"></div>
+            <div class="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300/20 blur-3xl"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/30 to-white"></div>
+        </div>
+        <div class="relative mx-auto max-w-5xl px-6 text-center">
+            <div class="relative">
+                <h2 class="text-2xl md:text-3xl font-black text-primary font-headline mb-4 tracking-tight uppercase">
+                    Modernisation de l'Administration</h2>
+                <p class="text-slate-600 text-sm mb-8 max-w-xl mx-auto font-medium">Rejoignez l'infrastructure numérique
+                    sécurisée pour vos démarches en République Démocratique du Congo.</p>
+                <!-- Armoiries animées (flottement + zoom/dézoom) -->
+                <img src="{% static 'armoiries RDC.png' %}" alt="" aria-hidden="true"
+                    class="crest-float pointer-events-none absolute -right-10 -top-10 hidden w-[200px] opacity-[0.16] mix-blend-multiply drop-shadow-[0_22px_50px_rgba(0,0,0,0.15)] md:block" />
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#procedure"
+                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md">Créer
+                        mon compte</a>
+                    <a href="#footer-support"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-300/70 bg-white/70 px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-primary backdrop-blur-md transition-all hover:bg-white">Support
+                        Technique</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="relative overflow-hidden border-t border-slate-200 bg-white pt-14 pb-10">
+        <div class="pointer-events-none absolute inset-0 footer-halos opacity-[0.18]" aria-hidden="true"></div>
+        <!-- Armoiries RDC en filigrane (discret, institutionnel) -->
+        <img src="{% static 'armoiries RDC.png' %}" alt="Armoiries de la RDC"
+            class="pointer-events-none absolute right-6 top-8 hidden w-28 opacity-[0.10] md:block"
+            aria-hidden="true" />
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="flex items-center gap-2">
+                        <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC"
+                            class="h-7 w-auto opacity-90 [filter:brightness(0)_saturate(100%)]" />
+                        <span class="font-headline font-extrabold text-lg text-primary tracking-tight">MuniWorks</span>
+                    </div>
+                </div>
+                <p class="text-slate-500 font-medium text-xs leading-relaxed mb-6">
+                    Plateforme officielle de digitalisation des services municipaux de la RDC.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold text-slate-600">
+                        <span class="material-symbols-outlined text-sm text-primary">verified_user</span>
+                        Portail institutionnel
+                    </span>
+                    <span class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold text-slate-600">
+                        <span class="material-symbols-outlined text-sm text-primary">lock</span>
+                        Sécurisé
+                    </span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 col-span-1 md:col-span-3 gap-8">
+                <div>
+                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">
+                        Navigation</h5>
+                    <ul class="space-y-2 text-xs font-medium">
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Services</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Portails</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Législation</a></li>
+                    </ul>
+                </div>
+                <div id="footer-support" class="scroll-mt-14">
+                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">Support
+                    </h5>
+                    <ul class="space-y-2 text-xs font-medium">
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Aide &amp; FAQ</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Support</a></li>
+                        <li><a class="text-secondary font-bold" href="#">Statut</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">Légal
+                    </h5>
+                    <ul class="space-y-2 text-xs font-medium">
+                        <li><a class="text-slate-500 hover:text-primary" href="#">Confidentialité</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">CGU</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-slate-100 mt-8 pt-6">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-400 font-medium text-[10px]">© {% now "Y" %} Municipal Excellence Digital Services.
+                    République Démocratique du Congo.</p>
+                <div class="flex items-center gap-3">
+                    <img src="{% static 'armoiries RDC.png' %}" alt="RDC"
+                        class="h-6 w-auto opacity-70 grayscale-[0.1]" />
+                    <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC"
+                        class="h-5 w-auto opacity-90 [filter:brightness(0)_saturate(100%)]" />
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        (function () {
+            function initCarousel(root) {
+                const slides = Array.from(root.querySelectorAll('.carousel-slide'));
+                const dots = Array.from(root.querySelectorAll('.carousel-dot'));
+                const prevBtn = root.querySelector('.carousel-prev');
+                const nextBtn = root.querySelector('.carousel-next');
+                if (!slides.length) return;
+
+                let idx = 0;
+                let timer = null;
+
+                function setActive(nextIdx) {
+                    idx = (nextIdx + slides.length) % slides.length;
+                    slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+                    dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+                }
+
+                function next() { setActive(idx + 1); }
+                function prev() { setActive(idx - 1); }
+
+                function start() {
+                    stop();
+                    timer = window.setInterval(next, 6000);
+                }
+
+                function stop() {
+                    if (timer) window.clearInterval(timer);
+                    timer = null;
+                }
+
+                prevBtn && prevBtn.addEventListener('click', () => { prev(); start(); });
+                nextBtn && nextBtn.addEventListener('click', () => { next(); start(); });
+                dots.forEach((d, i) => d.addEventListener('click', () => { setActive(i); start(); }));
+
+                root.addEventListener('mouseenter', stop);
+                root.addEventListener('mouseleave', start);
+                root.addEventListener('focusin', stop);
+                root.addEventListener('focusout', start);
+
+                setActive(0);
+                start();
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('[data-carousel]').forEach(initCarousel);
+
+                const nav = document.getElementById('siteNav');
+                if (!nav) return;
+                function onScroll() {
+                    nav.classList.toggle('nav-scrolled', window.scrollY > 16);
+                }
+                onScroll();
+                window.addEventListener('scroll', onScroll, { passive: true });
+            });
+        })();
+    </script>
+</body>
+
+</html>

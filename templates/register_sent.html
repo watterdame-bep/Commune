@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr" class="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vérifiez votre email | MuniWorks DRC</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          borderRadius: {
+            DEFAULT: "0.75rem",
+            xl: "0.75rem",
+            "2xl": "0.75rem",
+            "3xl": "0.75rem",
+            full: "9999px",
+          },
+          fontFamily: {
+            headline: ["Outfit", "system-ui", "sans-serif"],
+            body: ["Outfit", "system-ui", "sans-serif"],
+            label: ["Outfit", "system-ui", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="min-h-dvh bg-[#f6f7fb] font-body text-slate-900">
+  <main class="mx-auto flex min-h-dvh max-w-2xl items-center px-5 py-10 sm:px-8">
+    <div class="w-full rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_35px_70px_-55px_rgba(2,6,23,0.25)]">
+      <div class="flex items-center gap-3">
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-[#0B2B4A]/10 ring-1 ring-[#0B2B4A]/15">
+          <span class="material-symbols-outlined text-[#0B2B4A]">mail</span>
+        </div>
+        <div>
+          <p class="font-headline text-xl font-extrabold tracking-tight">Confirmation d’email</p>
+          <p class="mt-1 text-[13px] font-medium text-slate-600">Un lien vient d’être envoyé à votre adresse email.</p>
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4">
+        <p class="text-sm font-semibold text-slate-700">
+          Votre compte a été créé. Ouvrez votre boîte mail et cliquez sur le lien pour activer votre compte.
+          Si vous ne voyez rien, vérifiez les spams.
+        </p>
+        <p class="mt-2 text-[13px] font-bold text-slate-700">
+          Le lien expire dans <span class="text-[#0B2B4A]">10 minutes</span>.
+        </p>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="{% url 'login' %}"
+          class="inline-flex items-center justify-center rounded-2xl bg-[#FDB813] px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#10131a] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md">
+          Ouvrir une session
+        </a>
+        <a href="{% url 'register' %}"
+          class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-700 hover:bg-slate-50">
+          Reprendre l’inscription
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
+

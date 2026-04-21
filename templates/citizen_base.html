@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr" class="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Espace citoyen | MuniWorks DRC{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          borderRadius: {
+            DEFAULT: "0.75rem",
+            xl: "0.75rem",
+            "2xl": "0.75rem",
+            "3xl": "0.75rem",
+            full: "9999px",
+          },
+          fontFamily: {
+            headline: ["Outfit", "system-ui", "sans-serif"],
+            body: ["Outfit", "system-ui", "sans-serif"],
+            label: ["Outfit", "system-ui", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+      vertical-align: middle;
+    }
+
+    /* Bleu secondaire (moins saturé) pour limiter la dominance du bleu */
+    .drc-topbar {
+      background:
+        radial-gradient(ellipse 120% 90% at 20% 10%, rgba(56, 189, 248, 0.10) 0%, transparent 58%),
+        radial-gradient(ellipse 110% 90% at 88% 20%, rgba(96, 165, 250, 0.07) 0%, transparent 62%),
+        linear-gradient(162deg, #123554 0%, #10314e 28%, #0d2b46 58%, #0a243d 82%, #081d33 100%);
+    }
+
+    /* Motif : hexagone + losange intérieur */
+    .hex-motif {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='220' viewBox='0 0 240 220'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.14' stroke-width='1'%3E%3Cpath d='M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z'/%3E%3Cpath d='M60 38 L84 52 L60 66 L36 52 Z'/%3E%3Cpath d='M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z'/%3E%3Cpath d='M140 82 L164 96 L140 110 L116 96 Z'/%3E%3Cpath d='M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z'/%3E%3Cpath d='M60 138 L84 152 L60 166 L36 152 Z'/%3E%3C/g%3E%3Cg fill='%23ffffff' fill-opacity='0.26'%3E%3Ccircle cx='20' cy='44' r='1.2'/%3E%3Ccircle cx='100' cy='88' r='1.2'/%3E%3Ccircle cx='180' cy='132' r='1.2'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 460px 460px;
+      background-repeat: repeat;
+      background-position: center;
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-[#f6f7fb] font-body text-slate-900">
+  <header class="relative overflow-hidden pt-14">
+    <div class="absolute inset-0 drc-topbar"></div>
+    <div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.32] mix-blend-soft-light"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/40"></div>
+
+    <div class="relative z-10">
+      <!-- Navbar fixe : sidebar horizontale -->
+      <nav class="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#0B2B4A] shadow-sm shadow-black/25">
+        <div class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center gap-3">
+            <a href="{% url 'welcome' %}" class="flex items-center gap-2">
+              <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+              <span class="hidden font-headline text-[13px] font-extrabold tracking-tight text-white sm:inline">MuniWorks DRC</span>
+            </a>
+          </div>
+
+          {% with current=request.resolver_match.url_name %}
+          <nav class="hidden items-center gap-2 md:flex">
+            <a class="inline-flex items-center gap-2 rounded-xl border border-white/15 px-3 py-1.5 text-center text-[13px] font-semibold text-white hover:bg-white/10 {% if current == 'dashboard' %}bg-white/10{% else %}bg-transparent{% endif %}"
+              href="{% url 'dashboard' %}">
+              <span class="material-symbols-outlined text-[18px]">dashboard</span>
+              Dashboard
+            </a>
+            <a class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white"
+              href="#">
+              <span class="material-symbols-outlined text-[18px]">assignment</span>
+              Mes demandes
+            </a>
+            <a class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white {% if current == 'documents' %}bg-white/10 text-white{% endif %}"
+              href="{% url 'documents' %}">
+              <span class="material-symbols-outlined text-[18px]">folder_open</span>
+              Documents
+            </a>
+            <a class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white"
+              href="{% url 'welcome' %}">
+              <span class="material-symbols-outlined text-[18px]">public</span>
+              Site web
+            </a>
+          </nav>
+          {% endwith %}
+
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button id="themeBtn" type="button"
+              class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 p-2 text-white hover:bg-white/15"
+              aria-label="Thème clair/sombre">
+              <span class="material-symbols-outlined text-[18px]">dark_mode</span>
+            </button>
+            <button type="button"
+              class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 p-2 text-white hover:bg-white/15"
+              aria-label="Notifications">
+              <span class="material-symbols-outlined text-[18px]">notifications</span>
+            </button>
+            <button type="button"
+              class="hidden items-center justify-center rounded-xl bg-[#FDB813] p-2 text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md md:inline-flex"
+              aria-label="Nouvelle demande" title="Nouvelle demande">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+            </button>
+
+            <div class="relative">
+              <button id="acctBtn"
+                class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-white backdrop-blur hover:bg-white/15"
+                type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="acctMenu">
+                <span class="material-symbols-outlined text-[20px]">account_circle</span>
+                <span class="hidden text-sm font-bold sm:inline">{{ request.user.first_name|default:"Compte" }}</span>
+                <span class="material-symbols-outlined text-[18px] opacity-90">expand_more</span>
+              </button>
+
+              <div id="acctMenu" role="menu" aria-label="Menu du compte"
+                class="invisible absolute right-0 mt-2 w-[292px] origin-top-right translate-y-2 rounded-3xl border border-white/15 bg-white/95 p-3 opacity-0 shadow-[0_20px_60px_-45px_rgba(2,6,23,0.35)] backdrop-blur transition-all duration-150">
+                <div class="overflow-hidden rounded-3xl bg-[#0B2B4A] text-white">
+                  <div class="relative px-4 py-4">
+                    <div class="pointer-events-none absolute inset-0 opacity-[0.6]" aria-hidden="true"
+                      style="background: radial-gradient(ellipse 90% 70% at 20% 20%, rgba(253,184,19,0.14), transparent 55%), radial-gradient(ellipse 80% 70% at 85% 30%, rgba(56,189,248,0.12), transparent 60%);"></div>
+                    <div class="relative flex items-center gap-3">
+                      <div class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+                        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+                      </div>
+                      <div class="min-w-0">
+                        <p class="truncate text-sm font-extrabold">{{ request.user.get_full_name|default:request.user.username }}</p>
+                        <p class="truncate text-[12px] font-semibold text-white/75">{{ request.user.email|default:request.user.username }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="px-4 pb-4">
+                    <div class="grid grid-cols-2 gap-2">
+                      <a role="menuitem" href="#"
+                        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-3 py-2 text-[12px] font-semibold text-white hover:bg-white/15">
+                        <span class="material-symbols-outlined text-[18px]">person</span>
+                        Profil
+                      </a>
+                      <a role="menuitem" href="#"
+                        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 px-3 py-2 text-[12px] font-semibold text-white hover:bg-white/15">
+                        <span class="material-symbols-outlined text-[18px]">shield</span>
+                        Sécurité
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-3 space-y-2">
+                  <div class="rounded-2xl border border-slate-200 bg-white px-3 py-2">
+                    <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-500">Langue</p>
+                    <div class="mt-2 grid grid-cols-2 overflow-hidden rounded-xl border border-slate-200">
+                      <button class="bg-[#123554] py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-white" type="button">FR</button>
+                      <button class="py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-600" type="button">EN</button>
+                    </div>
+                  </div>
+
+                  <a role="menuitem"
+                    class="flex items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-rose-700 hover:bg-rose-100"
+                    href="{% url 'login' %}">
+                    <span class="material-symbols-outlined text-[18px]">logout</span> Déconnexion
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {% block hero %}{% endblock %}
+    </div>
+  </header>
+
+  <main class="{% block main_class %}mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="relative overflow-hidden border-t border-white/10 bg-[#061c3b] text-white">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden="true"
+      style="background: radial-gradient(ellipse 110% 70% at 20% 0%, rgba(56,189,248,0.16), transparent 55%), radial-gradient(ellipse 90% 60% at 85% 20%, rgba(253,184,19,0.10), transparent 60%), linear-gradient(180deg, rgba(255,255,255,0.03), transparent 45%);"></div>
+    <div class="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-6 text-center sm:flex-row sm:text-left sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 text-[12px] font-semibold text-white/75">
+        <img src="{% static 'armoiries RDC.png' %}" alt="RDC" class="h-5 w-auto opacity-80" />
+        <span>© {% now "Y" %} — Portail citoyen communal</span>
+      </div>
+      <div class="flex items-center gap-3 text-[12px] font-semibold text-white/70">
+        <a href="{% url 'welcome' %}" class="hover:text-white">Accueil</a>
+        <span class="opacity-30">•</span>
+        <a href="#" class="hover:text-white">Confidentialité</a>
+        <span class="opacity-30">•</span>
+        <a href="#" class="hover:text-white">Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('acctBtn');
+      const menu = document.getElementById('acctMenu');
+      if (!btn || !menu) return;
+
+      function close() {
+        menu.classList.add('invisible', 'opacity-0', 'translate-y-2');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      function open() {
+        menu.classList.remove('invisible', 'opacity-0', 'translate-y-2');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      function toggle() {
+        if (menu.classList.contains('invisible')) open();
+        else close();
+      }
+
+      btn.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+      document.addEventListener('click', close);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      close();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('themeBtn');
+      if (!btn) return;
+      function apply(mode) {
+        document.documentElement.classList.toggle('dark', mode === 'dark');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.textContent = mode === 'dark' ? 'light_mode' : 'dark_mode';
+      }
+      const saved = localStorage.getItem('mw_theme');
+      const initial = saved || 'light';
+      apply(initial);
+      btn.addEventListener('click', () => {
+        const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem('mw_theme', next);
+        apply(next);
+      });
+    })();
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>
+
