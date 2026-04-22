@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -63,6 +63,10 @@ from accounts.models import Demande, DemandeStatut, Document, PasswordResetCode,
 
 signer = TimestampSigner(salt="sisepcommune.email")
 
+def _is_admin_user(user: User) -> bool:
+    role = getattr(getattr(user, "profile", None), "role", None)
+    return bool(getattr(user, "is_superuser", False) or role == UserRole.ADMIN)
+
 
 def welcome(request):
     """Page d'accueil publique — point d'entrée du portail (landing)."""
@@ -75,20 +79,34 @@ def login_view(request):
         return redirect('welcome')
 
     if request.method == "POST":
-        username = (request.POST.get("username") or "").strip()
+        identifier = (request.POST.get("username") or "").strip().lower()
         password = request.POST.get("password") or ""
+        username = identifier
+        if identifier and "@" in identifier:
+            u = User.objects.filter(email__iexact=identifier).first()
+            if u is not None:
+                username = u.username
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
             next_url = request.GET.get("next") or request.POST.get("next")
+            if _is_admin_user(user):
+                return redirect(next_url or "hdv_dashboard")
             return redirect(next_url or "dashboard")
         # Message plus clair si le compte existe mais n'est pas activé
-        if username and User.objects.filter(username=username, is_active=False).exists():
+        if identifier and User.objects.filter(email__iexact=identifier, is_active=False).exists():
             messages.error(request, "Veuillez confirmer votre email pour activer votre compte.")
         else:
             messages.error(request, "Identifiants incorrects. Veuillez réessayer.")
 
     return render(request, "login.html")
+
+
+@require_http_methods(["POST"])
+def logout_view(request):
+    auth_logout(request)
+    return redirect("welcome")
 
 
 @require_http_methods(["GET", "POST"])
@@ -219,6 +237,8 @@ def register_view(request):
 
 @login_required
 def dashboard_view(request):
+    if _is_admin_user(request.user):
+        return redirect("hdv_dashboard")
     user = request.user
     display = (user.first_name or user.get_full_name() or user.username).strip() or "Citoyen"
     qs = Demande.objects.filter(citoyen=user)
@@ -276,6 +296,37 @@ def documents_view(request):
         "documents": docs,
     }
     return render(request, "documents.html", ctx)
+
+
+def _require_admin_role(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    role = getattr(getattr(request.user, "profile", None), "role", None)
+    if role != UserRole.ADMIN:
+        messages.error(request, "Accès refusé.")
+        return redirect("dashboard")
+    return None
+
+
+@login_required
+def hdv_dashboard_view(request):
+    denied = _require_admin_role(request)
+    if denied is not None:
+        return denied
+
+    user = request.user
+    display = (user.first_name or user.get_full_name() or user.username).strip() or "Administrateur"
+
+    ctx = {
+        "user_display_name": display,
+        "kpis": {
+            "communes": 0,
+            "bourgmestres": 0,
+            "agents": 0,
+            "demandes": Demande.objects.count(),
+        },
+    }
+    return render(request, "hdv_dashboard.html", ctx)
 
 
 DOCUMENT_CREATE_OPTIONS = (

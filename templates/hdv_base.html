@@ -1,0 +1,83 @@
+{% extends "backoffice_base.html" %}
+{% load static %}
+
+{% block title %}Hôtel de ville | MuniWorks DRC{% endblock %}
+
+{% block sidebar_brand %}
+<div class="flex items-center gap-3">
+  <img src="{% static 'logo.png' %}" alt="MuniWorks DRC" class="h-9 w-9 rounded-2xl border border-slate-200 bg-white p-1" />
+  <div class="min-w-0">
+    <p class="truncate text-sm font-extrabold text-[#0B2B4A]">Hôtel de ville</p>
+    <p class="truncate text-[12px] font-semibold text-slate-500">Administration centrale</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar_brand_mobile %}
+<img src="{% static 'logo.png' %}" alt="MuniWorks DRC" class="h-9 w-9 rounded-2xl border border-slate-200 bg-white p-1" />
+<div class="min-w-0">
+  <p class="truncate text-sm font-extrabold text-[#0B2B4A]">Hôtel de ville</p>
+  <p class="truncate text-[12px] font-semibold text-slate-500">Administration centrale</p>
+</div>
+{% endblock %}
+
+{% block topbar_subtitle %}Administration centrale{% endblock %}
+
+{% block sidebar_nav %}
+<nav class="space-y-2">
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_dashboard' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_dashboard' %}">
+    <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+    Tableau de bord
+  </a>
+  <details class="group rounded-2xl border border-transparent open:bg-slate-50/60">
+    <summary class="flex cursor-pointer list-none items-center justify-between rounded-2xl px-3 py-2.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">
+      <span class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+        Gestion
+      </span>
+      <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
+    </summary>
+    <div class="pb-2 pl-10 pr-3">
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Communes</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Bourgmestres</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Agents</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Dossiers (global)</a>
+    </div>
+  </details>
+</nav>
+{% endblock %}
+
+{% block sidebar_nav_mobile %}
+<nav class="space-y-2">
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_dashboard' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-slate-200 bg-white text-slate-700{% endif %}"
+    href="{% url 'hdv_dashboard' %}">
+    <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+    Tableau de bord
+  </a>
+  <details class="group rounded-2xl border border-slate-200 bg-white open:bg-slate-50/60">
+    <summary class="flex cursor-pointer list-none items-center justify-between rounded-2xl px-3 py-2.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">
+      <span class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+        Gestion
+      </span>
+      <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
+    </summary>
+    <div class="pb-2 pl-10 pr-3">
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Communes</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Bourgmestres</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Agents</a>
+      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">Dossiers (global)</a>
+    </div>
+  </details>
+</nav>
+{% endblock %}
+

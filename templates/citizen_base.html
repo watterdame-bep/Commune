@@ -86,7 +86,7 @@
               <span class="material-symbols-outlined text-[18px]">assignment</span>
               Mes demandes
             </a>
-            <a class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white {% if current == 'documents' %}bg-white/10 text-white{% endif %}"
+            <a class="inline-flex items-center gap-2 rounded-xl border border-transparent px-3 py-1.5 text-center text-[13px] font-semibold text-white/90 transition-colors hover:bg-white/10 hover:text-white {% if current == 'documents' %}bg-white/10 text-white{% endif %}"
               href="{% url 'documents' %}">
               <span class="material-symbols-outlined text-[18px]">folder_open</span>
               Documents
@@ -97,7 +97,6 @@
               Site web
             </a>
           </nav>
-          {% endwith %}
 
           <div class="flex items-center gap-2 sm:gap-3">
             <button id="themeBtn" type="button"
@@ -110,14 +109,18 @@
               aria-label="Notifications">
               <span class="material-symbols-outlined text-[18px]">notifications</span>
             </button>
+            <button id="navMobileBtn" type="button"
+              class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 p-2 text-white hover:bg-white/15 md:hidden"
+              aria-label="Ouvrir le menu" aria-controls="navMobilePanel" aria-expanded="false">
+              <span class="material-symbols-outlined text-[20px]">menu</span>
+            </button>
             <a href="{% url 'demande_create' %}"
-              class="hidden items-center justify-center gap-2 rounded-xl bg-[#FDB813] px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md md:inline-flex"
-              title="Nouvelle demande">
+              class="hidden items-center justify-center rounded-xl bg-[#FDB813] p-2 text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md md:inline-flex"
+              aria-label="Nouvelle demande" title="Nouvelle demande">
               <span class="material-symbols-outlined text-[18px]">add</span>
-              <span class="hidden lg:inline">Nouvelle demande</span>
             </a>
 
-            <div class="relative">
+            <div class="relative hidden md:block">
               <button id="acctBtn"
                 class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-white backdrop-blur hover:bg-white/15"
                 type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="acctMenu">
@@ -160,24 +163,96 @@
 
                 <div class="mt-3 space-y-2">
                   <div class="rounded-2xl border border-slate-200 bg-white px-3 py-2">
-                    <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-slate-500">Langue</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Langue</p>
                     <div class="mt-2 grid grid-cols-2 overflow-hidden rounded-xl border border-slate-200">
-                      <button class="bg-[#123554] py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-white" type="button">FR</button>
-                      <button class="py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-600" type="button">EN</button>
+                      <button class="bg-[#123554] py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white" type="button">FR</button>
+                      <button class="py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600" type="button">EN</button>
                     </div>
                   </div>
 
-                  <a role="menuitem"
-                    class="flex items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-rose-700 hover:bg-rose-100"
-                    href="{% url 'login' %}">
-                    <span class="material-symbols-outlined text-[18px]">logout</span> Déconnexion
-                  </a>
+                  <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" role="menuitem"
+                      class="flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-rose-700 hover:bg-rose-100">
+                      <span class="material-symbols-outlined text-[18px]">logout</span> Déconnexion
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </nav>
+
+      <!-- Menu mobile (sidebar) -->
+      <div id="navMobilePanel" class="fixed inset-0 z-[60] hidden" aria-hidden="true">
+        <div id="navMobileBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
+        <aside class="absolute right-0 top-0 h-full w-[86%] max-w-[320px] overflow-auto bg-[#0B2B4A] p-4 text-white shadow-2xl">
+          <div class="flex items-center justify-between gap-3">
+            <a href="{% url 'welcome' %}" class="flex items-center gap-2">
+              <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+              <span class="font-headline text-[13px] font-extrabold tracking-tight text-white">MuniWorks DRC</span>
+            </a>
+            <button id="navMobileClose" type="button"
+              class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/10 p-2 text-white hover:bg-white/15"
+              aria-label="Fermer le menu">
+              <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+          </div>
+
+          <div class="mt-4 rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div class="flex items-center gap-3">
+              <div class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
+                <span class="material-symbols-outlined text-[22px]">account_circle</span>
+              </div>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-extrabold">{{ request.user.get_full_name|default:request.user.username }}</p>
+                <p class="truncate text-[12px] font-semibold text-white/75">{{ request.user.email|default:request.user.username }}</p>
+              </div>
+            </div>
+            <form action="{% url 'logout' %}" method="post" class="mt-4">
+              {% csrf_token %}
+              <button type="submit"
+                class="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white hover:bg-white/15">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                Déconnexion
+              </button>
+            </form>
+          </div>
+
+          <nav class="mt-4 space-y-2">
+            <a class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[13px] font-semibold text-white hover:bg-white/10 {% if current == 'dashboard' %}ring-1 ring-white/20{% endif %}"
+              href="{% url 'dashboard' %}">
+              <span class="material-symbols-outlined text-[20px]">dashboard</span>
+              Dashboard
+            </a>
+            <a class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[13px] font-semibold text-white hover:bg-white/10 {% if current == 'demandes' or current == 'demande_detail' or current == 'demande_create' %}ring-1 ring-[#FDB813]/40{% endif %}"
+              href="{% url 'demandes' %}">
+              <span class="material-symbols-outlined text-[20px]">assignment</span>
+              Mes demandes
+            </a>
+            <a class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[13px] font-semibold text-white hover:bg-white/10 {% if current == 'documents' %}ring-1 ring-white/20{% endif %}"
+              href="{% url 'documents' %}">
+              <span class="material-symbols-outlined text-[20px]">folder_open</span>
+              Documents
+            </a>
+            <a class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[13px] font-semibold text-white hover:bg-white/10"
+              href="{% url 'welcome' %}">
+              <span class="material-symbols-outlined text-[20px]">public</span>
+              Site web
+            </a>
+          </nav>
+
+          <div class="mt-4">
+            <a href="{% url 'demande_create' %}"
+              class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-4 py-3 text-[12px] font-bold text-[#1a2332] shadow-sm hover:brightness-[1.02]">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              Nouvelle demande
+            </a>
+          </div>
+        </aside>
+      </div>
+      {% endwith %}
 
       {% block hero %}{% endblock %}
     </div>
@@ -228,6 +303,34 @@
       document.addEventListener('click', close);
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
       close();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const btn = document.getElementById('navMobileBtn');
+      const panel = document.getElementById('navMobilePanel');
+      const closeBtn = document.getElementById('navMobileClose');
+      const backdrop = document.getElementById('navMobileBackdrop');
+      if (!btn || !panel) return;
+
+      function open() {
+        panel.classList.remove('hidden');
+        panel.setAttribute('aria-hidden', 'false');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        panel.classList.add('hidden');
+        panel.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', (e) => { e.preventDefault(); open(); });
+      closeBtn && closeBtn.addEventListener('click', (e) => { e.preventDefault(); close(); });
+      backdrop && backdrop.addEventListener('click', close);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     })();
   </script>
 

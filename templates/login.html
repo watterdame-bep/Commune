@@ -134,12 +134,12 @@
             <input type="hidden" name="next" value="{{ request.GET.next }}" />
 
             <div>
-              <label class="mb-1.5 block text-[12px] font-bold uppercase tracking-[0.14em] text-white/70">Nom d’utilisateur</label>
+              <label class="mb-1.5 block text-[12px] font-bold uppercase tracking-[0.14em] text-white/70">Adresse email</label>
               <div class="relative">
                 <span class="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/60">person</span>
-                <input name="username" autocomplete="username" required
+                <input name="username" autocomplete="email" required
                   class="w-full rounded-2xl border border-white/15 bg-white/10 px-10 py-3 text-sm font-semibold text-white shadow-sm outline-none ring-0 placeholder:text-white/45 focus:border-sky-300/70 focus:shadow-[0_0_0_4px_rgba(56,189,248,0.22)]"
-                  placeholder="ex: admin" />
+                  placeholder="ex: nom@domaine.com" />
               </div>
             </div>
 

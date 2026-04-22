@@ -3,13 +3,15 @@
 {% block title %}Tableau de bord | MuniWorks DRC{% endblock %}
 
 {% block header_background %}
-<div class="absolute inset-0 bg-[#0B2B4A]"></div>
-<div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.22] mix-blend-overlay"></div>
-<div class="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/40"></div>
+<div class="absolute inset-0 bg-[#f6f7fb]"></div>
 {% endblock %}
 
 {% block hero %}
-<div class="mx-auto flex min-h-[calc(100dvh-56px)] max-w-7xl items-center px-5 pb-14 pt-6 sm:px-7 lg:px-8 lg:pb-16">
+<div class="mx-auto max-w-7xl px-3 pb-14 pt-4 sm:px-3 lg:px-3">
+  <div class="relative overflow-hidden rounded-[28px] bg-[#0B2B4A] p-3 shadow-[0_25px_70px_-55px_rgba(2,6,23,0.28)] sm:p-4">
+    <div class="pointer-events-none absolute inset-0 hex-motif opacity-[0.22] mix-blend-overlay"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/35"></div>
+    <div class="flex min-h-[calc(100dvh-56px-40px)] items-center">
   <div class="grid w-full gap-6 lg:grid-cols-3 lg:items-stretch">
     <div class="lg:col-span-2">
       <div class="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/15 bg-black/25 px-7 py-7 backdrop-blur-md shadow-[0_25px_70px_-55px_rgba(0,0,0,0.75)]">
@@ -103,6 +105,8 @@
           <p class="text-[12px] font-semibold text-white/65">Dernière activité : aujourd’hui</p>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </div>

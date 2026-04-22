@@ -175,3 +175,14 @@ if _is_server_command and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
         "Configuration SMTP manquante. Définissez SMTP_USERNAME et SMTP_PASSWORD "
         "(mot de passe d'application Gmail) avant de démarrer le serveur."
     )
+
+# --- Compte Hôtel de ville (super administrateur applicatif) ---
+# Ces valeurs peuvent être définies dans le fichier .env.
+HDV_ADMIN_USERNAME = os.environ.get("HDV_ADMIN_USERNAME", "hoteldeville")
+HDV_ADMIN_EMAIL = os.environ.get("HDV_ADMIN_EMAIL", "hoteldeville@muniworks.local")
+HDV_ADMIN_PASSWORD = os.environ.get("HDV_ADMIN_PASSWORD", "")
+if DEBUG and not HDV_ADMIN_PASSWORD:
+    # Valeur dev par défaut (à changer dans .env)
+    HDV_ADMIN_PASSWORD = "hoteldeville123"
+if (not DEBUG) and _is_server_command and not HDV_ADMIN_PASSWORD:
+    raise RuntimeError("HDV_ADMIN_PASSWORD manquant. Définissez-le avant de démarrer le serveur.")
