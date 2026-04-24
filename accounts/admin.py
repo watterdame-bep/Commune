@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from accounts.models import Demande, Document, PasswordResetCode, UserProfile
+from accounts.models import Commune, Demande, Document, PasswordResetCode, UserProfile
 
 
 @admin.register(UserProfile)
@@ -41,4 +41,12 @@ class PasswordResetCodeAdmin(admin.ModelAdmin):
     search_fields = ("user__username", "user__email")
     list_filter = ("used_at",)
     ordering = ("-created_at",)
+
+
+@admin.register(Commune)
+class CommuneAdmin(admin.ModelAdmin):
+    list_display = ("nom", "province", "code", "active", "updated_at")
+    search_fields = ("nom", "province", "code")
+    list_filter = ("active",)
+    ordering = ("nom",)
 

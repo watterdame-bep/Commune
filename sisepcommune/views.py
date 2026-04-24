@@ -59,7 +59,7 @@ def _validate_demande_form(data: dict[str, str]) -> list[str]:
         errs.append("Précisez le motif de votre demande (au moins 20 caractères).")
     return errs
 
-from accounts.models import Demande, DemandeStatut, Document, PasswordResetCode, UserRole
+from accounts.models import Commune, Demande, DemandeStatut, Document, PasswordResetCode, UserProfile, UserRole
 
 signer = TimestampSigner(salt="sisepcommune.email")
 
@@ -320,13 +320,88 @@ def hdv_dashboard_view(request):
     ctx = {
         "user_display_name": display,
         "kpis": {
-            "communes": 0,
-            "bourgmestres": 0,
-            "agents": 0,
+            "communes": Commune.objects.count(),
+            "bourgmestres": UserProfile.objects.filter(role=UserRole.CHEF_SERVICE).count(),
+            "agents": UserProfile.objects.filter(role=UserRole.AGENT).count(),
             "demandes": Demande.objects.count(),
         },
     }
     return render(request, "hdv_dashboard.html", ctx)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def hdv_communes_view(request):
+    denied = _require_admin_role(request)
+    if denied is not None:
+        return denied
+
+    q = (request.GET.get("q") or "").strip()
+    qs = Commune.objects.all()
+    if q:
+        qs = qs.filter(Q(nom__icontains=q) | Q(province__icontains=q) | Q(code__icontains=q))
+
+    if request.method == "POST":
+        nom = (request.POST.get("nom") or "").strip()
+        province = (request.POST.get("province") or "").strip()
+        code = (request.POST.get("code") or "").strip()
+        active = request.POST.get("active") == "on"
+
+        if len(nom) < 2:
+            messages.error(request, "Le nom de la commune est requis (au moins 2 caractères).")
+        elif Commune.objects.filter(nom__iexact=nom).exists():
+            messages.error(request, "Une commune avec ce nom existe déjà.")
+        else:
+            Commune.objects.create(nom=nom, province=province, code=code, active=active)
+            messages.success(request, "Commune créée avec succès.")
+            return redirect("hdv_communes")
+
+    ctx = {
+        "user_display_name": (request.user.first_name or request.user.get_full_name() or request.user.username).strip()
+        or "Administrateur",
+        "q": q,
+        "communes": qs,
+    }
+    return render(request, "hdv_communes.html", ctx)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def hdv_commune_edit_view(request, pk: int):
+    denied = _require_admin_role(request)
+    if denied is not None:
+        return denied
+
+    obj = Commune.objects.filter(pk=pk).first()
+    if obj is None:
+        messages.error(request, "Commune introuvable.")
+        return redirect("hdv_communes")
+
+    if request.method == "POST":
+        nom = (request.POST.get("nom") or "").strip()
+        province = (request.POST.get("province") or "").strip()
+        code = (request.POST.get("code") or "").strip()
+        active = request.POST.get("active") == "on"
+
+        if len(nom) < 2:
+            messages.error(request, "Le nom de la commune est requis (au moins 2 caractères).")
+        elif Commune.objects.exclude(pk=obj.pk).filter(nom__iexact=nom).exists():
+            messages.error(request, "Une autre commune utilise déjà ce nom.")
+        else:
+            obj.nom = nom
+            obj.province = province
+            obj.code = code
+            obj.active = active
+            obj.save(update_fields=["nom", "province", "code", "active", "updated_at"])
+            messages.success(request, "Commune mise à jour.")
+            return redirect("hdv_communes")
+
+    ctx = {
+        "user_display_name": (request.user.first_name or request.user.get_full_name() or request.user.username).strip()
+        or "Administrateur",
+        "commune": obj,
+    }
+    return render(request, "hdv_commune_edit.html", ctx)
 
 
 DOCUMENT_CREATE_OPTIONS = (

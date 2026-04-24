@@ -36,6 +36,8 @@ urlpatterns = [
     path('demandes/', views.demandes_view, name='demandes'),
     path('documents/', views.documents_view, name='documents'),
     path('hdv/', views.hdv_dashboard_view, name='hdv_dashboard'),
+    path('hdv/communes/', views.hdv_communes_view, name='hdv_communes'),
+    path('hdv/communes/<int:pk>/', views.hdv_commune_edit_view, name='hdv_commune_edit'),
     path('admin/', admin.site.urls),
 ]
 

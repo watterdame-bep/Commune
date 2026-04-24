@@ -153,6 +153,7 @@ STATIC_URL = 'static/'
 # Static assets stored at project root (ex: images/logo-white.png)
 STATICFILES_DIRS = [
     BASE_DIR / 'images',
+    BASE_DIR / 'static',
 ]
 
 MEDIA_URL = "media/"

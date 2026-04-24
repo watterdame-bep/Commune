@@ -94,3 +94,18 @@ class PasswordResetCode(models.Model):
     def __str__(self) -> str:
         return f"reset:{self.user_id} exp:{self.expires_at:%Y-%m-%d %H:%M}"
 
+
+class Commune(models.Model):
+    nom = models.CharField(max_length=120, unique=True)
+    province = models.CharField(max_length=120, blank=True, default="")
+    code = models.CharField(max_length=32, blank=True, default="", db_index=True)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("nom",)
+
+    def __str__(self) -> str:
+        return self.nom
+

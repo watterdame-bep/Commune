@@ -1,0 +1,60 @@
+{% extends "hdv_base.html" %}
+
+{% block title %}Modifier commune — Hôtel de ville | MuniWorks DRC{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]">
+  <div class="border-b border-slate-200 bg-slate-50 px-6 py-5">
+    <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Gestion</p>
+    <div class="mt-2 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h1 class="font-headline text-2xl font-extrabold tracking-tight text-[#0B2B4A]">Modifier une commune</h1>
+        <p class="mt-1 text-[12px] font-semibold text-slate-600">Mettre à jour les informations et l’état.</p>
+      </div>
+      <a href="{% url 'hdv_communes' %}"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        Retour
+      </a>
+    </div>
+  </div>
+
+  <form method="post" class="p-6">
+    {% csrf_token %}
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="sm:col-span-2">
+        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Nom</label>
+        <input name="nom" required value="{{ commune.nom }}"
+          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Province</label>
+        <input name="province" value="{{ commune.province }}"
+          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Code</label>
+        <input name="code" value="{{ commune.code }}"
+          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+      </div>
+      <label class="sm:col-span-2 inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700">
+        <input type="checkbox" name="active" class="rounded border-slate-300" {% if commune.active %}checked{% endif %} />
+        Active
+      </label>
+    </div>
+
+    <div class="mt-6 flex flex-wrap justify-end gap-2">
+      <a href="{% url 'hdv_communes' %}"
+        class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+        Annuler
+      </a>
+      <button type="submit"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
+        <span class="material-symbols-outlined text-[18px]">save</span>
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

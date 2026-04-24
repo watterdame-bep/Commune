@@ -4,21 +4,27 @@
 {% block title %}Hôtel de ville | MuniWorks DRC{% endblock %}
 
 {% block sidebar_brand %}
-<div class="flex items-center gap-3">
-  <img src="{% static 'logo.png' %}" alt="MuniWorks DRC" class="h-9 w-9 rounded-2xl border border-slate-200 bg-white p-1" />
-  <div class="min-w-0">
-    <p class="truncate text-sm font-extrabold text-[#0B2B4A]">Hôtel de ville</p>
-    <p class="truncate text-[12px] font-semibold text-slate-500">Administration centrale</p>
+<a href="{% url 'hdv_dashboard' %}" class="flex items-center gap-3 rounded-3xl bg-[#0B2B4A] p-3 ring-1 ring-[#0B2B4A]/15">
+  <div class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+    <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
   </div>
-</div>
+  <div class="min-w-0">
+    <p class="truncate text-sm font-extrabold tracking-tight text-white">MuniWorks DRC</p>
+    <p class="truncate text-[12px] font-semibold text-white/75">Hôtel de ville</p>
+  </div>
+</a>
 {% endblock %}
 
 {% block sidebar_brand_mobile %}
-<img src="{% static 'logo.png' %}" alt="MuniWorks DRC" class="h-9 w-9 rounded-2xl border border-slate-200 bg-white p-1" />
-<div class="min-w-0">
-  <p class="truncate text-sm font-extrabold text-[#0B2B4A]">Hôtel de ville</p>
-  <p class="truncate text-[12px] font-semibold text-slate-500">Administration centrale</p>
-</div>
+<a href="{% url 'hdv_dashboard' %}" class="flex items-center gap-3 rounded-3xl bg-[#0B2B4A] p-3 ring-1 ring-[#0B2B4A]/15">
+  <div class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+    <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+  </div>
+  <div class="min-w-0">
+    <p class="truncate text-sm font-extrabold tracking-tight text-white">MuniWorks DRC</p>
+    <p class="truncate text-[12px] font-semibold text-white/75">Hôtel de ville</p>
+  </div>
+</a>
 {% endblock %}
 
 {% block topbar_subtitle %}Administration centrale{% endblock %}
@@ -39,14 +45,26 @@
       <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
     </summary>
     <div class="pb-2 pl-10 pr-3">
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Communes</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Bourgmestres</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Agents</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Dossiers (global)</a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="{% url 'hdv_communes' %}">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">location_city</span>
+        Communes
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">badge</span>
+        Bourgmestres
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">groups</span>
+        Agents
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">folder_open</span>
+        Dossiers (global)
+      </a>
     </div>
   </details>
 </nav>
@@ -68,14 +86,26 @@
       <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
     </summary>
     <div class="pb-2 pl-10 pr-3">
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Communes</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Bourgmestres</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Agents</a>
-      <a class="mt-1 block rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">Dossiers (global)</a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="{% url 'hdv_communes' %}">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">location_city</span>
+        Communes
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">badge</span>
+        Bourgmestres
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">groups</span>
+        Agents
+      </a>
+      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
+        href="#">
+        <span class="material-symbols-outlined text-[18px] text-slate-500">folder_open</span>
+        Dossiers (global)
+      </a>
     </div>
   </details>
 </nav>
