@@ -1,0 +1,581 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-27 11:13+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\templates\login.html:9 .\templates\login.html:97
+#: .\templates\welcome.html:310
+msgid "Connexion"
+msgstr "Kokota"
+
+#: .\templates\login.html:58
+msgid "République Démocratique du Congo"
+msgstr "Repibliki Demokratiki ya Kongó"
+
+#: .\templates\login.html:65
+msgid "Authentification sécurisée"
+msgstr "Kokota ya libateli"
+
+#: .\templates\login.html:68
+msgid "Ouvrez votre session"
+msgstr "Kota na konti na yo"
+
+#: .\templates\login.html:69
+msgid "en toute confiance."
+msgstr "Na libateli nyonso"
+
+#: .\templates\login.html:72
+msgid ""
+"Accédez à votre espace citoyen pour déposer des demandes, suivre les étapes "
+"et récupérer vos documents."
+msgstr ""
+"Kota na konti na yo ya mwana mboka mpo na kosenga mikanda, landa mitinda "
+"nyonso mpo na kozwa mikanda na yo."
+
+#: .\templates\login.html:87
+msgid "Retour à l’accueil"
+msgstr "Zonga na ebandeli"
+
+#: .\templates\login.html:98
+msgid "Accédez à votre espace MuniWorks"
+msgstr "Kota na konti na yo ya MuniWorks"
+
+#: .\templates\login.html:115
+msgid "Trop de tentatives. Réessayez dans"
+msgstr "Omeki mbala mingi. Meka lisusu na nsima ya"
+
+#: .\templates\password_reset.html:9
+msgid "Réinitialiser le mot de passe"
+msgstr "Bongola mot de passe na yo"
+
+#: .\templates\password_reset_verify.html:9
+msgid "Vérification du code"
+msgstr "Kotala kode"
+
+#: .\templates\password_reset_verify.html:53
+msgid "Recommencer"
+msgstr "Bandela"
+
+#: .\templates\password_reset_verify.html:63
+msgid "Saisir le code"
+msgstr "Beta kode"
+
+#: .\templates\password_reset_verify.html:64
+msgid "Un code a été envoyé à"
+msgstr "Totindeli yo code na "
+
+#: .\templates\password_reset_verify.html:64
+msgid "votre email"
+msgstr "email na yo"
+
+#: .\templates\password_reset_verify.html:68
+msgid "Expire dans"
+msgstr "Ekosila nsima ya"
+
+#: .\templates\password_reset_verify.html:87
+msgid "Code (6 chiffres)"
+msgstr "Kode (motango 6)"
+
+#: .\templates\password_reset_verify.html:93
+msgid "Nouveau mot de passe"
+msgstr "Mot de passe ya sika"
+
+#: .\templates\password_reset_verify.html:99
+msgid "Confirmer"
+msgstr "Ndima"
+
+#: .\templates\password_reset_verify.html:109
+msgid "Mettre à jour le mot de passe"
+msgstr "Tya mot de passe ya sika"
+
+#: .\templates\password_reset_verify.html:113
+msgid ""
+"Le code expire après 10 minutes. Si le compteur arrive à zéro, recommencez "
+"la demande."
+msgstr ""
+"Kode ekobeba nsima ya miniti 10. Soki motango ekomi na zero, bandela lisusu "
+"kosenga."
+
+#: .\templates\register.html:9 .\templates\welcome.html:314
+msgid "Créer un compte"
+msgstr "Kosala konto"
+
+#: .\templates\welcome.html:11
+msgid "Portail Officiel des Services Municipaux"
+msgstr "Portal ya Leta ya Misala ya Engumba"
+
+#: .\templates\welcome.html:247 .\templates\welcome.html:470
+#: .\templates\welcome.html:873
+msgid "Services"
+msgstr "Misala"
+
+#: .\templates\welcome.html:251 .\templates\welcome.html:874
+msgid "Portails"
+msgstr "Baporte"
+
+#: .\templates\welcome.html:255 .\templates\welcome.html:639
+msgid "Procédure"
+msgstr "Nzela"
+
+#: .\templates\welcome.html:259 .\templates\welcome.html:875
+msgid "Cadre légal"
+msgstr "Mobeko"
+
+#: .\templates\welcome.html:262 .\templates\welcome.html:777
+msgid "FAQ"
+msgstr "FAQ"
+
+#: .\templates\welcome.html:274
+msgid "Langue"
+msgstr "Lokóta"
+
+#: .\templates\welcome.html:281
+msgid "Français"
+msgstr "Lifalansé"
+
+#: .\templates\welcome.html:287
+#, fuzzy
+#| msgid "Lingala"
+msgid "Lingála"
+msgstr "Lingala"
+
+#: .\templates\welcome.html:297 .\templates\welcome.html:301
+#: .\templates\welcome.html:305
+msgid "Mon portail"
+msgstr "Portal na ngai"
+
+#: .\templates\welcome.html:340
+msgid "Maison communale"
+msgstr "Ndako ya commune"
+
+#: .\templates\welcome.html:350
+msgid "Photo précédente"
+msgstr "Foto ya liboso"
+
+#: .\templates\welcome.html:355
+msgid "Photo suivante"
+msgstr "Foto elandi"
+
+#: .\templates\welcome.html:364
+#, python-format
+msgid "Aller à la photo %(forloop.counter)s"
+msgstr "Kokende na foto %(forloop.counter)s"
+
+#: .\templates\welcome.html:368
+msgid "Aller à la photo 1"
+msgstr "Kokende na foto 1"
+
+#: .\templates\welcome.html:376
+msgid "Voir la galerie"
+msgstr "Komona galeri"
+
+#: .\templates\welcome.html:385
+msgid "Services communaux & état civil"
+msgstr "Misala ya commune & etat civil"
+
+#: .\templates\welcome.html:387
+msgid "Votre commune,"
+msgstr "Commune na bino,"
+
+#: .\templates\welcome.html:388
+msgid "désormais en ligne."
+msgstr "sik’oyo na internet."
+
+#: .\templates\welcome.html:398 .\templates\welcome.html:495
+#: .\templates\welcome.html:531 .\templates\welcome.html:567
+#: .\templates\welcome.html:599
+#, fuzzy
+#| msgid "Recommencer"
+msgid "Commencer"
+msgstr "Bandela"
+
+#: .\templates\welcome.html:401
+msgid "Se connecter"
+msgstr "Kota"
+
+#: .\templates\welcome.html:470
+msgid "municipaux"
+msgstr "ya engumba"
+
+#: .\templates\welcome.html:473
+msgid ""
+"Prestations de la maison communale accessibles en ligne : délais affichés, "
+"tarifs indicatifs, parcours guidé — aux couleurs institutionnelles bleu nuit "
+"et or de MuniWorks DRC."
+msgstr ""
+"Misala ya ndako ya commune ekoki kosalema na internet: mikolo ya kosilisa "
+"emonani, motuya ya kotala, nzela ya kosala etambwisami — na langi ya leta "
+"bleu-nuit mpe wolo ya MuniWorks DRC."
+
+#: .\templates\welcome.html:488
+msgid "État civil & actes"
+msgstr "Etat civil & mikanda"
+
+#: .\templates\welcome.html:490
+msgid ""
+"Demandes d’actes de naissance, mariage, décès et extraits certifiés, "
+"déposées et suivies sur le portail."
+msgstr ""
+"Kosenga mikanda ya kobotama, libala, liwa mpe extraits certifiés; kotinda mpe "
+"kolanda na portal."
+
+#: .\templates\welcome.html:501 .\templates\welcome.html:605
+msgid "Délai moyen"
+msgstr "Ntango ya moke-moke"
+
+#: .\templates\welcome.html:507
+msgid "À partir de"
+msgstr "Kobanda na"
+
+#: .\templates\welcome.html:524
+msgid "Permis de construire"
+msgstr "Permit ya kotonga"
+
+#: .\templates\welcome.html:526
+msgid ""
+"Dépôt des plans, pièces urbanistiques et autorisations de bâtir avec "
+"instruction numérique par la commune."
+msgstr ""
+"Kotinda plan, mikanda ya urbanisme mpe ndingisa ya kotonga na boyekoli "
+"numérique ya commune."
+
+#: .\templates\welcome.html:537
+msgid "Délai max."
+msgstr "Ntango max."
+
+#: .\templates\welcome.html:543
+msgid "Frais min."
+msgstr "Frais min."
+
+#: .\templates\welcome.html:560
+msgid "Pétitions & concertation"
+msgstr "Petitions & bosololi"
+
+#: .\templates\welcome.html:562
+msgid ""
+"Recueil de contributions citoyennes, pétitions et suggestions pour les "
+"projets communaux prioritaires."
+msgstr ""
+"Kozwa makanisi ya bana-mboka, petitions mpe mateya mpo na misala ya commune "
+"ya liboso."
+
+#: .\templates\welcome.html:572 .\templates\welcome.html:686
+msgid "Instruction"
+msgstr "Bolandeli"
+
+#: .\templates\welcome.html:576
+msgid "Frais"
+msgstr "Frais"
+
+#: .\templates\welcome.html:592
+msgid "Taxes & redevances"
+msgstr "Taxe & redevance"
+
+#: .\templates\welcome.html:594
+msgid ""
+"Encodage des droits communaux, quittances et attestations de paiement liés "
+"aux services municipaux."
+msgstr ""
+"Kokoma mibeko ya mbongo ya commune, quittances mpe mikanda ya kofuta mpo na "
+"misala ya engumba."
+
+#: .\templates\welcome.html:610
+msgid "Montant"
+msgstr "Motango"
+
+#: .\templates\welcome.html:611
+msgid "Selon barème"
+msgstr "Kolanda barème"
+
+#: .\templates\welcome.html:637
+msgid "Parcours citoyen"
+msgstr "Nzela ya mwana-mboka"
+
+#: .\templates\welcome.html:639
+msgid "administrative"
+msgstr "ya bokonzi"
+
+#: .\templates\welcome.html:642
+msgid ""
+"Quatre étapes alignées, de l’identification à la délivrance. Chaque dossier "
+"est tracé sur la plateforme — vous suivez l’avancement sans déplacements "
+"inutiles."
+msgstr ""
+"Etape minei: kobanda na koyeba moto kino na kopesa mokanda. Dossier nyonso "
+"etali na plateforme — olandaka ndenge ezali kokende kozanga mobembo ya pamba."
+
+#: .\templates\welcome.html:658
+msgid "Identité & compte"
+msgstr "Kombo & konto"
+
+#: .\templates\welcome.html:661
+msgid ""
+"Compte citoyen et vérification d’identité — accès unique à tous les services "
+"de la commune."
+msgstr ""
+"Konti ya mwana-mboka mpe kolandela identité — nzela moko mpo na misala nyonso "
+"ya commune."
+
+#: .\templates\welcome.html:672
+msgid "Dépôt du dossier"
+msgstr "Kotinda dossier"
+
+#: .\templates\welcome.html:675
+msgid ""
+"Formulaire guidé, pièces au format requis et accusé de réception automatique."
+msgstr ""
+"Formulaire etambwisami, mikanda na format oyo esengeli mpe accusé de "
+"réception automatique."
+
+#: .\templates\welcome.html:689
+msgid ""
+"Traitement par les agents : compléments demandés et notifications à chaque "
+"étape."
+msgstr ""
+"Basali basalelaka dossier: bakoki kosenga kobakisa mpe obandaka koyoka "
+"sango na etape nyonso."
+
+#: .\templates\welcome.html:700
+msgid "Délivrance"
+msgstr "Kopesa"
+
+#: .\templates\welcome.html:703
+msgid ""
+"Document certifié en téléchargement sécurisé ou retrait sur convocation ; "
+"dossier archivé."
+msgstr ""
+"Mokanda certifié: okoki kotélécharger na libateli to kozwa na mbenga; dossier "
+"ebombami."
+
+#: .\templates\welcome.html:711
+msgid ""
+"Délais indicatifs selon le service — les barèmes et pièces exactes figurent "
+"sur chaque fiche métier."
+msgstr ""
+"Ntango ya kosilisa engebeni  service — barème mpe mikanda "
+"emonani na fiche ya service."
+
+#: .\templates\welcome.html:722
+msgid "Gouvernance"
+msgstr "Boyangeli"
+
+#: .\templates\welcome.html:723
+msgid "Cadre légal & sécurité"
+msgstr "Mobeko mpe libateli"
+
+#: .\templates\welcome.html:725
+msgid ""
+"Vos démarches sont traitées dans un cadre institutionnel : accès sécurisé, "
+"protection des données et suivi transparent de l’avancement."
+msgstr ""
+"Bosenga na yo esalemi na kolanda mitinda ya leta: kokota ya libateli, bobateli ya "
+"données mpe kolanda polele ndenge ezali kokende."
+
+#: .\templates\welcome.html:731
+msgid "Accès sécurisé"
+msgstr "Bokoti ya libateli"
+
+#: .\templates\welcome.html:734
+msgid "Données protégées"
+msgstr "Données ebatelami"
+
+#: .\templates\welcome.html:737
+msgid "Téléchargement contrôlé"
+msgstr "Téléchargement etalelami"
+
+#: .\templates\welcome.html:740
+msgid "Traçabilité"
+msgstr "Traçabilité"
+
+#: .\templates\welcome.html:746
+msgid "Accès"
+msgstr "Bokoti"
+
+#: .\templates\welcome.html:747
+msgid "Authentification & contrôle"
+msgstr "Kokota & contrôle"
+
+#: .\templates\welcome.html:749
+msgid ""
+"Connexion obligatoire pour déposer une demande. Les pages sensibles ne sont "
+"pas mises en cache."
+msgstr "Osengeli kozali na konti, mpo osala bosenge."
+
+#: .\templates\welcome.html:753
+msgid "Documents"
+msgstr "Mikanda"
+
+#: .\templates\welcome.html:754
+msgid "Téléchargement sécurisé"
+msgstr ""
+
+#: .\templates\welcome.html:756
+msgid ""
+"Les documents délivrés ne sont téléchargeables que par le citoyen concerné "
+"via un lien contrôlé."
+msgstr "Mikanda oyo ebimi ekoki kozwa na lien internet, kaka epaï ya mwana mboka oyo asengaki."
+
+#: .\templates\welcome.html:760
+msgid "Suivi"
+msgstr "Kolanda"
+
+#: .\templates\welcome.html:761
+msgid "Traçabilité & transparence"
+msgstr ""
+
+#: .\templates\welcome.html:763
+msgid ""
+"Statuts clairs, historique et notifications. Vous suivez votre dossier sans "
+"déplacements inutiles."
+msgstr ""
+
+#: .\templates\welcome.html:776
+msgid "Aide"
+msgstr ""
+
+#: .\templates\welcome.html:779
+msgid ""
+"Réponses rapides aux questions fréquentes sur le portail, l’inscription et "
+"la récupération de documents."
+msgstr ""
+
+#: .\templates\welcome.html:785
+#, fuzzy
+#| msgid "Créer un compte"
+msgid "Comment créer un compte ?"
+msgstr "Fongola konti"
+
+#: .\templates\welcome.html:787
+msgid ""
+"Cliquez sur “Créer mon compte”, puis confirmez votre email pour activer "
+"votre accès."
+msgstr "Fina \"Fongola konti\", mpe ndima na email na yo po okota na konti."
+
+#: .\templates\welcome.html:791
+msgid "J’ai oublié mon mot de passe"
+msgstr "Nabosani mot de passe"
+
+#: .\templates\welcome.html:793
+msgid ""
+"Utilisez “Mot de passe oublié ?” sur la page de connexion : un code "
+"temporaire est envoyé par email."
+msgstr "Fina na “Nabosani mot de passe“ mpe okozwa code moko na email na yo"
+
+#: .\templates\welcome.html:797
+msgid "Mes documents sont-ils sécurisés ?"
+msgstr "Mikanda na ngaï ebatelami malamu?"
+
+#: .\templates\welcome.html:799
+msgid ""
+"Oui. Les téléchargements passent par une URL contrôlée et nécessitent une "
+"session authentifiée."
+msgstr ""
+
+#: .\templates\welcome.html:803
+msgid "Où contacter le support ?"
+msgstr ""
+
+#: .\templates\welcome.html:805
+msgid ""
+"Rendez-vous en bas de page dans la section Support pour les canaux officiels."
+msgstr ""
+
+#: .\templates\welcome.html:825
+msgid "Modernisation de l'Administration"
+msgstr ""
+
+#: .\templates\welcome.html:827
+msgid ""
+"Rejoignez l'infrastructure numérique sécurisée pour vos démarches en "
+"République Démocratique du Congo."
+msgstr ""
+
+#: .\templates\welcome.html:834
+#, fuzzy
+#| msgid "Créer un compte"
+msgid "Créer mon compte"
+msgstr "Fongola konti"
+
+#: .\templates\welcome.html:836
+msgid "Support Technique"
+msgstr ""
+
+#: .\templates\welcome.html:855
+msgid ""
+"Plateforme officielle de digitalisation des services municipaux de la RDC."
+msgstr ""
+
+#: .\templates\welcome.html:860
+msgid "Portail institutionnel"
+msgstr "Esika ya bakonzi"
+
+#: .\templates\welcome.html:864
+msgid "Sécurisé"
+msgstr "Ebaltelami"
+
+#: .\templates\welcome.html:871
+msgid "Navigation"
+msgstr "Tambola"
+
+#: .\templates\welcome.html:879 .\templates\welcome.html:882
+msgid "Support"
+msgstr ""
+
+#: .\templates\welcome.html:881
+msgid "Aide & FAQ"
+msgstr "Lisungi mpe FAQ"
+
+#: .\templates\welcome.html:883
+msgid "Statut"
+msgstr ""
+
+#: .\templates\welcome.html:887
+msgid "Légal"
+msgstr ""
+
+#: .\templates\welcome.html:889
+msgid "Confidentialité"
+msgstr ""
+
+#: .\templates\welcome.html:890
+msgid "CGU"
+msgstr ""
+
+#: .\templates\welcome.html:898
+msgid "Municipal Excellence Digital Services."
+msgstr ""
+
+#: .\templates\welcome.html:898
+#, fuzzy
+#| msgid "République Démocratique du Congo"
+msgid "République Démocratique du Congo."
+msgstr "Repibliki Demokratiki ya Congo"
+
+#: .\templates\welcome.html:927
+msgid "Texte dynamique"
+msgstr ""
+
+#: .\templates\welcome.html:931
+msgid ""
+"Déposez vos demandes, suivez chaque étape et récupérez vos documents sans "
+"file d’attente. Une plateforme sécurisée pour l’état civil, les "
+"autorisations communales et l’archivage. L’Hôtel de ville supervise et "
+"pilote l’activité globale."
+msgstr ""
+
+#~ msgid "un compte"
+#~ msgstr "konti"

@@ -112,6 +112,7 @@
       </header>
 
       <main class="p-4 md:p-6">
+        {% block bo_before_content %}{% endblock %}
         {% block content %}{% endblock %}
       </main>
     </div>
@@ -211,6 +212,7 @@
     })();
   </script>
   {% endwith %}
+  {% block extra_body %}{% endblock %}
 </body>
 
 </html>

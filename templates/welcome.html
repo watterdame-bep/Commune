@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 
-<html class="light" lang="fr">
+{% get_current_language as LANGUAGE_CODE %}
+<html class="light" lang="{{ LANGUAGE_CODE }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>MuniWorks DRC | Portail Officiel des Services Municipaux</title>
+    <title>MuniWorks DRC | {% trans "Portail Officiel des Services Municipaux" %}</title>
     <!-- Police principale (type GENK) : Plus Jakarta Sans -->
     <!-- Outfit : section procédure (lisible sur fond sombre) -->
     <link
@@ -21,34 +23,67 @@
 
         .hero-banner-drc {
             background:
-                radial-gradient(ellipse 140% 110% at 12% 18%, rgba(56, 189, 248, 0.10) 0%, transparent 56%),
-                radial-gradient(ellipse 105% 90% at 88% 22%, rgba(96, 165, 250, 0.07) 0%, transparent 62%),
-                radial-gradient(ellipse 95% 70% at 50% 110%, rgba(0, 12, 28, 0.62) 0%, transparent 48%),
-                radial-gradient(circle at 45% 55%, rgba(255, 255, 255, 0.045) 0%, transparent 42%),
-                linear-gradient(162deg, #0b2b4a 0%, #0a2a48 18%, #082744 40%, #07223c 62%, #061b32 82%, #051428 100%);
+                linear-gradient(180deg, rgba(6, 30, 51, 0.96) 0%, rgba(8, 34, 58, 0.98) 100%),
+                #08233c;
         }
 
         .hero-radial-glow {
             background:
-                radial-gradient(ellipse 65% 50% at 18% 42%, rgba(255, 255, 255, 0.07) 0%, transparent 52%),
-                radial-gradient(ellipse 50% 40% at 92% 12%, rgba(253, 184, 19, 0.055) 0%, transparent 45%),
-                radial-gradient(ellipse 70% 50% at 75% 88%, rgba(0, 40, 90, 0.25) 0%, transparent 50%);
+                radial-gradient(ellipse 60% 46% at 18% 40%, rgba(255, 255, 255, 0.045) 0%, transparent 50%),
+                radial-gradient(ellipse 44% 34% at 92% 12%, rgba(253, 184, 19, 0.045) 0%, transparent 42%),
+                radial-gradient(ellipse 68% 48% at 75% 88%, rgba(2, 18, 35, 0.22) 0%, transparent 52%);
         }
 
-        /* Motif pentagones (hero) */
-        .hero-pentagon {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.20' stroke-width='1.1'%3E%3Cpath d='M110 12 L188 70 L158 168 L62 168 L32 70 Z'/%3E%3Cpath d='M110 48 L160 86 L141 150 L79 150 L60 86 Z'/%3E%3C/g%3E%3Cg fill='%23f0b322' fill-opacity='0.22'%3E%3Ccircle cx='60' cy='66' r='1.7'/%3E%3Ccircle cx='160' cy='154' r='1.7'/%3E%3Ccircle cx='168' cy='78' r='1.35'/%3E%3Ccircle cx='52' cy='142' r='1.35'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: 92px 92px;
+        /* Hauteur carrousel : robuste (sans dépendre Tailwind) */
+        .hero-carousel-frame {
+            height: 220px;
+        }
+
+        @media (min-width: 640px) {
+            .hero-carousel-frame {
+                height: 260px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-carousel-frame {
+                height: 300px;
+            }
+        }
+
+        /* Clamp : empêche le texte dynamique du hero de pousser les boutons */
+        .hero-branding-clamp-3 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            overflow: hidden;
+        }
+
+        /* Motif hero : losanges / diagonales (comme la capture) */
+        .hero-motif-pro {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.20' stroke-width='1'%3E%3Cpath d='M80 0 L160 80 L80 160 L0 80 Z'/%3E%3Cpath d='M80 24 L136 80 L80 136 L24 80 Z'/%3E%3C/g%3E%3Cg stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1'%3E%3Cpath d='M80 -80 L240 80 L80 240 L-80 80 Z'/%3E%3Cpath d='M80 -56 L216 80 L80 216 L-56 80 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
             background-repeat: repeat;
             background-position: center;
         }
 
+        .hero-strong-white {
+            color: #ffffff;
+            text-shadow: 0 2px 18px rgba(0, 0, 0, 0.18);
+        }
+
+        .hero-readable-copy {
+            color: rgba(255, 255, 255, 0.985);
+            text-shadow: 0 2px 16px rgba(0, 0, 0, 0.22);
+        }
+
         .nav-scrolled {
-            background-color: rgba(0, 40, 85, 0.82) !important;
-            border-color: rgba(255, 255, 255, 0.14) !important;
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            background-color: rgba(255, 255, 255, 0.96) !important;
+            border-color: rgba(226, 232, 240, 0.95) !important;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 34px rgba(2, 6, 23, 0.10);
         }
 
         /* Motif procédure (déplacé du style inline pour éviter erreurs CSS) */
@@ -117,6 +152,22 @@
         .svc-gold-motif {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f0b322' stroke-opacity='0.62' stroke-width='2.25'%3E%3Cpath d='M60 10 L78 22 L92 40 L90 60 L92 80 L78 98 L60 110 L42 98 L28 80 L30 60 L28 40 L42 22 Z'/%3E%3Cpath d='M60 24 L72 32 L80 44 L79 60 L80 76 L72 88 L60 96 L48 88 L40 76 L41 60 L40 44 L48 32 Z'/%3E%3Crect x='53' y='53' width='14' height='14' rx='2'/%3E%3C/g%3E%3C/svg%3E");
             background-size: 28px 28px;
+            background-repeat: repeat;
+            background-position: center;
+        }
+
+        /* Motif FAQ (institutionnel) : chevrons/losanges discrets */
+        .faq-motif {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none'%3E%3Cg stroke='%230B2B4A' stroke-opacity='0.10' stroke-width='1'%3E%3Cpath d='M120 0 L240 120 L120 240 L0 120 Z'/%3E%3Cpath d='M120 32 L208 120 L120 208 L32 120 Z'/%3E%3Cpath d='M120 64 L176 120 L120 176 L64 120 Z'/%3E%3C/g%3E%3Cg stroke='%23FDB813' stroke-opacity='0.22' stroke-width='1'%3E%3Cpath d='M120 96 L144 120 L120 144 L96 120 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 240px 240px;
+            background-repeat: repeat;
+            background-position: center;
+        }
+
+        /* Motif "points" (institutionnel, discret) */
+        .dots-motif {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none'%3E%3Cg fill='%230B2B4A' fill-opacity='0.10'%3E%3Ccircle cx='24' cy='28' r='1.4'/%3E%3Ccircle cx='76' cy='22' r='1.2'/%3E%3Ccircle cx='138' cy='34' r='1.4'/%3E%3Ccircle cx='162' cy='78' r='1.2'/%3E%3Ccircle cx='142' cy='132' r='1.4'/%3E%3Ccircle cx='92' cy='156' r='1.2'/%3E%3Ccircle cx='40' cy='148' r='1.4'/%3E%3Ccircle cx='18' cy='104' r='1.2'/%3E%3C/g%3E%3Cg fill='%23FDB813' fill-opacity='0.14'%3E%3Ccircle cx='54' cy='64' r='1.3'/%3E%3Ccircle cx='122' cy='92' r='1.3'/%3E%3Ccircle cx='86' cy='104' r='1.1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 240px 240px;
             background-repeat: repeat;
             background-position: center;
         }
@@ -202,140 +253,182 @@
         #siteNav a[data-nav-link].is-active {
             border-bottom: 1px solid #FDB813;
             padding-bottom: 0.125rem;
-            color: #FDB813 !important;
+            color: #0B2B4A !important;
         }
     </style>
 </head>
 
-<body
-    class="bg-background text-on-background font-body selection:bg-secondary-container selection:text-on-secondary-container">
-    <!-- TopNavBar (institutionnel, faible hauteur — inspiré portails e-services RDC) -->
+<body class="bg-background text-on-background font-body selection:bg-secondary-container selection:text-on-secondary-container">
+    <!-- TopNavBar (institutionnel) -->
     <nav id="siteNav"
-        class="fixed left-0 right-0 top-0 z-50 border-b border-transparent bg-transparent transition-colors duration-300">
-        <div class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        class="fixed left-0 right-0 top-0 z-50 border-b border-slate-200/80 bg-white/95 transition-colors duration-300">
+        <div class="mx-auto flex min-h-[84px] max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
             <a href="{% url 'welcome' %}" class="flex shrink-0 items-center gap-2">
-                <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+                <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC"
+                    class="h-8 w-auto [filter:brightness(0)_saturate(100%)]" />
                 <span
-                    class="hidden font-headline text-[13px] font-extrabold tracking-tight text-white sm:inline">MuniWorks
+                    class="hidden font-headline text-[13px] font-extrabold tracking-tight text-[#0B2B4A] sm:inline">MuniWorks
                     DRC</span>
             </a>
             <div class="hidden flex-1 justify-center gap-7 md:flex lg:gap-10">
-                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
-                    href="#services">Services</a>
-                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
-                    href="#portail-citoyen">Portails</a>
-                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
-                    href="#procedure">Procédure</a>
-                <a data-nav-link class="text-[13px] font-semibold text-white/90 transition-colors hover:text-white"
-                    href="#footer-support">FAQ</a>
+                <a data-nav-link class="text-[13px] font-semibold text-[#0B2B4A]/90 transition-colors hover:text-[#0B2B4A]"
+                    href="#services">
+                    {% trans "Services" %}
+                </a>
+                <a data-nav-link class="text-[13px] font-semibold text-[#0B2B4A]/90 transition-colors hover:text-[#0B2B4A]"
+                    href="#portail-citoyen">
+                    {% trans "Portails" %}
+                </a>
+                <a data-nav-link class="text-[13px] font-semibold text-[#0B2B4A]/90 transition-colors hover:text-[#0B2B4A]"
+                    href="#procedure">
+                    {% trans "Procédure" %}
+                </a>
+                <a data-nav-link class="text-[13px] font-semibold text-[#0B2B4A]/90 transition-colors hover:text-[#0B2B4A]"
+                    href="#cadre-legal">
+                    {% trans "Cadre légal" %}
+                </a>
+                <a data-nav-link class="text-[13px] font-semibold text-[#0B2B4A]/90 transition-colors hover:text-[#0B2B4A]"
+                    href="#faq">{% trans "FAQ" %}</a>
             </div>
             <div class="flex shrink-0 items-center gap-2 sm:gap-4">
-                <span class="inline-flex items-center gap-1 text-[13px] font-semibold text-white/95"
-                    aria-label="Langue : français">
-                    <span class="material-symbols-outlined text-base opacity-90">language</span>
-                    FR
-                </span>
+                <div class="relative">
+                    <button id="langBtn" type="button"
+                        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-[#0B2B4A] transition-all hover:bg-slate-100"
+                        aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+                        <span class="material-symbols-outlined text-[22px] opacity-95">g_translate</span>
+                    </button>
+                    <div id="langMenu"
+                        class="absolute right-0 top-[calc(100%+0.5rem)] z-[60] hidden w-44 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_25px_60px_-40px_rgba(2,6,23,0.22)]"
+                        role="menu" aria-label="{% trans 'Langue' %}">
+                        <form method="post" action="{% url 'set_language' %}" class="p-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}" />
+                            <button type="submit" name="language" value="fr"
+                                class="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[12px] font-semibold text-[#0B2B4A] hover:bg-slate-50"
+                                role="menuitem">
+                                <span>{% trans "Français" %}</span>
+                                <span class="text-[#0B2B4A]/70">FR</span>
+                            </button>
+                            <button type="submit" name="language" value="ln"
+                                class="mt-1 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[12px] font-semibold text-[#0B2B4A] hover:bg-slate-50"
+                                role="menuitem">
+                                <span>{% trans "Lingála" %}</span>
+                                <span class="text-[#0B2B4A]/70">LN</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 {% if user.is_authenticated %}
+                {% if user.profile.role == 'super_admin' %}
+                <a href="{% url 'ministere_dashboard' %}"
+                    class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[#0B2B4A] transition-colors hover:bg-slate-50 sm:px-6 sm:text-[11px]">
+                    {% trans "Mon portail" %}</a>
+                {% elif user.profile.role == 'city_admin' or user.profile.role == 'admin' %}
+                <a href="{% url 'hdv_dashboard' %}"
+                    class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[#0B2B4A] transition-colors hover:bg-slate-50 sm:px-6 sm:text-[11px]">
+                    {% trans "Mon portail" %}</a>
+                {% else %}
                 <a href="{% url 'dashboard' %}"
-                    class="rounded-xl border border-white px-3 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-white/10 sm:px-4 sm:text-[11px]">Mon
-                    portail</a>
+                    class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-[#0B2B4A] transition-colors hover:bg-slate-50 sm:px-6 sm:text-[11px]">
+                    {% trans "Mon portail" %}</a>
+                {% endif %}
                 {% else %}
                 <a href="{% url 'login' %}"
-                    class="hidden sm:inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/10 px-4 py-1.5 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-[2px] transition-all hover:bg-white/15 sm:text-[11px]">Connexion</a>
-                <a href="{% url 'login' %}"
-                    class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-4 py-1.5 text-center text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md sm:text-[11px]">Créer
-                    un compte</a>
+                    class="hidden sm:inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-[#0B2B4A] transition-all hover:bg-slate-50 sm:text-[11px]">
+                    {% trans "Connexion" %}
+                </a>
+                <a href="{% url 'register' %}"
+                    class="inline-flex h-11 items-center justify-center rounded-xl bg-[#FDB813] px-6 text-center text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md sm:text-[11px]">
+                    {% trans "Créer un compte" %}</a>
                 {% endif %}
             </div>
         </div>
     </nav>
     <!-- Hero / bannière (hauteur = navigateur) -->
-    <section class="relative min-h-[100dvh] overflow-hidden pt-14">
+    <section class="relative overflow-hidden" style="min-height: 100vh; padding-top: 104px;">
         <div class="absolute inset-0 hero-banner-drc"></div>
         <div class="pointer-events-none absolute inset-0 hero-radial-glow"></div>
-        <div class="pointer-events-none absolute inset-0 hero-pentagon opacity-[0.62] mix-blend-screen" aria-hidden="true"></div>
-        <!-- Grain mat (bruit fractal), sans lignes géométriques — proche texture photo de référence -->
-        <div class="pointer-events-none absolute inset-0 z-[1] opacity-[0.5] mix-blend-soft-light"
-            aria-hidden="true">
-            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <filter id="sisepHeroGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" stitchTiles="stitch"
-                        result="noise" />
-                    <feColorMatrix in="noise" type="saturate" values="0" />
-                </filter>
-                <rect width="100%" height="100%" filter="url(#sisepHeroGrain)" fill="#ffffff" />
-            </svg>
-        </div>
-        <div
-            class="relative z-10 mx-auto flex min-h-[calc(100dvh-56px)] max-w-7xl flex-col justify-start gap-7 px-5 pb-16 pt-6 sm:px-6 lg:flex-row lg:items-start lg:gap-12 lg:px-8 lg:pb-28 lg:pt-7">
+        <div class="pointer-events-none absolute inset-0 hero-motif-pro opacity-[0.62]" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 faq-motif opacity-[0.34]" aria-hidden="true"></div>
+        <div class="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-start gap-10 px-5 pb-12 sm:px-6 md:grid-cols-2 lg:gap-12 lg:px-8"
+            style="min-height: calc(100vh - 104px);">
             <!-- Carrousel (gauche sur desktop) -->
-            <div class="order-2 w-full lg:order-1 lg:flex-[0_0_560px] lg:max-w-[560px] lg:pt-2">
+            <div class="order-2 w-full md:order-1">
                 <div class="carousel-root relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_20px_60px_-35px_rgba(0,0,0,0.65)] backdrop-blur-[2px]"
                     data-carousel="commune">
-                <div class="relative h-[260px] w-full sm:h-[320px] lg:h-[380px]">
-                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
-                            src="{% static 'commune-image/comune1.png' %}" alt="Maison communale - 1" />
-                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
-                            src="{% static 'commune-image/comune2.png' %}" alt="Maison communale - 2" />
-                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
-                            src="{% static 'commune-image/commune3.png' %}" alt="Maison communale - 3" />
-                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
-                            src="{% static 'commune-image/commune4.png' %}" alt="Maison communale - 4" />
-                        <img class="carousel-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-out"
-                            src="{% static 'commune-image/commune5.jpg' %}" alt="Maison communale - 5" />
+                <div class="hero-carousel-frame relative w-full">
+                        {% if gallery_photos %}
+                          {% for p in gallery_photos %}
+                          <img class="carousel-slide{% if forloop.first %} is-active{% endif %} absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
+                            style="opacity:{% if forloop.first %}1{% else %}0{% endif %};"
+                            src="{{ p.image.url }}" alt="{{ p.title|default:'Photo' }}"
+                            data-caption="{{ p.description|default:p.title|default:''|escape }}" />
+                          {% endfor %}
+                        {% else %}
+                          <img class="carousel-slide is-active absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
+                              style="opacity:1;"
+                              src="{% static 'commune-image/comune1.png' %}" alt="{% trans 'Maison communale' %}" data-caption="{% trans 'Maison communale' %}" />
+                        {% endif %}
 
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/10"></div>
+                        <!-- (Légende déplacée dans le branding à droite) -->
                     </div>
 
                     <!-- Controls -->
                     <button type="button"
                         class="carousel-nav-btn carousel-prev absolute left-3 top-1/2 z-[2] -translate-y-1/2 rounded-full border border-white/25 bg-black/35 p-2 text-white backdrop-blur-md hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#FDB813]/70"
-                        aria-label="Photo précédente">
+                        aria-label="{% trans 'Photo précédente' %}">
                         <span class="material-symbols-outlined text-[20px]">chevron_left</span>
                         </button>
                     <button type="button"
                         class="carousel-nav-btn carousel-next absolute right-3 top-1/2 z-[2] -translate-y-1/2 rounded-full border border-white/25 bg-black/35 p-2 text-white backdrop-blur-md hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-[#FDB813]/70"
-                        aria-label="Photo suivante">
+                        aria-label="{% trans 'Photo suivante' %}">
                         <span class="material-symbols-outlined text-[20px]">chevron_right</span>
                         </button>
 
                     <!-- Dots -->
                     <div class="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
-                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
-                            aria-label="Aller à la photo 1"></button>
-                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
-                            aria-label="Aller à la photo 2"></button>
-                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
-                            aria-label="Aller à la photo 3"></button>
-                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
-                            aria-label="Aller à la photo 4"></button>
-                        <button type="button" class="carousel-dot h-2 w-2 rounded-full bg-white/35 transition-all"
-                            aria-label="Aller à la photo 5"></button>
+                        {% if gallery_photos %}
+                          {% for _p in gallery_photos %}
+                          <button type="button" class="carousel-dot{% if forloop.first %} is-active{% endif %} h-2 w-2 rounded-full bg-white/35 transition-all"
+                              aria-label="{% blocktrans %}Aller à la photo {{ forloop.counter }}{% endblocktrans %}"></button>
+                          {% endfor %}
+                        {% else %}
+                          <button type="button" class="carousel-dot is-active h-2 w-2 rounded-full bg-white/35 transition-all"
+                              aria-label="{% trans 'Aller à la photo 1' %}"></button>
+                        {% endif %}
                     </div>
+                </div>
+                <div class="mt-3 flex justify-start">
+                    <a href="{% url 'public_gallery' %}"
+                        class="inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white/90 underline decoration-white/25 underline-offset-[5px] transition-colors hover:text-white hover:decoration-white/45">
+                        <span class="material-symbols-outlined text-[18px]">photo_library</span>{% trans "Galerie" %}
+                    </a>
                 </div>
             </div>
 
             <!-- Branding (droite sur desktop) -->
-            <div class="order-1 max-w-xl flex-1 text-white lg:order-2 lg:max-w-[640px] lg:pt-2">
+            <div class="order-1 max-w-xl text-white md:order-2 lg:max-w-[640px]">
                 <p
                     class="mb-4 inline-flex rounded-xl border border-[#FDB813] bg-black/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#FDB813]">
-                    Services communaux & état civil</p>
-                <h1 class="mb-6 font-headline text-4xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
-                    Votre commune,<br />
-                    <span class="text-[#FDB813]">désormais en ligne.</span>
+                    {% trans "Services communaux & état civil" %}</p>
+                <h1 class="hero-strong-white mb-6 font-headline text-4xl font-extrabold leading-[1.04] tracking-tight sm:text-5xl lg:text-6xl">
+                    {% trans "Votre commune," %}<br />
+                    <span class="text-[#FDB813]">{% trans "désormais en ligne." %}</span>
                 </h1>
-                <p class="mb-9 max-w-xl text-[16px] font-medium leading-relaxed text-white/90 sm:text-[17px]">
-                    Déposez vos demandes, suivez chaque étape et récupérez vos documents sans file d’attente.
-                    Une plateforme sécurisée pour l’<strong class="font-bold text-white">état civil</strong>, les
-                    autorisations communales et l’archivage.
+                <p class="hero-readable-copy hero-branding-clamp-3 mb-6 max-w-xl text-[16px] font-medium leading-relaxed sm:text-[17px]"
+                    data-branding-caption-long>
+                    —
                 </p>
+                
 
                 <div class="mt-4 flex flex-wrap gap-3 sm:gap-4">
                     <a href="#services"
-                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02] sm:text-xs">Commencer</a>
+                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] transition-all hover:brightness-[1.02] sm:text-xs">{% trans "Commencer" %}</a>
+                    {% if not user.is_authenticated %}
                     <a href="{% url 'login' %}"
-                        class="inline-flex items-center justify-center rounded-xl border border-white/30 bg-transparent px-8 py-3 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-white/10 sm:text-xs">Se
-                        connecter</a>
+                        class="inline-flex items-center justify-center rounded-xl border border-white/30 bg-transparent px-8 py-3 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-white/10 sm:text-xs">{% trans "Se connecter" %}</a>
+                    {% endif %}
                     </div>
             </div>
         </div>
@@ -347,7 +440,11 @@
             if (!links.length) return;
 
             function setActiveByHash() {
-                const hash = window.location.hash || '#services';
+                const hash = window.location.hash || '';
+                if (!hash) {
+                    links.forEach(a => a.classList.remove('is-active'));
+                    return;
+                }
                 links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === hash));
             }
 
@@ -362,159 +459,185 @@
             setActiveByHash();
         })();
     </script>
-    <!-- Services Section (charte MuniWorks, fond blanc nuancé + grain) -->
+
+    <script>
+        (function () {
+            const btn = document.getElementById('langBtn');
+            const menu = document.getElementById('langMenu');
+            if (!btn || !menu) return;
+            function close() {
+                menu.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+            function toggle() {
+                const hidden = menu.classList.contains('hidden');
+                if (hidden) {
+                    menu.classList.remove('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                } else {
+                    close();
+                }
+            }
+            btn.addEventListener('click', (e) => { e.preventDefault(); toggle(); });
+            document.addEventListener('click', (e) => {
+                if (e.target === btn || btn.contains(e.target) || menu.contains(e.target)) return;
+                close();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') close();
+            });
+        })();
+    </script>
+
+    <!-- Services Section (charte MuniWorks, fond blanc nuancé) -->
     <section id="services" class="svc-section-bg relative scroll-mt-14 border-b border-slate-300/40 py-16">
-        <div class="pointer-events-none absolute inset-0 opacity-[0.38] mix-blend-multiply" aria-hidden="true">
-            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <filter id="sisepServicesGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="4" stitchTiles="stitch"
-                        result="noise" />
-                    <feColorMatrix in="noise" type="saturate" values="0" />
-                </filter>
-                <rect width="100%" height="100%" filter="url(#sisepServicesGrain)" fill="#64748b" />
-            </svg>
-        </div>
         <!-- Motif doré (photo) — taille très réduite, rendu institutionnel -->
         <div class="pointer-events-none absolute inset-0 z-[2] svc-gold-motif opacity-[0.28]" aria-hidden="true"></div>
-        <div class="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-soft-light" aria-hidden="true">
-            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <filter id="sisepServicesGrainTop" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="4" stitchTiles="stitch"
-                        result="noise2" />
-                    <feColorMatrix in="noise2" type="saturate" values="0" />
-                </filter>
-                <rect width="100%" height="100%" filter="url(#sisepServicesGrainTop)" fill="#ffffff" />
-            </svg>
-        </div>
         <div class="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center md:mb-14">
+            <div class="mb-10 text-center md:mb-14">
                 <h2 class="mb-3 font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
-                    Services <span class="text-[#FDB813]">municipaux</span>
+                    {% trans "Services" %} <span class="text-[#FDB813]">{% trans "municipaux" %}</span>
                 </h2>
                 <p class="mx-auto max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
-                    Prestations de la maison communale accessibles en ligne : délais affichés, tarifs indicatifs,
-                    parcours guidé — aux couleurs institutionnelles bleu nuit et or de MuniWorks DRC.
+                    {% blocktrans %}Prestations de la maison communale accessibles en ligne : délais affichés, tarifs indicatifs, parcours guidé — aux couleurs institutionnelles bleu nuit et or de MuniWorks DRC.{% endblocktrans %}
                 </p>
             </div>
-            <div class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
                 <!-- Carte 1 -->
                 <article
-                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_22px_60px_-46px_rgba(2,6,23,0.20)]">
                     <div class="relative h-[8.75rem] shrink-0 svc-header-poly-1">
                         <span
                             class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-primary shadow-sm backdrop-blur-[2px]">#1</span>
                         <span
                             class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
                     </div>
-                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
-                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
-                            État civil &amp; actes</h3>
-                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Demandes d’actes de naissance,
-                            mariage, décès et extraits certifiés, déposées et suivies sur le portail.</p>
+                    <div class="flex flex-1 flex-col px-5 pb-5 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-[15px] font-extrabold leading-snug tracking-tight text-[#1a2332]">
+                            {% trans "État civil & actes" %}</h3>
+                        <p class="mb-0 flex-1 text-[13px] font-medium leading-relaxed text-slate-600">
+                            {% blocktrans %}Demandes d’actes de naissance, mariage, décès et extraits certifiés, déposées et suivies sur le portail.{% endblocktrans %}
+                        </p>
                         <a href="#procedure"
-                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
-                            la procédure</a>
+                            class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2B4A] px-4 py-2.5 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-white shadow-sm transition-all hover:bg-[#123554] active:scale-[0.99]">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            {% trans "Commencer" %}
+                        </a>
                     </div>
                     <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
-                                moyen</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                {% trans "Délai moyen" %}
+                            </p>
                             <p class="font-headline text-sm font-bold text-[#1a2332]">10 jours ouvrés</p>
                         </div>
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">À partir
-                                de</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                {% trans "À partir de" %}
+                            </p>
                             <p class="font-headline text-sm font-bold text-primary">2 500 CDF</p>
                         </div>
                     </div>
                 </article>
                 <!-- Carte 2 -->
                 <article
-                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_22px_60px_-46px_rgba(2,6,23,0.20)]">
                     <div class="relative h-[8.75rem] shrink-0 svc-header-poly-2">
                         <span
                             class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-[#8b6914] shadow-sm backdrop-blur-[2px]">#2</span>
                         <span
                             class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
                     </div>
-                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
-                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
-                            Permis de construire</h3>
-                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Dépôt des plans, pièces
-                            urbanistiques et autorisations de bâtir avec instruction numérique par la commune.</p>
+                    <div class="flex flex-1 flex-col px-5 pb-5 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-[15px] font-extrabold leading-snug tracking-tight text-[#1a2332]">
+                            {% trans "Permis de construire" %}</h3>
+                        <p class="mb-0 flex-1 text-[13px] font-medium leading-relaxed text-slate-600">
+                            {% blocktrans %}Dépôt des plans, pièces urbanistiques et autorisations de bâtir avec instruction numérique par la commune.{% endblocktrans %}
+                        </p>
                         <a href="#procedure"
-                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
-                            la procédure</a>
+                            class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2B4A] px-4 py-2.5 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-white shadow-sm transition-all hover:bg-[#123554] active:scale-[0.99]">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            {% trans "Commencer" %}
+                        </a>
                     </div>
                     <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
-                                max.</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                {% trans "Délai max." %}
+                            </p>
                             <p class="font-headline text-sm font-bold text-[#1a2332]">45 jours</p>
                         </div>
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Frais
-                                min.</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                {% trans "Frais min." %}
+                            </p>
                             <p class="font-headline text-sm font-bold text-primary">15 000 CDF</p>
                         </div>
                     </div>
                 </article>
                 <!-- Carte 3 -->
                 <article
-                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_22px_60px_-46px_rgba(2,6,23,0.20)]">
                     <div class="relative h-[8.75rem] shrink-0 svc-header-poly-3">
                         <span
                             class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-[#14523d] shadow-sm backdrop-blur-[2px]">#3</span>
                         <span
                             class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
                     </div>
-                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
-                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
-                            Pétitions &amp; concertation</h3>
-                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Recueil de contributions
-                            citoyennes, pétitions et suggestions pour les projets communaux prioritaires.</p>
+                    <div class="flex flex-1 flex-col px-5 pb-5 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-[15px] font-extrabold leading-snug tracking-tight text-[#1a2332]">
+                            {% trans "Pétitions & concertation" %}</h3>
+                        <p class="mb-0 flex-1 text-[13px] font-medium leading-relaxed text-slate-600">
+                            {% blocktrans %}Recueil de contributions citoyennes, pétitions et suggestions pour les projets communaux prioritaires.{% endblocktrans %}
+                        </p>
                         <a href="#procedure"
-                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
-                            la procédure</a>
+                            class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2B4A] px-4 py-2.5 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-white shadow-sm transition-all hover:bg-[#123554] active:scale-[0.99]">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            {% trans "Commencer" %}
+                        </a>
                     </div>
                     <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Instruction</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">{% trans "Instruction" %}</p>
                             <p class="font-headline text-sm font-bold text-[#1a2332]">30 jours</p>
                         </div>
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Frais</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">{% trans "Frais" %}</p>
                             <p class="font-headline text-sm font-bold text-primary">0 CDF</p>
                 </div>
                     </div>
                 </article>
                 <!-- Carte 4 -->
                 <article
-                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-300/60 bg-gradient-to-b from-white via-white to-[#f6f8fc] shadow-[0_10px_34px_-16px_rgba(0,48,100,0.18)] ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_16px_55px_-22px_rgba(0,48,100,0.22)]">
+                    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_22px_60px_-46px_rgba(2,6,23,0.20)]">
                     <div class="relative h-[8.75rem] shrink-0 svc-header-poly-4">
                         <span
                             class="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-md border border-slate-200/60 bg-white/95 text-sm font-black text-primary shadow-sm backdrop-blur-[2px]">#4</span>
                         <span
                             class="absolute left-[3.2rem] top-3 h-9 w-[5.2rem] rounded-md bg-white/85 shadow-sm backdrop-blur-[2px]"></span>
                 </div>
-                    <div class="flex flex-1 flex-col px-5 pb-1 pt-5 text-left">
-                        <h3 class="mb-2 font-headline text-base font-bold leading-snug tracking-tight text-[#1a2332]">
-                            Taxes &amp; redevances</h3>
-                        <p class="mb-0 flex-1 text-sm leading-relaxed text-slate-600">Encodage des droits communaux,
-                            quittances et attestations de paiement liés aux services municipaux.</p>
+                    <div class="flex flex-1 flex-col px-5 pb-5 pt-5 text-left">
+                        <h3 class="mb-2 font-headline text-[15px] font-extrabold leading-snug tracking-tight text-[#1a2332]">
+                            {% trans "Taxes & redevances" %}</h3>
+                        <p class="mb-0 flex-1 text-[13px] font-medium leading-relaxed text-slate-600">
+                            {% blocktrans %}Encodage des droits communaux, quittances et attestations de paiement liés aux services municipaux.{% endblocktrans %}
+                        </p>
                         <a href="#procedure"
-                            class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-[#FDB813] px-4 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md active:scale-[0.99]">Commencer
-                            la procédure</a>
+                            class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2B4A] px-4 py-2.5 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-white shadow-sm transition-all hover:bg-[#123554] active:scale-[0.99]">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            {% trans "Commencer" %}
+                        </a>
                     </div>
                     <div class="mt-4 grid grid-cols-2 gap-px border-t border-slate-200/90 bg-slate-200/90">
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Délai
-                                moyen</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                                {% trans "Délai moyen" %}
+                            </p>
                             <p class="font-headline text-sm font-bold text-[#1a2332]">48 h</p>
                         </div>
                         <div class="bg-[#f3f5f9]/95 px-4 py-3.5 backdrop-blur-[1px]">
-                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Montant</p>
-                            <p class="font-headline text-sm font-bold text-primary">Selon barème</p>
+                            <p class="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">{% trans "Montant" %}</p>
+                            <p class="font-headline text-sm font-bold text-primary">{% trans "Selon barème" %}</p>
                         </div>
                 </div>
                 </article>
@@ -524,30 +647,23 @@
     <!-- Procédure administrative — bandeau horizontal, fond noir nuancé, police Outfit -->
     <section id="procedure"
         class="font-procedure relative scroll-mt-14 overflow-hidden border-t border-white/[0.06] py-20 text-center">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_95%_65%_at_50%_-18%,rgba(59,130,246,0.16),transparent_58%),radial-gradient(ellipse_75%_55%_at_0%_100%,rgba(56,189,248,0.08),transparent_55%),radial-gradient(ellipse_70%_50%_at_100%_100%,rgba(212,168,75,0.08),transparent_50%),linear-gradient(165deg,#0f0f14_0%,#1b1b24_44%,#0b0b10_100%)]"
-            aria-hidden="true"></div>
+        <div class="absolute inset-0" aria-hidden="true"
+            style="background:
+              radial-gradient(ellipse 90% 70% at 50% -10%, rgba(253,184,19,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse 85% 65% at 0% 100%, rgba(18,53,84,0.22) 0%, transparent 58%),
+              radial-gradient(ellipse 85% 65% at 100% 100%, rgba(11,43,74,0.26) 0%, transparent 58%),
+              linear-gradient(165deg, #0B2B4A 0%, #123554 44%, #051428 100%);"></div>
         <!-- Motif type e‑VISA (fine, visible sans gêner le texte) -->
         <div class="pointer-events-none absolute inset-0 procedure-motif opacity-[0.42] mix-blend-screen" aria-hidden="true"></div>
-        <div class="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-overlay" aria-hidden="true">
-            <svg class="block h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <filter id="sisepProcedureGrain" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.88" numOctaves="3" stitchTiles="stitch"
-                        result="n" />
-                    <feColorMatrix in="n" type="saturate" values="0" />
-                </filter>
-                <rect width="100%" height="100%" filter="url(#sisepProcedureGrain)" fill="#ffffff" />
-            </svg>
-        </div>
         <div class="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
             <header class="mx-auto mb-14 max-w-3xl sm:mb-16">
-                <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-sky-200/75">Parcours citoyen
-                </p>
-                <h2 class="mb-4 text-3xl font-semibold tracking-tight text-[#ececf1] sm:text-4xl md:text-[2.35rem] md:leading-tight">
-                    Procédure <span class="bg-gradient-to-r from-[#e8c86a] via-[#d4a84b] to-[#b8923f] bg-clip-text font-semibold text-transparent">administrative</span>
+                <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">{% trans "Parcours citoyen" %}</p>
+                <h2 class="mb-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-[2.35rem] md:leading-tight">
+                    {% trans "Procédure" %} <span class="font-semibold text-[#FDB813]">{% trans "administrative" %}</span>
                 </h2>
-                <p class="text-sm font-light leading-relaxed text-slate-400/95 sm:text-[15px]">Quatre étapes alignées,
-                    de l’identification à la délivrance. Chaque dossier est tracé sur la plateforme — vous suivez
-                    l’avancement sans déplacements inutiles.</p>
+                <p class="text-sm font-light leading-relaxed text-white/75 sm:text-[15px]">
+                    {% blocktrans %}Quatre étapes alignées, de l’identification à la délivrance. Chaque dossier est tracé sur la plateforme — vous suivez l’avancement sans déplacements inutiles.{% endblocktrans %}
+                </p>
             </header>
 
             <div class="relative">
@@ -557,62 +673,167 @@
                     class="mx-auto grid max-w-6xl list-none grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4 lg:gap-6 lg:gap-y-6">
                     <li class="flex flex-col items-center text-center">
                         <span
-                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#2a63b5] to-[#0e2f62] text-sm font-semibold text-[#eef2ff] shadow-[0_0_0_1px_rgba(255,255,255,0.12)] shadow-[0_12px_30px_-18px_rgba(56,189,248,0.65)] ring-4 ring-[#0f0f14]">1</span>
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#0B2B4A] text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.12)] shadow-[0_12px_30px_-18px_rgba(11,43,74,0.65)] ring-4 ring-[#051428]">1</span>
                         <div
                             class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
-                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">person_add</span>
-                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Identité
-                                &amp; compte</h3>
-                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Compte citoyen
-                                et vérification d’identité — accès unique à tous les services de la commune.</p>
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-white">person_add</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-white">
+                                {% trans "Identité & compte" %}
+                            </h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-white/75">
+                                {% blocktrans %}Compte citoyen et vérification d’identité — accès unique à tous les services de la commune.{% endblocktrans %}
+                            </p>
                             </div>
                     </li>
                     <li class="flex flex-col items-center text-center">
                         <span
-                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#191925] text-sm font-semibold text-[#d7e2f5] shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(59,130,246,0.45)] ring-4 ring-[#0f0f14]">2</span>
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#123554] text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(11,43,74,0.45)] ring-4 ring-[#051428]">2</span>
                         <div
                             class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
-                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">edit_document</span>
-                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Dépôt du
-                                dossier</h3>
-                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Formulaire
-                                guidé, pièces au format requis et accusé de réception automatique.</p>
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-white">edit_document</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-white">
+                                {% trans "Dépôt du dossier" %}
+                            </h3>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-white/75">
+                                {% blocktrans %}Formulaire guidé, pièces au format requis et accusé de réception automatique.{% endblocktrans %}
+                            </p>
                         </div>
                     </li>
                     <li class="flex flex-col items-center text-center">
                         <span
-                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#191925] text-sm font-semibold text-[#d7e2f5] shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(59,130,246,0.45)] ring-4 ring-[#0f0f14]">3</span>
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-[#123554] text-sm font-semibold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.07)] shadow-[0_10px_26px_-20px_rgba(11,43,74,0.45)] ring-4 ring-[#051428]">3</span>
                         <div
                             class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
-                            <span class="material-symbols-outlined mb-3 text-[26px] text-sky-300/85">fact_check</span>
-                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Instruction
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-white">fact_check</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-white">
+                                {% trans "Instruction" %}
                             </h3>
-                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Traitement par
-                                les agents : compléments demandés et notifications à chaque étape.</p>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-white/75">
+                                {% blocktrans %}Traitement par les agents : compléments demandés et notifications à chaque étape.{% endblocktrans %}
+                            </p>
                         </div>
                     </li>
                     <li class="flex flex-col items-center text-center">
                         <span
-                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#f1cf6a] via-[#d4a84b] to-[#8f6f2e] text-sm font-semibold text-[#171510] shadow-[0_0_0_1px_rgba(255,255,255,0.16)] shadow-[0_14px_34px_-22px_rgba(212,168,75,0.7)] ring-4 ring-[#0f0f14]">4</span>
+                            class="relative z-10 mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#FDB813] text-sm font-semibold text-[#1a2332] shadow-[0_0_0_1px_rgba(255,255,255,0.16)] shadow-[0_14px_34px_-22px_rgba(253,184,19,0.7)] ring-4 ring-[#051428]">4</span>
                         <div
                             class="flex min-h-[230px] w-full max-w-xs flex-col rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.07] via-white/[0.045] to-white/[0.03] px-5 py-5 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] shadow-[0_16px_45px_-30px_rgba(0,0,0,0.85)] sm:max-w-none">
-                            <span class="material-symbols-outlined mb-3 text-[26px] text-amber-200/80">verified</span>
-                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-[#e4e6eb]">Délivrance
+                            <span class="material-symbols-outlined mb-3 text-[26px] text-[#FDB813]">verified</span>
+                            <h3 class="mb-2 text-base font-semibold leading-snug tracking-tight text-white">
+                                {% trans "Délivrance" %}
                             </h3>
-                            <p class="flex-1 text-[13px] font-light leading-relaxed text-slate-400/95">Document
-                                certifié en téléchargement sécurisé ou retrait sur convocation ; dossier archivé.</p>
+                            <p class="flex-1 text-[13px] font-light leading-relaxed text-white/75">
+                                {% blocktrans %}Document certifié en téléchargement sécurisé ou retrait sur convocation ; dossier archivé.{% endblocktrans %}
+                            </p>
                         </div>
                     </li>
                 </ol>
             </div>
 
-            <p class="mx-auto mt-12 max-w-2xl text-center text-[11px] font-light leading-relaxed text-slate-500/90">
-                Délais indicatifs selon le service — les barèmes et pièces exactes figurent sur chaque fiche métier.
+            <p class="mx-auto mt-12 max-w-2xl text-center text-[11px] font-light leading-relaxed text-white/60">
+                {% blocktrans %}Délais indicatifs selon le service — les barèmes et pièces exactes figurent sur chaque fiche métier.{% endblocktrans %}
             </p>
         </div>
     </section>
+
+    <!-- Cadre légal & traçabilité (infos utiles au citoyen) -->
+    <section id="cadre-legal" class="relative overflow-hidden border-t border-slate-200 bg-white py-16 scroll-mt-14">
+        <div class="pointer-events-none absolute inset-0 dots-motif opacity-[0.65] mix-blend-multiply" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 footer-halos opacity-[0.10]" aria-hidden="true"></div>
+        <div class="relative mx-auto max-w-6xl px-6">
+            <div class="mx-auto max-w-3xl text-center">
+                <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">{% trans "Gouvernance" %}</p>
+                <h2 class="mt-2 font-headline text-3xl font-extrabold tracking-tight text-primary">{% trans "Cadre légal & sécurité" %}</h2>
+                <p class="mx-auto mt-3 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
+                    {% blocktrans %}Vos démarches sont traitées dans un cadre institutionnel : accès sécurisé, protection des données et suivi transparent de l’avancement.{% endblocktrans %}
+                </p>
+            </div>
+
+            <div class="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-2">
+                <span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur">
+                    {% trans "Accès sécurisé" %}
+                </span>
+                <span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur">
+                    {% trans "Données protégées" %}
+                </span>
+                <span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur">
+                    {% trans "Téléchargement contrôlé" %}
+                </span>
+                <span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur">
+                    {% trans "Traçabilité" %}
+                </span>
+            </div>
+
+            <div class="mt-10 grid gap-4 md:grid-cols-3">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{% trans "Accès" %}</p>
+                    <p class="mt-2 text-sm font-extrabold text-slate-900">{% trans "Authentification & contrôle" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Connexion obligatoire pour déposer une demande. Les pages sensibles ne sont pas mises en cache.{% endblocktrans %}
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{% trans "Documents" %}</p>
+                    <p class="mt-2 text-sm font-extrabold text-slate-900">{% trans "Téléchargement sécurisé" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Les documents délivrés ne sont téléchargeables que par le citoyen concerné via un lien contrôlé.{% endblocktrans %}
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{% trans "Suivi" %}</p>
+                    <p class="mt-2 text-sm font-extrabold text-slate-900">{% trans "Traçabilité & transparence" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Statuts clairs, historique et notifications. Vous suivez votre dossier sans déplacements inutiles.{% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ / Support -->
+    <section id="faq" class="relative overflow-hidden border-t border-slate-200 bg-slate-100 py-16 scroll-mt-14">
+        <div class="pointer-events-none absolute inset-0 faq-motif opacity-[0.55] mix-blend-multiply" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 footer-halos opacity-[0.10]" aria-hidden="true"></div>
+        <div class="relative mx-auto max-w-5xl px-6">
+            <div class="text-center">
+                <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">{% trans "Aide" %}</p>
+                <h2 class="mt-2 font-headline text-3xl font-extrabold tracking-tight text-primary">{% trans "FAQ" %}</h2>
+                <p class="mx-auto mt-3 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
+                    {% blocktrans %}Réponses rapides aux questions fréquentes sur le portail, l’inscription et la récupération de documents.{% endblocktrans %}
+                </p>
+            </div>
+
+            <div class="mt-10 grid gap-4 md:grid-cols-2">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-sm font-extrabold text-slate-900">{% trans "Comment créer un compte ?" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Cliquez sur “Créer mon compte”, puis confirmez votre email pour activer votre accès.{% endblocktrans %}
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-sm font-extrabold text-slate-900">{% trans "J’ai oublié mon mot de passe" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Utilisez “Mot de passe oublié ?” sur la page de connexion : un code temporaire est envoyé par email.{% endblocktrans %}
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-sm font-extrabold text-slate-900">{% trans "Mes documents sont-ils sécurisés ?" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Oui. Les téléchargements passent par une URL contrôlée et nécessitent une session authentifiée.{% endblocktrans %}
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_34px_-20px_rgba(2,6,23,0.12)]">
+                    <p class="text-sm font-extrabold text-slate-900">{% trans "Où contacter le support ?" %}</p>
+                    <p class="mt-2 text-[13px] font-medium leading-relaxed text-slate-600">
+                        {% blocktrans %}Rendez-vous en bas de page dans la section Support pour les canaux officiels.{% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
-    <section id="portail-citoyen" class="relative overflow-hidden py-16 scroll-mt-14">
+    <section id="portail-citoyen" class="relative overflow-hidden py-20 scroll-mt-14">
         <!-- Fond “photo 1” : grands halos flous, sans cadre -->
         <div class="pointer-events-none absolute inset-0" aria-hidden="true">
             <div class="absolute inset-0 bg-white"></div>
@@ -624,19 +845,18 @@
         <div class="relative mx-auto max-w-5xl px-6 text-center">
             <div class="relative">
                 <h2 class="text-2xl md:text-3xl font-black text-primary font-headline mb-4 tracking-tight uppercase">
-                    Modernisation de l'Administration</h2>
-                <p class="text-slate-600 text-sm mb-8 max-w-xl mx-auto font-medium">Rejoignez l'infrastructure numérique
-                    sécurisée pour vos démarches en République Démocratique du Congo.</p>
+                    {% trans "Modernisation de l'Administration" %}</h2>
+                <p class="text-slate-600 text-sm mb-8 max-w-xl mx-auto font-medium">
+                    {% blocktrans %}Rejoignez l'infrastructure numérique sécurisée pour vos démarches en République Démocratique du Congo.{% endblocktrans %}
+                </p>
                 <!-- Armoiries animées (flottement + zoom/dézoom) -->
                 <img src="{% static 'armoiries RDC.png' %}" alt="" aria-hidden="true"
                     class="crest-float pointer-events-none absolute -right-10 -top-10 hidden w-[200px] opacity-[0.16] mix-blend-multiply drop-shadow-[0_22px_50px_rgba(0,0,0,0.15)] md:block" />
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#procedure"
-                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md">Créer
-                        mon compte</a>
-                    <a href="#footer-support"
-                        class="inline-flex items-center justify-center rounded-xl border border-slate-300/70 bg-white/70 px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-primary backdrop-blur-md transition-all hover:bg-white">Support
-                        Technique</a>
+                    <a href="{% url 'register' %}"
+                        class="inline-flex items-center justify-center rounded-xl bg-[#FDB813] px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-[#1a2332] shadow-sm transition-all hover:brightness-[1.03] hover:shadow-md">{% trans "Créer mon compte" %}</a>
+                    <a href="#faq"
+                        class="inline-flex items-center justify-center rounded-xl border border-slate-300/70 bg-white/70 px-8 py-3 text-center text-xs font-bold uppercase tracking-widest text-primary backdrop-blur-md transition-all hover:bg-white">{% trans "Support Technique" %}</a>
                 </div>
             </div>
         </div>
@@ -644,10 +864,7 @@
     <!-- Footer -->
     <footer class="relative overflow-hidden border-t border-slate-200 bg-white pt-14 pb-10">
         <div class="pointer-events-none absolute inset-0 footer-halos opacity-[0.18]" aria-hidden="true"></div>
-        <!-- Armoiries RDC en filigrane (discret, institutionnel) -->
-        <img src="{% static 'armoiries RDC.png' %}" alt="Armoiries de la RDC"
-            class="pointer-events-none absolute right-6 top-8 hidden w-28 opacity-[0.10] md:block"
-            aria-hidden="true" />
+        <!-- (Logo filigrane supprimé : déjà présent dans la section précédente) -->
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div class="col-span-1 md:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
@@ -658,52 +875,51 @@
                     </div>
                 </div>
                 <p class="text-slate-500 font-medium text-xs leading-relaxed mb-6">
-                    Plateforme officielle de digitalisation des services municipaux de la RDC.
+                    {% blocktrans %}Plateforme officielle de digitalisation des services municipaux de la RDC.{% endblocktrans %}
                 </p>
                 <div class="flex flex-wrap gap-2">
                     <span class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold text-slate-600">
                         <span class="material-symbols-outlined text-sm text-primary">verified_user</span>
-                        Portail institutionnel
+                        {% trans "Portail institutionnel" %}
                     </span>
                     <span class="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold text-slate-600">
                         <span class="material-symbols-outlined text-sm text-primary">lock</span>
-                        Sécurisé
+                        {% trans "Sécurisé" %}
                     </span>
                 </div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 col-span-1 md:col-span-3 gap-8">
                 <div>
                     <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">
-                        Navigation</h5>
+                        {% trans "Navigation" %}</h5>
                     <ul class="space-y-2 text-xs font-medium">
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Services</a></li>
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Portails</a></li>
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Législation</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#services">{% trans "Services" %}</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#portail-citoyen">{% trans "Portails" %}</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#cadre-legal">{% trans "Cadre légal" %}</a></li>
                     </ul>
                 </div>
-                <div id="footer-support" class="scroll-mt-14">
-                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">Support
-                    </h5>
+                <div id="footer-support-links" class="scroll-mt-14">
+                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">{% trans "Support" %}</h5>
                     <ul class="space-y-2 text-xs font-medium">
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Aide &amp; FAQ</a></li>
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Support</a></li>
-                        <li><a class="text-secondary font-bold" href="#">Statut</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#faq">{% trans "Aide & FAQ" %}</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#footer-support-links">{% trans "Support" %}</a></li>
+                        <li><a class="text-secondary font-bold" href="#footer-support-links">{% trans "Statut" %}</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">Légal
-                    </h5>
+                    <h5 class="font-headline font-bold text-primary text-[10px] uppercase tracking-widest mb-4">{% trans "Légal" %}</h5>
                     <ul class="space-y-2 text-xs font-medium">
-                        <li><a class="text-slate-500 hover:text-primary" href="#">Confidentialité</a></li>
-                        <li><a class="text-slate-500 hover:text-primary" href="#">CGU</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">{% trans "Confidentialité" %}</a></li>
+                        <li><a class="text-slate-500 hover:text-primary" href="#">{% trans "CGU" %}</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="border-t border-slate-100 mt-8 pt-6">
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-slate-400 font-medium text-[10px]">© {% now "Y" %} Municipal Excellence Digital Services.
-                    République Démocratique du Congo.</p>
+                <p class="text-slate-400 font-medium text-[10px]">
+                    © {% now "Y" %} {% trans "Municipal Excellence Digital Services." %} {% trans "République Démocratique du Congo." %}
+                </p>
                 <div class="flex items-center gap-3">
                     <img src="{% static 'armoiries RDC.png' %}" alt="RDC"
                         class="h-6 w-auto opacity-70 grayscale-[0.1]" />
@@ -727,8 +943,29 @@
 
                 function setActive(nextIdx) {
                     idx = (nextIdx + slides.length) % slides.length;
-                    slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+                    slides.forEach((s, i) => {
+                        const active = i === idx;
+                        s.classList.toggle('is-active', active);
+                        s.style.opacity = active ? '1' : '0';
+                    });
                     dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+                    const txt = slides[idx].getAttribute('data-caption') || '';
+                    const branding = document.querySelector('[data-branding-caption]');
+                    const FALLBACK_DYNAMIC = "{% trans 'Texte dynamique' %}";
+                    if (branding) branding.textContent = txt ? FALLBACK_DYNAMIC : '—';
+                    const longEl = document.querySelector('[data-branding-caption-long]');
+                    if (longEl) {
+                        const ref = "{% blocktrans %}Déposez vos demandes, suivez chaque étape et récupérez vos documents sans file d’attente. Une plateforme sécurisée pour l’état civil, les autorisations communales et l’archivage. L’Hôtel de ville supervise et pilote l’activité globale.{% endblocktrans %}";
+                        const maxLen = ref.length + 10;
+                        const clean = (txt || '').replace(/\s+/g, ' ').trim();
+                        if (!clean) {
+                            longEl.textContent = '—';
+                        } else {
+                            const base = (clean.length > maxLen) ? clean.slice(0, maxLen) : clean;
+                            longEl.textContent = base + '...';
+                        }
+                        longEl.setAttribute('title', clean);
+                    }
                 }
 
                 function next() { setActive(idx + 1); }
@@ -736,7 +973,7 @@
 
                 function start() {
                     stop();
-                    timer = window.setInterval(next, 5000);
+                    timer = window.setInterval(next, 3000);
                 }
 
                 function stop() {
@@ -754,7 +991,8 @@
                 root.addEventListener('focusout', start);
 
                 setActive(0);
-                start();
+                // Démarre après le rendu initial pour éviter certains navigateurs (focus/hover).
+                window.setTimeout(start, 50);
             }
 
             document.addEventListener('DOMContentLoaded', function () {

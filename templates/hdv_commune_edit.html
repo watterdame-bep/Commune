@@ -2,59 +2,187 @@
 
 {% block title %}Modifier commune — Hôtel de ville | MuniWorks DRC{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+{% endblock %}
+
 {% block content %}
-<div class="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]">
-  <div class="border-b border-slate-200 bg-slate-50 px-6 py-5">
-    <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Gestion</p>
-    <div class="mt-2 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 class="font-headline text-2xl font-extrabold tracking-tight text-[#0B2B4A]">Modifier une commune</h1>
-        <p class="mt-1 text-[12px] font-semibold text-slate-600">Mettre à jour les informations et l’état.</p>
-      </div>
-      <a href="{% url 'hdv_communes' %}"
-        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
-        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-        Retour
-      </a>
-    </div>
-  </div>
+<div class="mx-auto max-w-6xl space-y-4">
+  <!-- HERO (simple, sans dégradé) -->
+  <section class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]"
+    style="background-color:#0B2B4A;">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.28] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cg fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%220.16%22 stroke-width=%221%22%3E%3Cpath d=%22M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z%22/%3E%3Cpath d=%22M60 38 L84 52 L60 66 L36 52 Z%22/%3E%3Cpath d=%22M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z%22/%3E%3Cpath d=%22M140 82 L164 96 L140 110 L116 96 Z%22/%3E%3Cpath d=%22M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z%22/%3E%3Cpath d=%22M60 138 L84 152 L60 166 L36 152 Z%22/%3E%3C/g%3E%3C/svg%3E');background-size:520px 520px;background-position:center;"></div>
+    <div class="pointer-events-none absolute -right-10 -top-10 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -left-24 bottom-3 h-[220px] w-[220px] rounded-full bg-[#FDB813]/15 blur-3xl" aria-hidden="true"></div>
 
-  <form method="post" class="p-6">
-    {% csrf_token %}
-    <div class="grid gap-4 sm:grid-cols-2">
-      <div class="sm:col-span-2">
-        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Nom</label>
-        <input name="nom" required value="{{ commune.nom }}"
-          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+    <div class="relative px-6 py-6 text-white">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Supervision</p>
+      <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <div class="min-w-0">
+          <h1 class="font-headline text-2xl font-extrabold tracking-tight">Modifier une commune</h1>
+          <p class="mt-1 text-[12px] font-semibold text-white/80">Mettre à jour les informations et l’état.</p>
+        </div>
+        <a href="{% url 'hdv_communes' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white hover:bg-white/15">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          Retour
+        </a>
       </div>
-      <div>
-        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Province</label>
-        <input name="province" value="{{ commune.province }}"
-          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
-      </div>
-      <div>
-        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Code</label>
-        <input name="code" value="{{ commune.code }}"
-          class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
-      </div>
-      <label class="sm:col-span-2 inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700">
-        <input type="checkbox" name="active" class="rounded border-slate-300" {% if commune.active %}checked{% endif %} />
-        Active
-      </label>
+    </div>
+  </section>
+
+  <section class="grid gap-4 lg:grid-cols-3">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 lg:col-span-2">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Formulaire</p>
+      <p class="mt-1 text-[13px] font-semibold text-slate-700">Données de la commune</p>
+
+      <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Nom</label>
+            <input name="nom" required value="{{ commune.nom }}"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Province</label>
+            <input name="province" value="{{ commune.province }}"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Code</label>
+            <input name="code" value="{{ commune.code }}"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Adresse (maison communale)</label>
+            <textarea name="adresse" rows="3" placeholder="Adresse complète…"
+              class="mt-1 w-full resize-none rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30">{{ commune.adresse }}</textarea>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Latitude</label>
+            <input id="latInput" name="latitude" value="{{ commune.latitude|default:'' }}" inputmode="decimal"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Longitude</label>
+            <input id="lngInput" name="longitude" value="{{ commune.longitude|default:'' }}" inputmode="decimal"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+          </div>
+          <label class="sm:col-span-2 inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700">
+            <input type="checkbox" name="active" class="rounded border-slate-300" {% if commune.active %}checked{% endif %} />
+            Active
+          </label>
+        </div>
+
+        <div class="mt-6 flex flex-wrap justify-end gap-2">
+          <a href="{% url 'hdv_communes' %}"
+            class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+            Annuler
+          </a>
+          <button type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
+            <span class="material-symbols-outlined text-[18px]">save</span>
+            Enregistrer
+          </button>
+        </div>
+      </form>
     </div>
 
-    <div class="mt-6 flex flex-wrap justify-end gap-2">
-      <a href="{% url 'hdv_communes' %}"
-        class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
-        Annuler
-      </a>
-      <button type="submit"
-        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
-        <span class="material-symbols-outlined text-[18px]">save</span>
-        Enregistrer
-      </button>
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Résumé</p>
+      <p class="mt-1 text-[13px] font-semibold text-slate-700">Informations rapides</p>
+
+      <div class="mt-4 space-y-2">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Nom</p>
+          <p class="mt-2 text-[13px] font-semibold text-slate-800">{{ commune.nom }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">État</p>
+          {% if commune.active %}
+          <p class="mt-2 text-[13px] font-extrabold text-emerald-700">Active</p>
+          {% else %}
+          <p class="mt-2 text-[13px] font-extrabold text-rose-700">Inactive</p>
+          {% endif %}
+          <p class="mt-1 text-[12px] font-medium text-slate-500">Dernière mise à jour : {{ commune.updated_at|date:"d/m/Y H:i" }}</p>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/60">
+          <div id="map" class="h-[220px] w-full bg-slate-50"></div>
+          <div class="border-t border-slate-200 p-3">
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="useMyPos"
+                class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-700 hover:bg-slate-50">
+                <span class="material-symbols-outlined text-[18px]">my_location</span>
+                Ma position
+              </button>
+              <button type="button" id="clearPos"
+                class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-700 hover:bg-slate-50">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+                Effacer
+              </button>
+            </div>
+            <p class="mt-2 text-[12px] font-medium text-slate-500">Clique sur la carte pour mettre à jour lat/lng.</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </form>
+  </section>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const latInput = document.getElementById('latInput');
+    const lngInput = document.getElementById('lngInput');
+    const mapEl = document.getElementById('map');
+    if (!mapEl || !window.L) return;
+
+    const lat0 = parseFloat(latInput?.value || '') || -4.325;
+    const lng0 = parseFloat(lngInput?.value || '') || 15.322;
+    const zoom0 = (latInput?.value && lngInput?.value) ? 16 : 12;
+
+    const map = L.map('map', { scrollWheelZoom: false }).setView([lat0, lng0], zoom0);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    let marker = null;
+    function setMarker(lat, lng) {
+      if (marker) marker.setLatLng([lat, lng]);
+      else marker = L.marker([lat, lng]).addTo(map);
+      latInput.value = (Math.round(lat * 1e6) / 1e6).toFixed(6);
+      lngInput.value = (Math.round(lng * 1e6) / 1e6).toFixed(6);
+    }
+
+    if (latInput?.value && lngInput?.value) {
+      setMarker(parseFloat(latInput.value), parseFloat(lngInput.value));
+    }
+
+    map.on('click', function (e) {
+      setMarker(e.latlng.lat, e.latlng.lng);
+    });
+
+    document.getElementById('clearPos')?.addEventListener('click', function () {
+      if (marker) { map.removeLayer(marker); marker = null; }
+      latInput.value = '';
+      lngInput.value = '';
+    });
+
+    document.getElementById('useMyPos')?.addEventListener('click', function () {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(function (pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        map.setView([lat, lng], 16);
+        setMarker(lat, lng);
+      });
+    });
+  });
+</script>
 {% endblock %}
 

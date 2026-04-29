@@ -1,0 +1,179 @@
+{% extends "backoffice_base.html" %}
+{% load static %}
+{% load hdv_flash %}
+
+{% block title %}Ministère — MuniWorks DRC{% endblock %}
+
+{% block sidebar_brand %}
+<a href="{% url 'ministere_villes' %}" class="flex items-center gap-3 rounded-3xl bg-[#0B2B4A] p-3 ring-1 ring-[#0B2B4A]/15">
+  <div class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+    <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+  </div>
+  <div class="min-w-0">
+    <p class="truncate text-sm font-extrabold tracking-tight text-white">MuniWorks DRC</p>
+    <p class="truncate text-[12px] font-semibold text-white/75">Ministère</p>
+  </div>
+</a>
+{% endblock %}
+
+{% block sidebar_brand_mobile %}
+<a href="{% url 'ministere_villes' %}" class="flex items-center gap-3 rounded-3xl bg-[#0B2B4A] p-3 ring-1 ring-[#0B2B4A]/15">
+  <div class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/10">
+    <img src="{% static 'logo-white.png' %}" alt="MuniWorks DRC" class="h-7 w-auto" />
+  </div>
+  <div class="min-w-0">
+    <p class="truncate text-sm font-extrabold tracking-tight text-white">MuniWorks DRC</p>
+    <p class="truncate text-[12px] font-semibold text-white/75">Ministère</p>
+  </div>
+</a>
+{% endblock %}
+
+{% block topbar_subtitle %}Gouvernance nationale{% endblock %}
+
+{% block sidebar_nav %}
+<nav class="space-y-2">
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Référentiel officiel</p>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_dashboard' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'ministere_dashboard' %}">
+    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+    Pilotage
+  </a>
+  
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_gallery' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'ministere_gallery' %}">
+    <span class="material-symbols-outlined text-[20px]">photo_library</span>
+    Galerie (accueil)
+  </a>
+
+  <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Référentiels</p>
+  <div id="geoRefRoot" class="rounded-2xl border border-slate-200 bg-white">
+    <button id="geoRefBtn" type="button"
+      class="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left"
+      aria-expanded="false" aria-controls="geoRefPanel">
+      <span class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px] text-slate-700">map</span>
+        <span class="text-[13px] font-semibold text-slate-800">Référentiel géographique</span>
+      </span>
+      <span class="geo-chevron material-symbols-outlined text-[20px] text-slate-500 transition-transform duration-200">expand_more</span>
+    </button>
+    <div id="geoRefPanel" class="hidden px-2 pb-2">
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_provinces' or current == 'ministere_province_create' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_provinces' %}">
+        <span class="material-symbols-outlined text-[18px]">flag</span>
+        Provinces
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_villes' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_villes' %}">
+        <span class="material-symbols-outlined text-[18px]">domain</span>
+        Villes
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_communes' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_communes' %}">
+        <span class="material-symbols-outlined text-[18px]">location_city</span>
+        Communes
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_quartiers' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_quartiers' %}">
+        <span class="material-symbols-outlined text-[18px]">map_search</span>
+        Quartiers
+      </a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block sidebar_nav_mobile %}
+<nav class="space-y-2">
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Référentiel officiel</p>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_dashboard' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'ministere_dashboard' %}">
+    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+    Pilotage
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_villes' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'ministere_villes' %}">
+    <span class="material-symbols-outlined text-[20px]">domain</span>
+    Villes
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_gallery' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'ministere_gallery' %}">
+    <span class="material-symbols-outlined text-[20px]">photo_library</span>
+    Galerie (accueil)
+  </a>
+
+  <p class="px-3 pt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Référentiels</p>
+  <div id="geoRefRootMobile" class="rounded-2xl border border-slate-200 bg-white">
+    <button id="geoRefBtnMobile" type="button"
+      class="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left"
+      aria-expanded="false" aria-controls="geoRefPanelMobile">
+      <span class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px] text-slate-700">map</span>
+        <span class="text-[13px] font-semibold text-slate-800">Référentiel géographique</span>
+      </span>
+      <span class="geo-chevron material-symbols-outlined text-[20px] text-slate-500 transition-transform duration-200">expand_more</span>
+    </button>
+    <div id="geoRefPanelMobile" class="hidden px-2 pb-2">
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_provinces' or current == 'ministere_province_create' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_provinces' %}">
+        <span class="material-symbols-outlined text-[18px]">flag</span>
+        Provinces
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_villes' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_villes' %}">
+        <span class="material-symbols-outlined text-[18px]">domain</span>
+        Villes
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_communes' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_communes' %}">
+        <span class="material-symbols-outlined text-[18px]">location_city</span>
+        Communes
+      </a>
+      <a class="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'ministere_geo_quartiers' %}bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+        href="{% url 'ministere_geo_quartiers' %}">
+        <span class="material-symbols-outlined text-[18px]">map_search</span>
+        Quartiers
+      </a>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block bo_before_content %}
+{% hdv_flash_messages %}
+{% endblock %}
+
+{% block extra_body %}
+{{ block.super }}
+<script>
+  (function () {
+    function initToggle(rootId, btnId, panelId, openByDefault) {
+      const root = document.getElementById(rootId);
+      const btn = document.getElementById(btnId);
+      const panel = document.getElementById(panelId);
+      if (!btn || !panel) return;
+      const chevron = btn.querySelector('.geo-chevron');
+
+      function setOpen(isOpen) {
+        panel.classList.toggle('hidden', !isOpen);
+        btn.setAttribute('aria-expanded', String(isOpen));
+        if (root) root.classList.toggle('is-open', isOpen);
+        if (chevron) chevron.classList.toggle('rotate-180', isOpen);
+      }
+
+      setOpen(Boolean(openByDefault));
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        setOpen(!isOpen);
+      });
+    }
+
+    const current = String("{{ current|default:'' }}");
+    const shouldOpenGeo = ['ministere_provinces', 'ministere_province_create', 'ministere_geo_villes', 'ministere_geo_communes', 'ministere_geo_quartiers', 'ministere_villes'].includes(current);
+
+    initToggle('geoRefRoot', 'geoRefBtn', 'geoRefPanel', shouldOpenGeo);
+    initToggle('geoRefRootMobile', 'geoRefBtnMobile', 'geoRefPanelMobile', shouldOpenGeo);
+  })();
+</script>
+{% endblock %}
+

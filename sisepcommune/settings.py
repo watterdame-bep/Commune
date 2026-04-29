@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 import sys
 
+from django.core.exceptions import ImproperlyConfigured
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,12 +37,15 @@ if _env_file.exists():
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@fndzes$dpqwc1#+u7#)ecf9sx!ztcc%8-s_&%8bf#5(+h)z!m'
+_insecure_dev_secret_key = "django-insecure-@fndzes$dpqwc1#+u7#)ecf9sx!ztcc%8-s_&%8bf#5(+h)z!m"
+SECRET_KEY = (os.environ.get("DJANGO_SECRET_KEY") or os.environ.get("SECRET_KEY") or _insecure_dev_secret_key).strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 
-ALLOWED_HOSTS = []
+# Hôtes autorisés : en production, liste obligatoire (ex. ALLOWED_HOSTS=portail.ville.cd,www.portail.ville.cd)
+_hosts_raw = (os.environ.get("ALLOWED_HOSTS") or "").strip()
+ALLOWED_HOSTS = [h.strip() for h in _hosts_raw.split(",") if h.strip()]
 
 LOGIN_URL = "/login/"
 
@@ -54,17 +59,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dossiers',
+    'gouvernance',
+    'referentiel_geo',
     'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'sisepcommune.middleware.StripPublicAuthMessagesForHdvMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sisepcommune.middleware.SensitiveHtmlNoCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'sisepcommune.urls'
@@ -113,6 +124,15 @@ else:
         }
     }
 
+# Cache (utilisé pour la limitation de débit, etc.)
+# En production, remplacez par Redis/Memcached si besoin.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "sisepcommune-default",
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -136,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr'
 
 TIME_ZONE = 'UTC'
 
@@ -144,11 +164,20 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ("fr", "Français"),
+    ("ln", "Lingála"),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Static assets stored at project root (ex: images/logo-white.png)
 STATICFILES_DIRS = [
@@ -158,6 +187,8 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Uploads (images) require Pillow in your environment.
 
 # Email (SMTP) — use environment variables (do not hardcode secrets)
 # In this project we ALWAYS send real emails via SMTP.
@@ -171,19 +202,57 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 _is_server_command = any(arg in {"runserver", "gunicorn", "uvicorn"} for arg in sys.argv)
+
+if not DEBUG:
+    if SECRET_KEY == _insecure_dev_secret_key:
+        raise ImproperlyConfigured(
+            "SECRET_KEY : définissez DJANGO_SECRET_KEY (ou SECRET_KEY) avec une valeur aléatoire longue "
+            "lorsque DEBUG=False."
+        )
+    if not ALLOWED_HOSTS:
+        raise ImproperlyConfigured(
+            "ALLOWED_HOSTS : définissez au moins un nom d’hôte (séparés par des virgules) lorsque DEBUG=False."
+        )
+
 if _is_server_command and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
     raise RuntimeError(
         "Configuration SMTP manquante. Définissez SMTP_USERNAME et SMTP_PASSWORD "
         "(mot de passe d'application Gmail) avant de démarrer le serveur."
     )
 
-# --- Compte Hôtel de ville (super administrateur applicatif) ---
+# --- Compte Ministère de l’Intérieur (super-administrateur national) ---
 # Ces valeurs peuvent être définies dans le fichier .env.
-HDV_ADMIN_USERNAME = os.environ.get("HDV_ADMIN_USERNAME", "hoteldeville")
-HDV_ADMIN_EMAIL = os.environ.get("HDV_ADMIN_EMAIL", "hoteldeville@muniworks.local")
-HDV_ADMIN_PASSWORD = os.environ.get("HDV_ADMIN_PASSWORD", "")
-if DEBUG and not HDV_ADMIN_PASSWORD:
+MINISTER_ADMIN_USERNAME = os.environ.get("MINISTER_ADMIN_USERNAME", "ministere")
+MINISTER_ADMIN_EMAIL = os.environ.get("MINISTER_ADMIN_EMAIL", "ministere@muniworks.local")
+MINISTER_ADMIN_PASSWORD = os.environ.get("MINISTER_ADMIN_PASSWORD", "")
+if DEBUG and not MINISTER_ADMIN_PASSWORD:
     # Valeur dev par défaut (à changer dans .env)
-    HDV_ADMIN_PASSWORD = "hoteldeville123"
-if (not DEBUG) and _is_server_command and not HDV_ADMIN_PASSWORD:
-    raise RuntimeError("HDV_ADMIN_PASSWORD manquant. Définissez-le avant de démarrer le serveur.")
+    MINISTER_ADMIN_PASSWORD = "ministere12345"
+if (not DEBUG) and _is_server_command and not MINISTER_ADMIN_PASSWORD:
+    raise RuntimeError("MINISTER_ADMIN_PASSWORD manquant. Définissez-le avant de démarrer le serveur.")
+
+# --- Statistiques (Hôtel de ville) ---
+# Les recettes / taxes affichées au dashboard sont des estimations basées sur des tarifs simples.
+# Mettez ces valeurs dans .env pour activer les KPIs financiers.
+HDV_CURRENCY = os.environ.get("HDV_CURRENCY", "CDF")
+HDV_FEE_DOCUMENT = int(os.environ.get("HDV_FEE_DOCUMENT", "0"))  # ex: 5000
+HDV_FEE_OCCUPATION = int(os.environ.get("HDV_FEE_OCCUPATION", "0"))  # ex: 25000
+
+# --- Cookies, HTTPS et HSTS (renforcés hors développement) ---
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_TRUSTED_ORIGINS = [
+    o.strip()
+    for o in (os.environ.get("CSRF_TRUSTED_ORIGINS") or "").split(",")
+    if o.strip()
+]
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "1") == "1"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    # Derrière un reverse proxy TLS, décommenter et adapter :
+    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

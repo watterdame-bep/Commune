@@ -3,92 +3,212 @@
 {% block title %}Dashboard — Hôtel de ville | MuniWorks DRC{% endblock %}
 
 {% block content %}
-<div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]">
-  <!-- Hero réduit + motif -->
-  <div class="relative px-6 py-5 text-white" style="background:
-    radial-gradient(circle at 12% 18%, rgba(56,189,248,0.16), transparent 42%),
-    radial-gradient(circle at 88% 22%, rgba(253,184,19,0.12), transparent 46%),
-    radial-gradient(circle at 55% 120%, rgba(0,0,0,0.55), transparent 55%),
-    linear-gradient(162deg, #0b2b4a 0%, #0a2a48 18%, #082744 40%, #07223c 62%, #061b32 82%, #051428 100%);">
-    <div class="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-soft-light" aria-hidden="true"
-      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cg fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%220.14%22 stroke-width=%221%22%3E%3Cpath d=%22M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z%22/%3E%3Cpath d=%22M60 38 L84 52 L60 66 L36 52 Z%22/%3E%3Cpath d=%22M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z%22/%3E%3Cpath d=%22M140 82 L164 96 L140 110 L116 96 Z%22/%3E%3Cpath d=%22M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z%22/%3E%3Cpath d=%22M60 138 L84 152 L60 166 L36 152 Z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');background-size:460px 460px;background-position:center;"></div>
-    <div class="relative">
+<div class="mx-auto max-w-6xl space-y-4">
+  <!-- HERO (fond uni + motif, sans dégradé) -->
+  <section class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]"
+    style="background-color:#0B2B4A;">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.28] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cg fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%220.16%22 stroke-width=%221%22%3E%3Cpath d=%22M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z%22/%3E%3Cpath d=%22M60 38 L84 52 L60 66 L36 52 Z%22/%3E%3Cpath d=%22M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z%22/%3E%3Cpath d=%22M140 82 L164 96 L140 110 L116 96 Z%22/%3E%3Cpath d=%22M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z%22/%3E%3Cpath d=%22M60 138 L84 152 L60 166 L36 152 Z%22/%3E%3C/g%3E%3C/svg%3E');background-size:520px 520px;background-position:center;"></div>
+    <div class="pointer-events-none absolute -right-10 -top-10 h-[260px] w-[260px] rounded-full bg-white/10 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -left-24 bottom-3 h-[220px] w-[220px] rounded-full bg-[#FDB813]/15 blur-3xl" aria-hidden="true"></div>
+
+    <div class="relative px-6 py-6 text-white">
       <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Administration centrale</p>
       <div class="mt-2 flex flex-wrap items-end justify-between gap-4">
-        <div>
+        <div class="min-w-0">
           <h1 class="font-headline text-2xl font-extrabold tracking-tight">Dashboard — Hôtel de ville</h1>
-          <p class="mt-1 text-[12px] font-semibold text-white/80">Pilotage global, suivi des demandes et gestion des entités.</p>
+          <p class="mt-1 text-[12px] font-semibold text-white/80">
+            Vue d’ensemble, suivi des demandes et supervision des communes.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold text-white/90">
+              <span class="material-symbols-outlined text-[16px]">account_circle</span>
+              {{ user_display_name }}
+            </span>
+            {% if kpis.communes_inactives %}
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold text-white/90">
+              <span class="material-symbols-outlined text-[16px]">warning</span>
+              {{ kpis.communes_inactives }} commune(s) inactive(s)
+            </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <a href="{% url 'hdv_communes' %}"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white hover:bg-white/15">
+            <span class="material-symbols-outlined text-[18px]">location_city</span>
+            Communes
+          </a>
+          <a href="#stats"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#FDB813] px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#0B2B4A] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.75)] hover:brightness-[1.03]">
+            <span class="material-symbols-outlined text-[18px]">bolt</span>
+            Statistiques
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTIQUES (toutes les cartes au même endroit) -->
+  <section id="stats" class="rounded-2xl border border-slate-200 bg-white p-6">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Statistiques — supervision centrale</p>
+        <p class="mt-1 text-[13px] font-semibold text-slate-700">Indicateurs synthétiques (aucun traitement de dossier ici).</p>
+      </div>
+      <p class="text-[11px] font-semibold text-slate-500">
+        Demandes “occupation / domaniale / maison” : <span class="font-extrabold text-[#0B2B4A]">{{ kpis.demandes_occupation }}</span>
+      </p>
+    </div>
+
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Communes</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.communes }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">Actives : {{ kpis.communes_actives }} · Inactives : {{ kpis.communes_inactives }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Bourgmestres</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.bourgmestres }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Agents</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.agents }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">Gérés au niveau des communes</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Demandes (global)</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.demandes }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">Ce mois : {{ kpis.demandes_mois }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-[#123554] p-4 text-white">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">Documents</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold">{{ kpis.documents }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-white/75">Ce mois : {{ kpis.documents_mois }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Recettes estimées (total)</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ finance.recettes_total }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">{{ finance.currency }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Recettes estimées (mois)</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ finance.recettes_mois }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">{{ finance.currency }}</p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Taxes “occupation” (estim.)</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ finance.taxes_occupation_total }}</p>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">{{ finance.currency }}</p>
+      </div>
+    </div>
+
+    <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-[12px] font-semibold text-slate-700">
+          Finances : estimations basées sur des tarifs simples.
+        </p>
+        <p class="text-[11px] font-semibold text-slate-500">
+          Devise : <span class="font-extrabold text-[#0B2B4A]">{{ finance.currency }}</span>
+          · Tarif doc : <span class="font-extrabold text-[#0B2B4A]">{{ finance.fee_document }}</span>
+          · Tarif occupation : <span class="font-extrabold text-[#0B2B4A]">{{ finance.fee_occupation }}</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APERÇU GLOBAL (infos pertinentes HDV, sans exécution opérationnelle) -->
+  <section class="grid gap-4 lg:grid-cols-3">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 lg:col-span-2">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Aperçu global</p>
+          <p class="mt-1 text-[13px] font-semibold text-slate-700">
+            Indications rapides sur la dynamique des communes (supervision).
+          </p>
         </div>
         <a href="{% url 'hdv_communes' %}"
-          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white hover:bg-white/15">
+          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-700 hover:bg-slate-50">
           <span class="material-symbols-outlined text-[18px]">location_city</span>
-          Gestion des communes
+          Voir communes
         </a>
       </div>
-    </div>
-  </div>
 
-  <div class="p-6">
-  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-      <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Communes</p>
-      <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.communes }}</p>
-    </div>
-    <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-      <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Bourgmestres</p>
-      <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.bourgmestres }}</p>
-    </div>
-    <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-      <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Agents</p>
-      <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.agents }}</p>
-    </div>
-    <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-      <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Demandes (global)</p>
-      <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ kpis.demandes }}</p>
-    </div>
-  </div>
-
-  <div class="mt-6 grid gap-4 lg:grid-cols-2">
-    <div class="rounded-3xl border border-slate-200 bg-white p-5">
-      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Activité</p>
-      <div class="mt-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-        <p class="text-sm font-semibold text-slate-700">Journal d’activité (à venir)</p>
-        <p class="mt-1 text-[12px] font-medium text-slate-500">Créations / modifications de communes, comptes, activations.</p>
-      </div>
-      <div class="mt-3 grid gap-2 sm:grid-cols-2">
-        <div class="rounded-2xl border border-slate-200 bg-white p-4">
-          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Dernière mise à jour</p>
-          <p class="mt-2 text-[13px] font-semibold text-slate-800">—</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Communes récemment mises à jour</p>
+          <div class="mt-3 space-y-2">
+            {% for c in overview.communes_recents %}
+            <div class="flex items-start justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5">
+              <div class="min-w-0">
+                <p class="truncate text-[12px] font-semibold text-slate-800">{{ c.nom }}</p>
+                <p class="truncate text-[11px] font-medium text-slate-500">{{ c.province|default:"—" }}</p>
+              </div>
+              <p class="shrink-0 text-[11px] font-semibold text-slate-500">{{ c.updated_at|date:"d/m/Y" }}</p>
+            </div>
+            {% empty %}
+            <p class="text-[12px] font-semibold text-slate-600">Aucune donnée.</p>
+            {% endfor %}
+          </div>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-white p-4">
-          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Actions aujourd’hui</p>
-          <p class="mt-2 text-[13px] font-semibold text-slate-800">—</p>
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Répartition par province</p>
+          <div class="mt-3 space-y-2">
+            {% for row in overview.communes_par_province %}
+            <div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5">
+              <p class="min-w-0 truncate text-[12px] font-semibold text-slate-700">{{ row.province }}</p>
+              <span class="rounded-full bg-slate-50 px-2.5 py-1 text-[11px] font-extrabold text-[#0B2B4A] ring-1 ring-slate-200">{{ row.c }}</span>
+            </div>
+            {% empty %}
+            <p class="text-[12px] font-semibold text-slate-600">Renseigne les provinces des communes pour voir la répartition.</p>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="rounded-3xl border border-slate-200 bg-white p-5">
-      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Accès & rôles</p>
-      <div class="mt-3 space-y-2 text-[12px] font-semibold text-slate-700">
-        <div class="flex items-start gap-2">
-          <span class="material-symbols-outlined text-[18px] text-slate-500">shield</span>
-          <p>Zone réservée au rôle <span class="font-extrabold text-[#0B2B4A]">ADMIN</span> (Hôtel de ville).</p>
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Points d’attention</p>
+      <p class="mt-1 text-[13px] font-semibold text-slate-700">Alertes de supervision (sans action terrain).</p>
+
+      <div class="mt-4 space-y-3">
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <div class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-[20px] text-amber-900">warning</span>
+            <div class="min-w-0">
+              <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-amber-900">Communes inactives</p>
+              <p class="mt-1 text-[12px] font-semibold text-amber-900/90">
+                Total : <span class="font-extrabold">{{ kpis.communes_inactives }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-3 space-y-2">
+            {% for c in overview.communes_inactives_list %}
+            <div class="flex items-center justify-between gap-3 rounded-2xl border border-amber-200/40 bg-white/70 px-3 py-2">
+              <p class="min-w-0 truncate text-[12px] font-semibold text-amber-900">{{ c.nom }}</p>
+              <a href="{% url 'hdv_commune_edit' c.pk %}" class="text-[11px] font-extrabold text-amber-900 underline decoration-amber-900/25 underline-offset-2">ouvrir</a>
+            </div>
+            {% empty %}
+            <p class="text-[12px] font-semibold text-amber-900/90">Aucune.</p>
+            {% endfor %}
+          </div>
         </div>
-        <div class="flex items-start gap-2">
-          <span class="material-symbols-outlined text-[18px] text-slate-500">verified_user</span>
-          <p>Les actions sensibles seront journalisées (audit) à la prochaine itération.</p>
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-700">Rappel de gouvernance</p>
+          <p class="mt-2 text-[12px] font-medium text-slate-600">
+            Commune → exécute · Hôtel de ville → contrôle, analyse, décide.
+          </p>
         </div>
-      </div>
-      <div class="mt-4">
-        <a href="{% url 'hdv_communes' %}"
-          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
-          <span class="material-symbols-outlined text-[18px]">location_city</span>
-          Ouvrir “Communes”
-        </a>
       </div>
     </div>
-  </div>
-  </div>
+  </section>
 </div>
 {% endblock %}
 

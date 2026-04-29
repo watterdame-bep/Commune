@@ -3,121 +3,123 @@
 {% block title %}Communes — Hôtel de ville | MuniWorks DRC{% endblock %}
 
 {% block content %}
-<div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]">
-  <div class="relative border-b border-slate-200 bg-[#0B2B4A] px-6 py-5 text-white">
-    <div class="pointer-events-none absolute inset-0 opacity-[0.35]" aria-hidden="true"
-      style="background-image:
-        radial-gradient(circle at 12% 18%, rgba(56,189,248,0.16), transparent 42%),
-        radial-gradient(circle at 88% 22%, rgba(253,184,19,0.12), transparent 46%),
-        radial-gradient(circle at 55% 120%, rgba(0,0,0,0.55), transparent 55%),
-        linear-gradient(162deg, #0b2b4a 0%, #0a2a48 18%, #082744 40%, #07223c 62%, #061b32 82%, #051428 100%);"></div>
-    <div class="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-soft-light" aria-hidden="true"
-      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cg fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%220.14%22 stroke-width=%221%22%3E%3Cpath d=%22M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z%22/%3E%3Cpath d=%22M60 38 L84 52 L60 66 L36 52 Z%22/%3E%3Cpath d=%22M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z%22/%3E%3Cpath d=%22M140 82 L164 96 L140 110 L116 96 Z%22/%3E%3Cpath d=%22M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z%22/%3E%3Cpath d=%22M60 138 L84 152 L60 166 L36 152 Z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');background-size:460px 460px;background-position:center;"></div>
+<div class="space-y-4">
+  <!-- HERO (simple, sans dégradé) -->
+  <section class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]"
+    style="background-color:#0B2B4A;">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.28] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22220%22 viewBox=%220 0 240 220%22%3E%3Cg fill=%22none%22 stroke=%22%23ffffff%22 stroke-opacity=%220.16%22 stroke-width=%221%22%3E%3Cpath d=%22M60 22 L100 44 L100 88 L60 110 L20 88 L20 44 Z%22/%3E%3Cpath d=%22M60 38 L84 52 L60 66 L36 52 Z%22/%3E%3Cpath d=%22M140 66 L180 88 L180 132 L140 154 L100 132 L100 88 Z%22/%3E%3Cpath d=%22M140 82 L164 96 L140 110 L116 96 Z%22/%3E%3Cpath d=%22M60 122 L100 144 L100 188 L60 210 L20 188 L20 144 Z%22/%3E%3Cpath d=%22M60 138 L84 152 L60 166 L36 152 Z%22/%3E%3C/g%3E%3C/svg%3E');background-size:520px 520px;background-position:center;"></div>
+    <div class="pointer-events-none absolute -right-10 -top-10 h-[220px] w-[220px] rounded-full bg-white/10 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -left-24 bottom-3 h-[220px] w-[220px] rounded-full bg-[#FDB813]/15 blur-3xl" aria-hidden="true"></div>
 
-    <div class="relative">
-      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Gestion</p>
+    <div class="relative px-6 py-6 text-white">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Supervision</p>
       <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
-        <div>
+        <div class="min-w-0">
           <h1 class="font-headline text-2xl font-extrabold tracking-tight">Communes</h1>
           <p class="mt-1 text-[12px] font-semibold text-white/80">Création, activation et informations de base.</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="p-6">
-    <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-      <form method="get" class="flex flex-1 items-center gap-2">
-        <div class="flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2.5">
-          <span class="material-symbols-outlined text-[20px] text-slate-400">search</span>
-          <input name="q" value="{{ q }}" placeholder="Rechercher (nom, province, code)…"
-            class="w-full border-0 bg-transparent p-0 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:ring-0" />
+  <!-- STATS -->
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Statistiques</p>
+        <p class="mt-1 text-[13px] font-semibold text-slate-700">Vue rapide des communes.</p>
+      </div>
+      <a href="{% url 'hdv_commune_create' %}"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Ajouter une commune
+      </a>
+    </div>
+
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Total</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.total }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Actives</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.actives }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Inactives</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold text-[#0B2B4A]">{{ stats.inactives }}</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-[#123554] p-4 text-white">
+        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">Provinces renseignées</p>
+        <p class="mt-2 font-headline text-3xl font-extrabold">{{ stats.provinces }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTE (pleine largeur) -->
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Liste</p>
+          <p class="mt-1 text-[13px] font-semibold text-slate-700">Toutes les communes enregistrées.</p>
         </div>
-        <button type="submit"
-          class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
-          Filtrer
-        </button>
-      </form>
-      <details class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#0B2B4A]">
-          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">add</span> Nouvelle commune</span>
-          <span class="material-symbols-outlined text-[18px] text-slate-500">expand_more</span>
-        </summary>
-        <form method="post" class="mt-4 grid gap-3 sm:grid-cols-2">
-          {% csrf_token %}
-          <div class="sm:col-span-2">
-            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Nom</label>
-            <input name="nom" required
-              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
+        <form method="get" class="flex w-full max-w-xl items-center gap-2">
+          <div class="flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2.5">
+            <span class="material-symbols-outlined text-[20px] text-slate-400">search</span>
+            <input name="q" value="{{ q }}" placeholder="Rechercher (nom, province, code)…"
+              class="w-full border-0 bg-transparent p-0 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:ring-0" />
           </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Province</label>
-            <input name="province"
-              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
-          </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Code</label>
-            <input name="code"
-              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-800 focus:border-sky-300/70 focus:ring-2 focus:ring-sky-300/30" />
-          </div>
-          <label class="sm:col-span-2 inline-flex items-center gap-2 text-[12px] font-semibold text-slate-700">
-            <input type="checkbox" name="active" class="rounded border-slate-300" checked />
-            Active
-          </label>
-          <div class="sm:col-span-2 flex justify-end">
-            <button type="submit"
-              class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
-              <span class="material-symbols-outlined text-[18px]">save</span>
-              Enregistrer
-            </button>
-          </div>
+          <button type="submit"
+            class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+            Filtrer
+          </button>
         </form>
-      </details>
-    </div>
+      </div>
 
-    <div class="mt-6 overflow-hidden rounded-3xl border border-slate-200">
-      <div class="grid grid-cols-12 bg-slate-50 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
-        <div class="col-span-5">Commune</div>
-        <div class="col-span-3">Province</div>
-        <div class="col-span-2">Code</div>
-        <div class="col-span-1 text-center">État</div>
-        <div class="col-span-1 text-right">Action</div>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="grid grid-cols-12 bg-slate-50 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+          <div class="col-span-5">Commune</div>
+          <div class="col-span-3">Province</div>
+          <div class="col-span-2">Code</div>
+          <div class="col-span-1 text-center">État</div>
+          <div class="col-span-1 text-right">Action</div>
+        </div>
+        {% for c in communes %}
+        <div class="grid grid-cols-12 items-center gap-2 border-t border-slate-100 px-4 py-3">
+          <div class="col-span-5 min-w-0">
+            <p class="truncate text-[13px] font-semibold text-slate-900">{{ c.nom }}</p>
+            <p class="truncate text-[11px] font-medium text-slate-500">Mise à jour : {{ c.updated_at|date:"d/m/Y H:i" }}</p>
+          </div>
+          <div class="col-span-3">
+            <p class="truncate text-[13px] font-semibold text-slate-800">{{ c.province|default:"—" }}</p>
+          </div>
+          <div class="col-span-2">
+            <p class="truncate text-[13px] font-semibold text-slate-800">{{ c.code|default:"—" }}</p>
+          </div>
+          <div class="col-span-1 text-center">
+            {% if c.active %}
+            <span class="inline-flex items-center justify-center rounded-full bg-emerald-500/10 px-2 py-1 text-[11px] font-bold text-emerald-700">Actif</span>
+            {% else %}
+            <span class="inline-flex items-center justify-center rounded-full bg-rose-500/10 px-2 py-1 text-[11px] font-bold text-rose-700">Inactif</span>
+            {% endif %}
+          </div>
+          <div class="col-span-1 text-right">
+            <a href="{% url 'hdv_commune_edit' c.pk %}"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+              aria-label="Modifier">
+              <span class="material-symbols-outlined text-[18px]">edit</span>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <div class="px-4 py-10 text-center">
+          <p class="text-sm font-semibold text-slate-700">Aucune commune trouvée.</p>
+          <p class="mt-1 text-[12px] font-medium text-slate-500">Ajoute une commune via le formulaire à droite.</p>
+        </div>
+        {% endfor %}
       </div>
-      {% for c in communes %}
-      <div class="grid grid-cols-12 items-center gap-2 border-t border-slate-100 px-4 py-3">
-        <div class="col-span-5 min-w-0">
-          <p class="truncate text-[13px] font-semibold text-slate-900">{{ c.nom }}</p>
-          <p class="truncate text-[11px] font-medium text-slate-500">Mise à jour : {{ c.updated_at|date:"d/m/Y H:i" }}</p>
-        </div>
-        <div class="col-span-3">
-          <p class="truncate text-[13px] font-semibold text-slate-800">{{ c.province|default:"—" }}</p>
-        </div>
-        <div class="col-span-2">
-          <p class="truncate text-[13px] font-semibold text-slate-800">{{ c.code|default:"—" }}</p>
-        </div>
-        <div class="col-span-1 text-center">
-          {% if c.active %}
-          <span class="inline-flex items-center justify-center rounded-full bg-emerald-500/10 px-2 py-1 text-[11px] font-bold text-emerald-700">Actif</span>
-          {% else %}
-          <span class="inline-flex items-center justify-center rounded-full bg-rose-500/10 px-2 py-1 text-[11px] font-bold text-rose-700">Inactif</span>
-          {% endif %}
-        </div>
-        <div class="col-span-1 text-right">
-          <a href="{% url 'hdv_commune_edit' c.pk %}"
-            class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
-            aria-label="Modifier">
-            <span class="material-symbols-outlined text-[18px]">edit</span>
-          </a>
-        </div>
-      </div>
-      {% empty %}
-      <div class="px-4 py-10 text-center">
-        <p class="text-sm font-semibold text-slate-700">Aucune commune trouvée.</p>
-        <p class="mt-1 text-[12px] font-medium text-slate-500">Ajoute une commune avec le formulaire “Nouvelle commune”.</p>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+  </section>
 </div>
 {% endblock %}
 

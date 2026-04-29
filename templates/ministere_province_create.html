@@ -1,0 +1,526 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Créer une province (Ministère) — MuniWorks DRC{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-6xl space-y-4">
+  <section class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B2B4A] p-6 text-white shadow-[0_30px_70px_-55px_rgba(2,6,23,0.75)] sm:p-8">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden="true"
+      style="background:
+        radial-gradient(ellipse 95% 80% at 10% 25%, rgba(56,189,248,0.00) 0%, transparent 60%),
+        radial-gradient(ellipse 75% 70% at 88% 30%, rgba(253,184,19,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 70% at 55% 120%, rgba(255,255,255,0.06) 0%, transparent 52%);">
+    </div>
+    <div class="relative z-10">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Référentiel géographique</p>
+      <h1 class="mt-2 font-headline text-2xl font-extrabold tracking-tight sm:text-3xl">Créer une province</h1>
+      <p class="mt-2 max-w-3xl text-[13px] font-semibold text-white/80">
+        Renseignez les informations essentielles (identité, géographie, démographie, économie et rattachement des villes).
+      </p>
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Création</p>
+        <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Fiche province</h2>
+      </div>
+      <a href="{% url 'ministere_provinces' %}"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-700 hover:bg-slate-50">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        Retour
+      </a>
+    </div>
+
+    <form method="post" class="mt-5 space-y-6">
+      {% csrf_token %}
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Identité</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Nom de la province</label>
+            <input id="provinceNameInput" name="nom" required
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: Nord-Kivu" />
+            <p id="provinceExistsMsg" class="mt-2 hidden text-[12px] font-semibold text-rose-700">
+              Province déjà existante.
+            </p>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Code (optionnel)</label>
+            <input name="code"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: PRO-NK" />
+          </div>
+          <div class="flex items-center gap-3 pt-7">
+            <input id="active" name="active" type="checkbox" checked class="h-4 w-4 rounded border-slate-300" />
+            <label for="active" class="text-sm font-semibold text-slate-700">Active</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+        <div class="flex items-center justify-between gap-3">
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Géographie</p>
+          <button id="openMapBtn" type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+            aria-label="Ouvrir la carte">
+            <span class="material-symbols-outlined text-[20px]">map</span>
+          </button>
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Latitude (GPS)</label>
+            <input id="latInput" name="latitude" inputmode="decimal"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="-4.325" />
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Longitude (GPS)</label>
+            <input id="lngInput" name="longitude" inputmode="decimal"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="15.322" />
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Superficie (km²)</label>
+            <input name="superficie_km2" inputmode="decimal"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: 9940" />
+          </div>
+          <div class="sm:col-span-3">
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Limites territoriales (provinces voisines)</label>
+            <textarea name="limites_voisines" rows="3"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: Ituri, Sud-Kivu, Maniema…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Démographie</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Population totale estimée</label>
+            <input name="population_estimee" inputmode="numeric"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: 6500000" />
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Nombre de territoires</label>
+            <input name="nb_territoires" inputmode="numeric"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="ex: 6" />
+          </div>
+          <div class="sm:col-span-3">
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Villes rattachées (optionnel)</label>
+            <!-- Dropdown multi-select (cases à cocher + recherche) -->
+            <div id="villesPicker" class="relative">
+              <button id="villesPickerBtn" type="button"
+                class="flex w-full items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-900 outline-none focus:border-sky-300">
+                <span id="villesPickerLabel" class="truncate text-slate-700">Sélectionner des villes…</span>
+                <span class="material-symbols-outlined text-[20px] text-slate-500">expand_more</span>
+              </button>
+
+              <div id="villesPickerPanel"
+                class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_25px_60px_-40px_rgba(2,6,23,0.22)]">
+                <div class="p-3 border-b border-slate-200 bg-slate-50/60">
+                  <div class="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2">
+                    <span class="material-symbols-outlined text-[20px] text-slate-400">search</span>
+                    <input id="villesPickerSearch" type="text" placeholder="Rechercher une ville…"
+                      class="w-full border-0 bg-transparent p-0 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:ring-0" />
+                  </div>
+                  <p class="mt-2 text-[11px] font-medium text-slate-500">
+                    Cliquez pour cocher/décocher. Tapez pour filtrer.
+                  </p>
+                </div>
+                <div id="villesPickerList" class="max-h-[320px] overflow-auto p-2"></div>
+                <!-- inputs cachés envoyés au serveur -->
+                <div id="villesHiddenInputs"></div>
+              </div>
+            </div>
+          </div>
+          <div class="sm:col-span-3">
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Chef-lieu (optionnel)</label>
+            <select id="chefLieuSelect" name="chef_lieu_ville_id"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300">
+              <option value="">—</option>
+            </select>
+            <p class="mt-2 text-[11px] font-medium text-slate-500">
+              Le chef-lieu est choisi parmi les villes rattachées sélectionnées.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Économie</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Principales ressources</label>
+            <textarea name="ressources_principales" rows="3"
+              class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+              placeholder="Minières, agricoles, forestières…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <button type="submit"
+          class="inline-flex items-center justify-center rounded-2xl bg-[#FDB813] px-6 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] hover:brightness-[1.02]">
+          Enregistrer la province
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- Modal carte Leaflet -->
+<div id="mapModal" class="fixed inset-0 z-[99999] hidden" aria-hidden="true">
+  <div id="mapModalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-[2px]"></div>
+  <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl"
+    style="width: min(96vw, 1400px); max-height: 96vh;">
+    <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+      <div class="min-w-0">
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Sélection GPS</p>
+        <p class="mt-1 font-headline text-lg font-extrabold text-[#0B2B4A]">Cliquez sur la carte (RDC)</p>
+      </div>
+      <button id="closeMapBtn" type="button"
+        class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+        aria-label="Fermer">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+    </div>
+    <div class="p-5" style="max-height: calc(96vh - 74px); overflow: hidden;">
+      <div id="leafletMap" class="w-full overflow-hidden rounded-2xl border border-slate-200"
+        style="height: min(78vh, 820px); min-height: 520px;"></div>
+      <p class="mt-3 text-[12px] font-medium text-slate-600">
+        Astuce : un clic remplit automatiquement Latitude / Longitude.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+{{ block.super }}
+<script src="{% static 'vendor/leaflet/leaflet.js' %}"></script>
+<script>
+  (function () {
+    const modal = document.getElementById('mapModal');
+    const openBtn = document.getElementById('openMapBtn');
+    const closeBtn = document.getElementById('closeMapBtn');
+    const backdrop = document.getElementById('mapModalBackdrop');
+    const provinceNameInput = document.getElementById('provinceNameInput');
+    const latInput = document.getElementById('latInput');
+    const lngInput = document.getElementById('lngInput');
+    const mapEl = document.getElementById('leafletMap');
+    if (!modal || !openBtn || !closeBtn || !backdrop || !provinceNameInput || !latInput || !lngInput || !mapEl) return;
+
+    let map = null;
+    let provincesLayer = null;
+    let provincesLoaded = false;
+
+    const CHARTER_BLUE = '#0B2B4A';
+
+    function open() {
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      // Le conteneur est dans un modal: on attend la mise en page avant invalidateSize()
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          setTimeout(() => {
+            initMap();
+            try { if (map) map.invalidateSize(true); } catch (_) {}
+          }, 60)
+        )
+      );
+    }
+    function close() {
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+
+    function setMarker(lat, lng) {
+      latInput.value = String(lat);
+      lngInput.value = String(lng);
+    }
+
+    function provinceStyle() {
+      return {
+        color: '#0f172a',
+        weight: 1,
+        opacity: 0.55,
+        fillColor: '#64748b',
+        fillOpacity: 0.38
+      };
+    }
+
+    function highlightProvince(e) {
+      const layer = e.target;
+      layer.setStyle({
+        weight: 2,
+        color: '#ffffff',
+        fillColor: CHARTER_BLUE,
+        fillOpacity: 0.32,
+        opacity: 0.95
+      });
+      layer.bringToFront();
+    }
+
+    function resetProvinceHighlight(e) {
+      if (!provincesLayer) return;
+      provincesLayer.resetStyle(e.target);
+    }
+
+    function getProvinceName(feature) {
+      const p = (feature && feature.properties) ? feature.properties : {};
+      return p.shapeName || p.shapeNAME || p.NAME_1 || p.name || p.Name || 'Province';
+    }
+
+    function onEachProvince(feature, layer) {
+      const name = getProvinceName(feature);
+      layer.bindTooltip(name, { sticky: true, direction: 'auto', opacity: 0.95 });
+      layer.on({
+        mouseover: highlightProvince,
+        mouseout: resetProvinceHighlight,
+        click: (e) => {
+          // 1) Garder la fonctionnalité existante: clic => Latitude/Longitude
+          const lat = Number(e.latlng.lat.toFixed(6));
+          const lng = Number(e.latlng.lng.toFixed(6));
+          setMarker(lat, lng);
+
+          // 2) Popup explicite au clic
+          layer.bindPopup(`<div style="font-weight:800;color:${CHARTER_BLUE}">${name}</div>`).openPopup();
+
+          // 3) Remplit automatiquement le champ Nom (pratique pour la création)
+          provinceNameInput.value = name;
+
+          // 4) Ferme le modal après sélection
+          close();
+        }
+      });
+    }
+
+    async function loadProvincesGeoJson() {
+      if (provincesLoaded) return;
+      provincesLoaded = true;
+      try {
+        const resp = await fetch("{% static 'geo/cod_provinces.geojson' %}", { cache: 'no-store' });
+        if (!resp.ok) throw new Error('GeoJSON introuvable');
+        const geojson = await resp.json();
+        provincesLayer = L.geoJSON(geojson, {
+          style: provinceStyle,
+          onEachFeature: onEachProvince
+        }).addTo(map);
+
+        try {
+          const bounds = provincesLayer.getBounds();
+          // Cadre la RDC "en grand" au chargement (sans trop dézoomer / trop zoomer)
+          map.fitBounds(bounds, { padding: [24, 24], maxZoom: 7.0 });
+          // Empêche de partir loin hors RDC par erreur (léger padding)
+          map.setMaxBounds(bounds.pad(0.25));
+        } catch (_) {}
+      } catch (err) {
+        console.warn('Impossible de charger le GeoJSON provinces RDC', err);
+      }
+    }
+
+    function initMap() {
+      if (map) {
+        map.invalidateSize();
+        loadProvincesGeoJson();
+        return;
+      }
+      // Centre RDC (approx.)
+      const drc = [-2.88, 23.65];
+      map = L.map(mapEl, {
+        zoomControl: true,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25,
+      }).setView(drc, 6.25);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      map.on('click', function (e) {
+        const lat = Number(e.latlng.lat.toFixed(6));
+        const lng = Number(e.latlng.lng.toFixed(6));
+        setMarker(lat, lng);
+      });
+
+      // Si déjà renseigné, on place le marqueur
+      const lat0 = parseFloat(latInput.value);
+      const lng0 = parseFloat(lngInput.value);
+      if (Number.isFinite(lat0) && Number.isFinite(lng0)) {
+        map.setView([lat0, lng0], 8);
+      }
+      map.invalidateSize();
+      loadProvincesGeoJson();
+    }
+
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    const input = document.getElementById('provinceNameInput');
+    const msg = document.getElementById('provinceExistsMsg');
+    if (!input || !msg) return;
+
+    let timer = null;
+    async function check() {
+      const name = String(input.value || '').trim();
+      if (name.length < 2) { msg.classList.add('hidden'); return; }
+      try {
+        const resp = await fetch("{% url 'ministere_province_name_exists' %}?nom=" + encodeURIComponent(name), { cache: 'no-store' });
+        if (!resp.ok) throw new Error('bad');
+        const data = await resp.json();
+        const exists = Boolean(data && data.exists);
+        msg.classList.toggle('hidden', !exists);
+      } catch (_) {
+        msg.classList.add('hidden');
+      }
+    }
+    function schedule() {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(check, 250);
+    }
+    input.addEventListener('input', schedule);
+    input.addEventListener('blur', check);
+  })();
+</script>
+
+<script>
+  (function () {
+    const picker = document.getElementById('villesPicker');
+    const btn = document.getElementById('villesPickerBtn');
+    const panel = document.getElementById('villesPickerPanel');
+    const search = document.getElementById('villesPickerSearch');
+    const list = document.getElementById('villesPickerList');
+    const label = document.getElementById('villesPickerLabel');
+    const hiddenWrap = document.getElementById('villesHiddenInputs');
+    const chef = document.getElementById('chefLieuSelect');
+    if (!picker || !btn || !panel || !search || !list || !label || !hiddenWrap || !chef) return;
+
+    const villes = [
+      {% for v in villes %}
+        { id: "{{ v.pk }}", name: "{{ v.nom|escapejs }}" },
+      {% endfor %}
+    ];
+
+    const selected = new Set();
+
+    function open() {
+      panel.classList.remove('hidden');
+      btn.setAttribute('aria-expanded', 'true');
+      setTimeout(() => { try { search.focus(); } catch (_) {} }, 0);
+    }
+    function close() {
+      panel.classList.add('hidden');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function toggle() {
+      const isHidden = panel.classList.contains('hidden');
+      if (isHidden) open();
+      else close();
+    }
+
+    function renderList(filterText) {
+      const q = (filterText || '').trim().toLowerCase();
+      const items = q ? villes.filter(v => v.name.toLowerCase().includes(q)) : villes;
+      list.innerHTML = '';
+      items.forEach(v => {
+        const row = document.createElement('label');
+        row.className = 'flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 hover:bg-slate-50';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = selected.has(v.id);
+        cb.className = 'h-4 w-4 rounded border-slate-300';
+        cb.addEventListener('change', () => {
+          if (cb.checked) selected.add(v.id);
+          else selected.delete(v.id);
+          syncAll();
+        });
+        const name = document.createElement('span');
+        name.className = 'text-[13px] font-semibold text-slate-800';
+        name.textContent = v.name;
+        row.appendChild(cb);
+        row.appendChild(name);
+        list.appendChild(row);
+      });
+    }
+
+    function syncHiddenInputs() {
+      hiddenWrap.innerHTML = '';
+      Array.from(selected).forEach(id => {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = 'villes_ids';
+        inp.value = id;
+        hiddenWrap.appendChild(inp);
+      });
+    }
+
+    function syncLabel() {
+      const names = villes.filter(v => selected.has(v.id)).map(v => v.name);
+      if (!names.length) label.textContent = 'Sélectionner des villes…';
+      else if (names.length <= 2) label.textContent = names.join(', ');
+      else label.textContent = `${names.slice(0, 2).join(', ')} +${names.length - 2}`;
+    }
+
+    function syncChefLieu() {
+      const current = chef.value;
+      chef.innerHTML = '<option value="">—</option>';
+      villes.forEach(v => {
+        if (!selected.has(v.id)) return;
+        const o = document.createElement('option');
+        o.value = v.id;
+        o.textContent = v.name;
+        chef.appendChild(o);
+      });
+      if (current && selected.has(current)) chef.value = current;
+      if (!selected.size) chef.value = '';
+    }
+
+    function syncAll() {
+      syncHiddenInputs();
+      syncLabel();
+      syncChefLieu();
+    }
+
+    btn.addEventListener('click', (e) => { e.preventDefault(); toggle(); });
+    document.addEventListener('click', (e) => {
+      if (panel.classList.contains('hidden')) return;
+      if (e.target === btn || btn.contains(e.target) || panel.contains(e.target)) return;
+      close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.classList.contains('hidden')) close();
+    });
+    search.addEventListener('input', () => renderList(search.value));
+
+    renderList('');
+    syncAll();
+  })();
+</script>
+{% endblock %}
+

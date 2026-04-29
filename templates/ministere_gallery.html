@@ -1,0 +1,265 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Galerie (accueil) — Ministère | MuniWorks DRC{% endblock %}
+
+{% block content %}
+<div class="mx-auto w-full max-w-7xl space-y-4">
+  <section class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]"
+    style="background-color:#0B2B4A;">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.28] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22260%22 viewBox=%220 0 260 260%22%3E%3Cg fill=%22none%22%3E%3Cpath d=%22M0 52H260M0 130H260M0 208H260%22 stroke=%22%23ffffff%22 stroke-opacity=%220.08%22 stroke-width=%221%22/%3E%3Cpath d=%22M52 0V260M130 0V260M208 0V260%22 stroke=%22%23ffffff%22 stroke-opacity=%220.06%22 stroke-width=%221%22/%3E%3C/g%3E%3C/svg%3E');background-size:520px 520px;background-position:center;"></div>
+    <div class="relative px-6 py-6 text-white">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Gouvernance nationale</p>
+      <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 class="font-headline text-2xl font-extrabold tracking-tight">Galerie (page d’accueil)</h1>
+          <p class="mt-1 text-[12px] font-semibold text-white/80">Toutes les photos des villes (carrousel public).</p>
+        </div>
+        <a href="{% url 'welcome' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white hover:bg-white/15">
+          <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+          Voir l’accueil
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Liste</p>
+          <p class="mt-1 text-[13px] font-semibold text-slate-700">Photos (filtrables par ville)</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <form method="get" class="flex items-center gap-2">
+            <select name="ville"
+              class="h-11 rounded-2xl border border-slate-200 bg-white px-3 text-[12px] font-semibold text-slate-800">
+              <option value="">Toutes les villes</option>
+              {% for v in villes %}
+                <option value="{{ v.pk }}" {% if selected_ville and selected_ville.pk == v.pk %}selected{% endif %}>{{ v.nom }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit"
+              class="inline-flex h-11 items-center justify-center rounded-2xl bg-[#0B2B4A] px-4 text-[12px] font-bold text-white hover:bg-[#123554]">
+              Filtrer
+            </button>
+          </form>
+
+          <button type="button" id="openAddModal"
+            class="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 text-[12px] font-bold text-white hover:bg-[#123554]">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            Ajouter
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4 max-h-[70dvh] overflow-auto pr-1">
+      <div id="galleryGrid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {% for p in photos %}
+        <div class="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/60">
+          <div class="h-[260px] w-full bg-slate-100">
+            <img src="{{ p.image.url }}" alt="{{ p.title|default:'Photo' }}" class="block h-full w-full object-cover" />
+          </div>
+          <div class="flex flex-1 flex-col p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="truncate text-[12px] font-extrabold text-[#0B2B4A]">{{ p.title|default:"(sans titre)" }}</p>
+                <p class="mt-1 text-[11px] font-semibold text-slate-600">{% if p.ville %}{{ p.ville.nom }}{% else %}—{% endif %}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="{% url 'ministere_gallery_edit' p.pk %}"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+                  aria-label="Modifier">
+                  <span class="material-symbols-outlined text-[18px]">edit</span>
+                </a>
+                <button type="button" data-delete-btn data-delete-action="{% url 'ministere_gallery_delete' p.pk %}"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-rose-700 hover:bg-rose-50"
+                  aria-label="Supprimer">
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </div>
+            {% if p.description %}
+              <p class="mt-2 line-clamp-3 text-[12px] font-medium leading-relaxed text-slate-600">{{ p.description }}</p>
+            {% endif %}
+            <div class="mt-auto pt-3 flex items-center justify-between gap-2 text-[11px] font-semibold text-slate-600">
+              <span>Ordre : {{ p.sort_order }}</span>
+              {% if p.is_active %}
+                <span class="rounded-full bg-emerald-500/10 px-2 py-1 text-emerald-700">Active</span>
+              {% else %}
+                <span class="rounded-full bg-rose-500/10 px-2 py-1 text-rose-700">Inactive</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-6 sm:col-span-2 lg:col-span-3">
+          <p class="text-[12px] font-semibold text-slate-700">Aucune photo dans la galerie.</p>
+        </div>
+        {% endfor %}
+      </div>
+      </div>
+  </section>
+</div>
+
+<!-- Modal ajout -->
+<div id="addModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center overflow-auto p-4">
+    <div class="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl flex flex-col">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Ajouter</p>
+          <p class="mt-1 text-[13px] font-semibold text-slate-700">Nouvelle photo</p>
+        </div>
+        <button type="button" data-modal-close
+          class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+          aria-label="Fermer">
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="mt-3 grid gap-2.5">
+        {% csrf_token %}
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Ville (optionnel)</label>
+          <select name="ville_id" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800">
+            <option value="">—</option>
+            {% for v in villes %}
+              <option value="{{ v.pk }}">{{ v.nom }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-3">
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Image</p>
+          <div class="mt-2 flex items-center gap-3">
+            <div class="h-12 w-12 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <img id="uploadPreview" alt="" class="h-full w-full object-cover hidden" />
+              <div id="uploadPlaceholder" class="grid h-full w-full place-items-center text-slate-400">
+                <span class="material-symbols-outlined text-[22px]">image</span>
+              </div>
+            </div>
+            <div class="min-w-0 flex-1">
+              <label for="uploadInput"
+                class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-700 hover:bg-slate-50">
+                <span class="material-symbols-outlined text-[18px]">upload</span>
+                Choisir une photo
+              </label>
+              <input id="uploadInput" type="file" name="image" accept="image/*" required class="hidden" />
+              <p class="mt-1 truncate text-[12px] font-medium text-slate-500" id="uploadFileName">Aucun fichier sélectionné</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Titre (court)</label>
+          <input name="title" placeholder="Ex: Maison communale — accueil principal"
+            class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800" />
+        </div>
+        <div>
+          <label for="descInput" class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Texte (long) — affiché sur l’accueil</label>
+          <textarea id="descInput" name="description" rows="3" maxlength="500" placeholder="Texte long… (max 500 caractères)"
+            class="mt-1 w-full resize-none rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Ordre</label>
+            <input name="sort_order" type="number" value="{{ next_sort|default:0 }}" min="0"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800" />
+          </div>
+          <label class="flex items-center gap-2 self-end pb-1 text-[12px] font-semibold text-slate-700">
+            <input type="checkbox" name="is_active" class="rounded border-slate-300" checked />
+            Active
+          </label>
+        </div>
+        <div class="mt-1 flex flex-wrap justify-end gap-2">
+          <button type="button" data-modal-close
+            class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+            Annuler
+          </button>
+          <button type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#123554]">
+            <span class="material-symbols-outlined text-[18px]">upload</span>
+            Ajouter
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal suppression -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  <div class="absolute left-1/2 top-1/2 w-[min(calc(100vw-2rem),520px)] -translate-x-1/2 -translate-y-1/2">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+      <div class="flex items-start gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-2xl bg-rose-50 text-rose-700 ring-1 ring-rose-200">
+          <span class="material-symbols-outlined text-[22px]">delete</span>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[13px] font-extrabold text-slate-900">Supprimer cette photo ?</p>
+          <p class="mt-1 text-[12px] font-medium text-slate-600">Cette action supprimera l’image et son contenu.</p>
+        </div>
+      </div>
+      <form id="deleteForm" method="post" class="mt-5 flex flex-wrap justify-end gap-2">
+        {% csrf_token %}
+        <button type="button" data-modal-cancel
+          class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+          Annuler
+        </button>
+        <button type="submit"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-bold"
+          style="background-color:#e11d48;color:#fff;border:1px solid #be123c;">
+          <span class="material-symbols-outlined text-[18px]" style="color:inherit;">delete</span>
+          Supprimer
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addModal = document.getElementById('addModal');
+    const openAdd = document.getElementById('openAddModal');
+    const closeBtns = addModal?.querySelectorAll('[data-modal-close]') || [];
+
+    function openModal(modal) { modal?.classList.remove('hidden'); }
+    function closeModal(modal) { modal?.classList.add('hidden'); }
+    openAdd?.addEventListener('click', () => openModal(addModal));
+    closeBtns.forEach(btn => btn.addEventListener('click', () => closeModal(addModal)));
+
+    // Upload preview
+    const uploadInput = document.getElementById('uploadInput');
+    const uploadPreview = document.getElementById('uploadPreview');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const uploadFileName = document.getElementById('uploadFileName');
+    uploadInput?.addEventListener('change', function () {
+      const file = uploadInput.files && uploadInput.files[0];
+      if (!file) return;
+      if (uploadFileName) uploadFileName.textContent = file.name;
+      const url = URL.createObjectURL(file);
+      if (uploadPreview) {
+        uploadPreview.src = url;
+        uploadPreview.classList.remove('hidden');
+      }
+      uploadPlaceholder?.classList.add('hidden');
+    });
+
+    // Delete modal
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteForm = document.getElementById('deleteForm');
+    const deleteCancel = deleteModal?.querySelector('[data-modal-cancel]');
+    deleteCancel?.addEventListener('click', () => closeModal(deleteModal));
+    document.querySelectorAll('[data-delete-btn]').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const action = btn.getAttribute('data-delete-action');
+        if (deleteForm && action) deleteForm.setAttribute('action', action);
+        openModal(deleteModal);
+      });
+    });
+  });
+</script>
+{% endblock %}
+

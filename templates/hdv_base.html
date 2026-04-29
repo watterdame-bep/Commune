@@ -1,5 +1,6 @@
 {% extends "backoffice_base.html" %}
 {% load static %}
+{% load hdv_flash %}
 
 {% block title %}Hôtel de ville | MuniWorks DRC{% endblock %}
 
@@ -36,37 +37,52 @@
     <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
     Tableau de bord
   </a>
-  <details class="group rounded-2xl border border-transparent open:bg-slate-50/60">
-    <summary class="flex cursor-pointer list-none items-center justify-between rounded-2xl px-3 py-2.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">
-      <span class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">settings</span>
-        Gestion
-      </span>
-      <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
-    </summary>
-    <div class="pb-2 pl-10 pr-3">
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="{% url 'hdv_communes' %}">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">location_city</span>
-        Communes
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">badge</span>
-        Bourgmestres
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">groups</span>
-        Agents
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">folder_open</span>
-        Dossiers (global)
-      </a>
-    </div>
-  </details>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Supervision</p>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_communes' or current == 'hdv_commune_edit' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_communes' %}">
+    <span class="material-symbols-outlined text-[20px]">location_city</span>
+    Communes
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_geo' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_geo' %}">
+    <span class="material-symbols-outlined text-[20px]">map</span>
+    Référentiel géographique
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_users' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_users' %}">
+    <span class="material-symbols-outlined text-[20px]">badge</span>
+    Utilisateurs (haut niveau)
+  </a>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Contrôle</p>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_activites' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_activites' %}">
+    <span class="material-symbols-outlined text-[20px]">monitoring</span>
+    Activités & rapports
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_dossiers_sensibles' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_dossiers_sensibles' %}">
+    <span class="material-symbols-outlined text-[20px]">verified_user</span>
+    Dossiers sensibles
+  </a>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Gouvernance</p>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_annonces' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_annonces' %}">
+    <span class="material-symbols-outlined text-[20px]">campaign</span>
+    Annonces officielles
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_gallery' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_gallery' %}">
+    <span class="material-symbols-outlined text-[20px]">photo_library</span>
+    Galerie (accueil)
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_audit' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}border-transparent text-slate-700{% endif %}"
+    href="{% url 'hdv_audit' %}">
+    <span class="material-symbols-outlined text-[20px]">shield</span>
+    Sécurité & audit
+  </a>
 </nav>
 {% endblock %}
 
@@ -77,37 +93,86 @@
     <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
     Tableau de bord
   </a>
-  <details class="group rounded-2xl border border-slate-200 bg-white open:bg-slate-50/60">
-    <summary class="flex cursor-pointer list-none items-center justify-between rounded-2xl px-3 py-2.5 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">
-      <span class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">settings</span>
-        Gestion
-      </span>
-      <span class="material-symbols-outlined text-[18px] text-slate-400 transition-transform group-open:rotate-180">expand_more</span>
-    </summary>
-    <div class="pb-2 pl-10 pr-3">
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="{% url 'hdv_communes' %}">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">location_city</span>
-        Communes
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">badge</span>
-        Bourgmestres
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">groups</span>
-        Agents
-      </a>
-      <a class="mt-1 flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] font-medium text-slate-700 hover:bg-white"
-        href="#">
-        <span class="material-symbols-outlined text-[18px] text-slate-500">folder_open</span>
-        Dossiers (global)
-      </a>
-    </div>
-  </details>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Supervision</p>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_communes' or current == 'hdv_commune_edit' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_communes' %}">
+    <span class="material-symbols-outlined text-[20px]">location_city</span>
+    Communes
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_geo' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_geo' %}">
+    <span class="material-symbols-outlined text-[20px]">map</span>
+    Référentiel géographique
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_users' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_users' %}">
+    <span class="material-symbols-outlined text-[20px]">badge</span>
+    Utilisateurs (haut niveau)
+  </a>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Contrôle</p>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_activites' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_activites' %}">
+    <span class="material-symbols-outlined text-[20px]">monitoring</span>
+    Activités & rapports
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_dossiers_sensibles' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_dossiers_sensibles' %}">
+    <span class="material-symbols-outlined text-[20px]">verified_user</span>
+    Dossiers sensibles
+  </a>
+
+  <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Gouvernance</p>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_annonces' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_annonces' %}">
+    <span class="material-symbols-outlined text-[20px]">campaign</span>
+    Annonces officielles
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_gallery' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_gallery' %}">
+    <span class="material-symbols-outlined text-[20px]">photo_library</span>
+    Galerie (accueil)
+  </a>
+  <a class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-slate-50 {% if current == 'hdv_audit' %}border-[#0B2B4A]/20 bg-[#0B2B4A]/5 text-[#0B2B4A]{% else %}text-slate-700{% endif %}"
+    href="{% url 'hdv_audit' %}">
+    <span class="material-symbols-outlined text-[20px]">shield</span>
+    Sécurité & audit
+  </a>
 </nav>
+{% endblock %}
+
+{% block bo_before_content %}
+{% hdv_flash_messages %}
+{% endblock %}
+
+{% block extra_body %}
+<script>
+  (function () {
+    document.addEventListener(
+      "submit",
+      function (e) {
+        var form = e.target;
+        if (!form || form.tagName !== "FORM" || String(form.method || "").toLowerCase() !== "post") return;
+        // Désactiver après le cycle courant : sinon certains navigateurs n’envoient pas le POST
+        // (bouton submit désactivé avant la soumission effective).
+        setTimeout(function () {
+          form.querySelectorAll('button[type="submit"]').forEach(function (btn) {
+            btn.disabled = true;
+          });
+        }, 0);
+      },
+      true
+    );
+    window.addEventListener("pageshow", function (ev) {
+      if (!ev.persisted) return;
+      document.querySelectorAll("form").forEach(function (form) {
+        form.querySelectorAll('button[type="submit"]').forEach(function (btn) {
+          btn.disabled = false;
+        });
+      });
+    });
+  })();
+</script>
 {% endblock %}
 

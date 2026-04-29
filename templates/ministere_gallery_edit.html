@@ -1,0 +1,91 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Modifier une photo — Galerie | Ministère{% endblock %}
+
+{% block content %}
+<div class="mx-auto w-full max-w-4xl space-y-4">
+  <section class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_25px_60px_-50px_rgba(2,6,23,0.14)]"
+    style="background-color:#0B2B4A;">
+    <div class="relative px-6 py-6 text-white">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/75">Galerie</p>
+      <div class="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 class="font-headline text-2xl font-extrabold tracking-tight">Modifier une photo</h1>
+          <p class="mt-1 text-[12px] font-semibold text-white/80">Mise à jour (texte, ordre, activation, image).</p>
+        </div>
+        <a href="{% url 'ministere_gallery' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white hover:bg-white/15">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          Retour
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+    <form method="post" enctype="multipart/form-data" class="grid gap-4">
+      {% csrf_token %}
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Aperçu</p>
+          <div class="mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+            <img src="{{ photo.image.url }}" alt="" class="block h-[260px] w-full object-cover" />
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Ville (optionnel)</label>
+            <select name="ville_id" class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800">
+              <option value="">—</option>
+              {% for v in villes %}
+                <option value="{{ v.pk }}" {% if photo.ville and photo.ville.pk == v.pk %}selected{% endif %}>{{ v.nom }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Titre (court)</label>
+            <input name="title" value="{{ photo.title|default:'' }}"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Ordre</label>
+            <input name="sort_order" type="number" min="0" value="{{ photo.sort_order|default:0 }}"
+              class="mt-1 w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800" />
+          </div>
+          <label class="flex items-center gap-2 text-[12px] font-semibold text-slate-700">
+            <input type="checkbox" name="is_active" class="rounded border-slate-300" {% if photo.is_active %}checked{% endif %} />
+            Active
+          </label>
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-3">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Remplacer l’image (optionnel)</p>
+            <input type="file" name="image" accept="image/*"
+              class="mt-2 block w-full text-[12px] font-semibold text-slate-700 file:mr-3 file:rounded-xl file:border-0 file:bg-[#0B2B4A] file:px-3 file:py-2 file:text-white" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Texte (long)</label>
+        <textarea name="description" rows="4" maxlength="500"
+          class="mt-1 w-full resize-none rounded-2xl border border-slate-200 bg-white px-3 py-2 text-[13px] font-semibold text-slate-800">{{ photo.description|default:'' }}</textarea>
+        <p class="mt-1 text-[11px] font-semibold text-slate-500">Max 500 caractères. Doit dépasser la limite d’affichage du hero.</p>
+      </div>
+
+      <div class="flex flex-wrap justify-end gap-2">
+        <a href="{% url 'ministere_gallery' %}"
+          class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-[12px] font-semibold text-slate-800 hover:bg-slate-50">
+          Annuler
+        </a>
+        <button type="submit"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-4 py-2.5 text-[12px] font-bold text-white hover:bg-[#123554]">
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          Enregistrer
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}
+

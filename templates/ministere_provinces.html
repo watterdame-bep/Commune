@@ -1,0 +1,168 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Provinces (Ministère) — MuniWorks DRC{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-6xl space-y-4">
+  <section class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B2B4A] p-6 text-white shadow-[0_30px_70px_-55px_rgba(2,6,23,0.65)] sm:p-8">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.42]" aria-hidden="true"
+      style="background:
+        radial-gradient(ellipse 95% 80% at 10% 25%, rgba(56,189,248,0.00) 0%, transparent 60%),
+        radial-gradient(ellipse 75% 70% at 88% 30%, rgba(253,184,19,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 70% at 55% 120%, rgba(255,255,255,0.06) 0%, transparent 52%);">
+    </div>
+    <div class="pointer-events-none absolute inset-0 opacity-[0.30] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.22' stroke-width='1'%3E%3Cpath d='M80 0 L160 80 L80 160 L0 80 Z'/%3E%3Cpath d='M80 24 L136 80 L80 136 L24 80 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;);background-size:88px 88px;background-repeat:repeat;background-position:center;">
+    </div>
+
+    <div class="relative z-10">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/80">Référentiels</p>
+      <h1 class="mt-2 font-headline text-2xl font-extrabold tracking-tight sm:text-3xl">Référentiel géographique — Provinces</h1>
+      <p class="mt-2 max-w-3xl text-[13px] font-semibold text-white/85">
+        Création des provinces (niveau national). Les provinces serviront à structurer les villes et communes.
+      </p>
+    </div>
+  </section>
+
+  <!-- KPI cards -->
+  <section class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Provinces</p>
+      <p class="mt-2 font-headline text-2xl font-extrabold text-slate-900">{{ stats.total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Total</p>
+    </div>
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Actives</p>
+      <p class="mt-2 font-headline text-2xl font-extrabold text-slate-900">{{ stats.active }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Référentiel</p>
+    </div>
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Population (proxy)</p>
+      <p class="mt-2 font-headline text-2xl font-extrabold text-slate-900">{{ stats.population }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Somme estimée</p>
+    </div>
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Superficie (km²)</p>
+      <p class="mt-2 font-headline text-2xl font-extrabold text-slate-900">{{ stats.superficie }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Somme déclarée</p>
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+    <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Registre</p>
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div class="min-w-0">
+        <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Provinces enregistrées</h2>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Recherche et filtrage du référentiel provincial.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {% if not all_initialized %}
+        <form method="post" action="{% url 'ministere_provinces_initialize_all' %}">
+          {% csrf_token %}
+          <button type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-700 hover:bg-slate-50">
+            <span class="material-symbols-outlined text-[18px]">autorenew</span>
+            Initialiser les provinces
+          </button>
+        </form>
+        {% endif %}
+        <a href="{% url 'ministere_province_create' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0B2B4A] px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] text-white hover:bg-[#123554]">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Créer une province
+        </a>
+      </div>
+    </div>
+
+    <form method="get" class="mt-4 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 sm:flex-row sm:items-end">
+      <div class="flex-1 sm:min-w-[520px]">
+        <label class="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600">Recherche</label>
+        <input name="q" value="{{ q }}"
+          class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-sky-300"
+          placeholder="Nom, chef-lieu, code…" />
+      </div>
+      <div class="flex w-full items-end justify-end gap-2 sm:w-auto">
+        <a href="{% url 'ministere_provinces' %}"
+          class="inline-flex h-12 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-slate-700 hover:bg-slate-50">
+          Réinitialiser
+        </a>
+        <button type="submit"
+          class="inline-flex h-12 items-center justify-center rounded-2xl bg-[#FDB813] px-4 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#1a2332] shadow-[0_14px_35px_-24px_rgba(253,184,19,0.85)] hover:brightness-[1.02]">
+          Filtrer
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div class="overflow-auto">
+        <table class="min-w-full text-left">
+          <thead class="bg-slate-50/70">
+            <tr class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-600">
+              <th class="px-4 py-3">Province</th>
+              <th class="px-4 py-3">Chef-lieu</th>
+              <th class="px-4 py-3">Superficie (km²)</th>
+              <th class="px-4 py-3">Population</th>
+              <th class="px-4 py-3">Villes</th>
+              <th class="px-4 py-3">Territoires</th>
+              <th class="px-4 py-3">Statut</th>
+              <th class="px-4 py-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            {% for p in provinces %}
+            <tr class="text-[13px] font-semibold text-slate-800">
+              <td class="px-4 py-3">
+                <div class="min-w-0">
+                  <p class="truncate font-extrabold text-slate-900">{{ p.nom }}</p>
+                  <p class="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                    {% if p.code %}{{ p.code }}{% else %}—{% endif %}
+                  </p>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-slate-700">{% if p.chef_lieu %}{{ p.chef_lieu }}{% else %}—{% endif %}</td>
+              <td class="px-4 py-3 text-slate-700">{% if p.superficie_km2 %}{{ p.superficie_km2 }}{% else %}—{% endif %}</td>
+              <td class="px-4 py-3 text-slate-700">{% if p.population_estimee %}{{ p.population_estimee }}{% else %}—{% endif %}</td>
+              <td class="px-4 py-3 text-slate-700">{% if p.nb_villes %}{{ p.nb_villes }}{% else %}—{% endif %}</td>
+              <td class="px-4 py-3 text-slate-700">{% if p.nb_territoires %}{{ p.nb_territoires }}{% else %}—{% endif %}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold {% if p.active %}bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200{% else %}bg-rose-50 text-rose-700 ring-1 ring-rose-200{% endif %}">
+                  {% if p.active %}Active{% else %}Inactive{% endif %}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex justify-end gap-2">
+                  <a href="{% url 'ministere_province_edit' p.pk %}"
+                    class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:bg-slate-50"
+                    aria-label="Modifier">
+                    <span class="material-symbols-outlined text-[18px]">edit</span>
+                  </a>
+                  <form method="post" action="{% url 'ministere_province_delete' p.pk %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                      class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2 text-rose-700 hover:bg-rose-50"
+                      aria-label="Supprimer"
+                      onclick="return confirm('Supprimer cette province ?');">
+                      <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8" class="px-6 py-10 text-center text-sm font-semibold text-slate-600">
+                Aucune province ne correspond à votre recherche.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+

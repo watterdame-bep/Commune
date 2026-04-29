@@ -1,0 +1,326 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Tableau de bord (Ministère) — MuniWorks DRC{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-6xl space-y-4">
+  <!-- HERO -->
+  <section class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B2B4A] p-6 text-white shadow-[0_30px_70px_-55px_rgba(2,6,23,0.75)] sm:p-8">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.55]" aria-hidden="true"
+      style="background:
+        radial-gradient(ellipse 95% 80% at 10% 25%, rgba(56,189,248,0.00) 0%, transparent 60%),
+        radial-gradient(ellipse 75% 70% at 88% 30%, rgba(253,184,19,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 70% at 55% 120%, rgba(255,255,255,0.06) 0%, transparent 52%);">
+    </div>
+    <div class="pointer-events-none absolute inset-0 opacity-[0.44] mix-blend-soft-light" aria-hidden="true"
+      style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.22' stroke-width='1'%3E%3Cpath d='M80 0 L160 80 L80 160 L0 80 Z'/%3E%3Cpath d='M80 24 L136 80 L80 136 L24 80 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;);background-size:88px 88px;background-repeat:repeat;background-position:center;">
+    </div>
+
+    <div class="relative z-10">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Ministère de l’Intérieur</p>
+      <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div class="min-w-0">
+          <h1 class="font-headline text-2xl font-extrabold tracking-tight sm:text-3xl">Pilotage national & décentralisation</h1>
+          <p class="mt-2 max-w-3xl text-[13px] font-semibold text-white/80">
+            Vue macroscopique : agrégats, tendances et sécurité. Aucun dossier individuel, aucun nom de citoyen.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-[11px] font-bold text-white/90 backdrop-blur">
+            <span class="material-symbols-outlined text-[18px]">shield</span>
+            Sécurité
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-[11px] font-bold text-white/90 backdrop-blur">
+            <span class="material-symbols-outlined text-[18px]">account_tree</span>
+            Décentralisation
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-[11px] font-bold text-white/90 backdrop-blur">
+            <span class="material-symbols-outlined text-[18px]">policy</span>
+            Gouvernance
+          </span>
+        </div>
+      </div>
+
+      <!-- (Filtres retirés à la demande) -->
+    </div>
+  </section>
+
+  <!-- CARDS statistiques (KPI essentiels Ministère) -->
+  <section class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Population (proxy)</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">groups</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ kpis.population_total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Somme estimée (communes)</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Natalité</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">child_friendly</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ kpis.natalite_1000 }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">pour 1000 hab.</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Naissances: {{ kpis.naissances }}</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Mortalité</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">health_and_safety</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ kpis.mortalite_1000 }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">pour 1000 hab.</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Décès: {{ kpis.deces }}</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Mariages civils</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">diversity_2</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ kpis.mariages }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Volume (agrégé)</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Recettes fiscales</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">payments</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ finances.paiements_total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">{{ finances.currency }} (agrégé)</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Ce mois: {{ finances.paiements_mois }} {{ finances.currency }}</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">ASBL &amp; Églises</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">account_balance</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ securite.asbl_eglises_total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Actifs (agrégé)</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Répartition dans “Module 6”.</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Incidents</p>
+        <span class="material-symbols-outlined text-[20px] text-[#FDB813]">verified_user</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ securite.incidents_total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Sécurité (agrégé)</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Ce mois: {{ securite.incidents_mois }}</p>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-40px_rgba(2,6,23,0.16)]">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Protection civile</p>
+        <span class="material-symbols-outlined text-[20px] text-[#0B2B4A]">flood</span>
+      </div>
+      <p class="mt-3 font-headline text-2xl font-extrabold text-slate-900">{{ securite.zones_risques_total }}</p>
+      <p class="mt-1 text-[12px] font-semibold text-slate-600">Zones à risques (actives)</p>
+      <p class="mt-2 text-[11px] font-medium text-slate-500">Détail dans “Module 6”.</p>
+    </div>
+  </section>
+
+  <section class="grid gap-4 md:grid-cols-2">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Module 1</p>
+      <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Identité & population</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Population (proxy)</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ kpis.population_total }}</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Natalité</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ kpis.natalite_1000 }}</p>
+          <p class="mt-1 text-[11px] font-medium text-slate-500">pour 1000 hab.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Mortalité</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ kpis.mortalite_1000 }}</p>
+          <p class="mt-1 text-[11px] font-medium text-slate-500">pour 1000 hab.</p>
+        </div>
+      </div>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="divide-y divide-slate-100">
+          {% for row in etat_civil.par_statut %}
+          <div class="flex items-center justify-between gap-3 p-4">
+            <p class="text-sm font-semibold text-slate-700">{{ row.statut }}</p>
+            <p class="font-headline text-sm font-extrabold text-slate-900">{{ row.c }}</p>
+          </div>
+          {% empty %}
+          <div class="p-6 text-center">
+            <p class="text-sm font-semibold text-slate-600">Aucune donnée.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <p class="mt-3 text-[11px] font-medium text-slate-500">Agrégat par statut — aucun accès aux dossiers.</p>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Module 2</p>
+      <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Recettes & autonomie</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Recettes fiscales</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ finances.paiements_total }}</p>
+          <p class="mt-1 text-[11px] font-medium text-slate-500">{{ finances.currency }} (agrégé)</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Part numérique</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ finances.part_num_pct }}%</p>
+          <p class="mt-1 text-[11px] font-medium text-slate-500">Mobile Money / Banque</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Part cash</p>
+          <p class="mt-2 font-headline text-lg font-extrabold text-slate-900">{{ finances.part_cash_pct }}%</p>
+          <p class="mt-1 text-[11px] font-medium text-slate-500">Espèces</p>
+        </div>
+      </div>
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-sm font-semibold text-slate-700">
+          Estimation recettes documents: <span class="font-extrabold text-slate-900">{{ finances.recettes_estimees }}</span> {{ finances.currency }}
+        </p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Basé sur le nombre de documents délivrés × frais unitaire (paramétrage actuel).
+        </p>
+      </div>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="divide-y divide-slate-100">
+          {% for r in finances.by_tax %}
+          <div class="flex items-center justify-between gap-3 p-4">
+            <p class="text-[12px] font-semibold text-slate-700">{{ r.tax_type|upper }}</p>
+            <p class="text-[12px] font-extrabold text-slate-900">{{ r.total|default:0 }} {{ finances.currency }}</p>
+          </div>
+          {% empty %}
+          <div class="p-6 text-center">
+            <p class="text-sm font-semibold text-slate-600">Aucune donnée fiscale disponible.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+        <p class="text-[12px] font-semibold text-slate-700">Audit anti-corruption</p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          À brancher sur un journal d’audit (annulations/modifications). Aucun journal national n’est encore modélisé.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-4 md:grid-cols-2">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Décentralisation</p>
+      <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Couverture territoriale</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Villes / province</p>
+          <div class="mt-2 space-y-2">
+            {% for r in decentralisation.villes_par_province %}
+            <div class="flex items-center justify-between gap-3 text-[12px] font-semibold text-slate-700">
+              <span class="truncate">{{ r.province }}</span>
+              <span class="font-extrabold text-slate-900">{{ r.villes }}</span>
+            </div>
+            {% empty %}
+            <p class="text-[12px] font-semibold text-slate-600">Aucune donnée.</p>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Communes / province</p>
+          <div class="mt-2 space-y-2">
+            {% for r in decentralisation.communes_par_province %}
+            <div class="flex items-center justify-between gap-3 text-[12px] font-semibold text-slate-700">
+              <span class="truncate">{{ r.province }}</span>
+              <span class="font-extrabold text-slate-900">{{ r.communes }}</span>
+            </div>
+            {% empty %}
+            <p class="text-[12px] font-semibold text-slate-600">Aucune donnée.</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[12px] font-semibold text-slate-700">Densité (proxy)</p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Pas de “ménages” pour l’instant : on affiche la population estimée si renseignée.
+        </p>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-6">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Module 6</p>
+      <h2 class="mt-2 font-headline text-xl font-extrabold tracking-tight text-[#0B2B4A]">Sécurité publique</h2>
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[12px] font-semibold text-slate-700">Incidents / mains courantes</p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Total: <span class="font-extrabold text-slate-900">{{ securite.incidents_total }}</span> — ce mois:
+          <span class="font-extrabold text-slate-900">{{ securite.incidents_mois }}</span>. Aucun détail nominatif.
+        </p>
+      </div>
+      <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="divide-y divide-slate-100">
+          {% for r in securite.incidents_by_type %}
+          <div class="flex items-center justify-between gap-3 p-4">
+            <p class="text-[12px] font-semibold text-slate-700">{{ r.incident_type }}</p>
+            <p class="text-[12px] font-extrabold text-slate-900">{{ r.c }}</p>
+          </div>
+          {% empty %}
+          <div class="p-6 text-center">
+            <p class="text-sm font-semibold text-slate-600">Aucun incident enregistré.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mt-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[12px] font-semibold text-slate-700">ASBL & Églises</p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Total actifs: <span class="font-extrabold text-slate-900">{{ securite.asbl_eglises_total }}</span>.
+        </p>
+      </div>
+      <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="divide-y divide-slate-100">
+          {% for r in securite.asbl_eglises_by_type %}
+          <div class="flex items-center justify-between gap-3 p-4">
+            <p class="text-[12px] font-semibold text-slate-700">{{ r.entity_type|upper }}</p>
+            <p class="text-[12px] font-extrabold text-slate-900">{{ r.c }}</p>
+          </div>
+          {% empty %}
+          <div class="p-6 text-center">
+            <p class="text-sm font-semibold text-slate-600">Aucune entité enregistrée.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mt-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+        <p class="text-[12px] font-semibold text-slate-700">Risques & catastrophes</p>
+        <p class="mt-1 text-[12px] font-medium text-slate-500">
+          Zones actives: <span class="font-extrabold text-slate-900">{{ securite.zones_risques_total }}</span>.
+        </p>
+      </div>
+      <div class="mt-3 overflow-hidden rounded-2xl border border-slate-200">
+        <div class="divide-y divide-slate-100">
+          {% for r in securite.zones_risques_by_type %}
+          <div class="flex items-center justify-between gap-3 p-4">
+            <p class="text-[12px] font-semibold text-slate-700">{{ r.risk_type }}</p>
+            <p class="text-[12px] font-extrabold text-slate-900">{{ r.c }}</p>
+          </div>
+          {% empty %}
+          <div class="p-6 text-center">
+            <p class="text-sm font-semibold text-slate-600">Aucune zone à risque enregistrée.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+

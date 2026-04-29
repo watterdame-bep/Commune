@@ -60,7 +60,7 @@
           <p class="mt-1 text-[12px] font-semibold text-slate-600">Ajouté le {{ doc.created_at|date:"d/m/Y" }}</p>
         </div>
         <div class="flex shrink-0 items-center gap-2">
-          <a href="{{ doc.fichier.url }}"
+          <a href="{% url 'document_download' doc.pk %}"
             class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B2B4A] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white hover:bg-[#123554]">
             <span class="material-symbols-outlined text-[18px]">download</span>
             Télécharger

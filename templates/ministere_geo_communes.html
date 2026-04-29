@@ -1,0 +1,31 @@
+{% extends "ministere_base.html" %}
+{% load static %}
+
+{% block title %}Communes (Ministère) — MuniWorks DRC{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-6xl space-y-4">
+  <section class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B2B4A] p-6 text-white shadow-[0_30px_70px_-55px_rgba(2,6,23,0.65)] sm:p-8">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.42]" aria-hidden="true"
+      style="background:
+        radial-gradient(ellipse 95% 80% at 10% 25%, rgba(56,189,248,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 75% 70% at 88% 30%, rgba(253,184,19,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 70% at 55% 120%, rgba(255,255,255,0.06) 0%, transparent 52%);">
+    </div>
+    <div class="relative z-10">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/80">Référentiel géographique</p>
+      <h1 class="mt-2 font-headline text-2xl font-extrabold tracking-tight sm:text-3xl">Communes</h1>
+      <p class="mt-2 max-w-3xl text-[13px] font-semibold text-white/85">
+        Interface en préparation. La création opérationnelle des communes se fait actuellement via l’Hôtel de ville (décentralisation).
+      </p>
+    </div>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6">
+    <p class="text-[12px] font-semibold text-slate-700">
+      Prochaine étape : permettre au Ministère de visualiser le registre national des communes (agrégé) et la cohérence Province → Ville → Commune.
+    </p>
+  </section>
+</div>
+{% endblock %}
+

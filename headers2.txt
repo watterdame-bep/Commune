@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Date: Wed, 29 Apr 2026 10:02:20 GMT
+Server: WSGIServer/0.2 CPython/3.13.5
+Content-Type: text/html; charset=utf-8
+Cache-Control: no-store, no-cache, must-revalidate, private
+X-Frame-Options: DENY
+Vary: Cookie, Accept-Language
+Content-Length: 65894
+Content-Language: fr
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Cross-Origin-Opener-Policy: same-origin
+Set-Cookie: csrftoken=d331xjki4bnlrKRwHeZ2aM22JLrCGqti; expires=Wed, 28 Apr 2027 10:02:20 GMT; Max-Age=31449600; Path=/; SameSite=Lax
+
